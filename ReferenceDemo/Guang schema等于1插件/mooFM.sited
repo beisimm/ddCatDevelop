@@ -1,0 +1,215 @@
+<!--?xml version="1.0" encoding="UTF-8" ?-->
+<sited  ver="4" debug="1"  engine="30" schema="1">
+	<meta>
+		<ua>iPhone</ua>
+		<guid></guid>
+		<title>mooFM</title>
+		<author>Guang</author>
+		<contact>未想好我空着</contact>
+		<intro>[FM](v4修复)献给Moo。陌声人广播，一个人的精神良药，能给你的小惊喜与耳边的温暖。有的节目同时属于多个分类。搜索是单期节目，最早12年的没有音频所以“播放失败”。</intro>
+		<url>http://www.moofm.com/</url>
+		<expr>\.moofm\.com</expr>
+		<logo>http://ww2.sinaimg.cn/mw690/76384e27gw1dxg1rrfyptj.jpg</logo>
+		<encode>UTF-8</encode>
+		<about title="反馈" mail="wistn@qq.com">
+			<item url="我邮箱是wistn@qq.com" />
+			<item />
+			<item url="欢迎打赏插件开发者Guang，反馈问题。"/>			
+			<item txt="点击或扫描二维码对[❤❤广]支付宝打赏"  expr="https://qr.alipay.com/aex05979jbnzvi4fs3hx691" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7nyz88j20by0by0sy.jpg"/>
+			<item />
+			<item txt="扫描二维码对我的微信打赏" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7oa4khj206b06bt9m.jpg"/>
+			<item />
+		</about>
+	</meta>
+	<main dtype="3" btag="电台">
+		<home>
+			<hots showImg="1" w="1" h="1" cache="1d" title="分类" method="get" parse="hots_parse" url="http://www.moofm.com/" />
+			<updates showImg="2" w="1" h="1" cache="1d" title="最新" method="get" parse="updates_parse" url="http://www.moofm.com/" /></home>
+		<search cache="1d" method="get" parse="search_parse" url="http://www.moofm.com/page/@page/?s=@key" />
+		<book>
+			<book cache="1d" method="get" parse="book_parse1" expr="com\/category\/" dtype="3" />
+			<book cache="0" method="get" parseUrl="book_parseUrl2" parse="book_parse2" expr="com\/(?!category).+" dtype="7" style="12" /></book>
+		<section cache="0" method="get" parseUrl="section_parseUrl" parse="section_parse"  style="12" /></main>
+	<script>
+		<require>
+			<item url="http://sited.noear.org/addin/js/cheerio.js" lib="cheerio" /></require>
+		<code>
+			<![CDATA[
+function urla(u) {
+	var host = "http://www.moofm.com";
+	if (u.indexOf("http") < 0) {
+		if (u.substr(0, 1) != '/') u = host + '/' + u;
+		else u = host + u;
+	}
+	return encodeURI(u);
+}
+
+function hots_parse(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+	var bm = {};
+	bm.name = '一诗一信';
+	bm.url = 'http://www.moofm.com/category/postunpoem/';
+	bm.logo = 'http://ww2.sinaimg.cn/mw690/76384e27gw1dxg1rrfyptj.jpg';
+	list.push(bm);
+	bm = {};	
+	bm.name = '听说';
+	bm.url = 'http://www.moofm.com/category/tingshuo/';
+	bm.logo = 'http://ww2.sinaimg.cn/mw690/76384e27gw1dxg1rrfyptj.jpg';
+	list.push(bm);
+	bm = {};
+	bm.name = '喂你读书';
+	bm.url = 'http://www.moofm.com/category/zhi/';
+	bm.logo = 'http://ww2.sinaimg.cn/mw690/76384e27gw1dxg1rrfyptj.jpg';
+	list.push(bm);
+	bm = {};
+	bm.name = '毒家观影指南';
+	bm.url = 'http://www.moofm.com/category/dianying/';
+	bm.logo = 'http://ww2.sinaimg.cn/mw690/76384e27gw1dxg1rrfyptj.jpg';
+	list.push(bm);
+	bm = {};
+	bm.name = '精神良药';
+	bm.url = 'http://www.moofm.com/category/yue/';
+	bm.logo = 'http://ww2.sinaimg.cn/mw690/76384e27gw1dxg1rrfyptj.jpg';
+	list.push(bm);
+	return JSON.stringify(list);
+}
+
+function updates_parse(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+
+	$('#main .box').each(function () {
+		if ($(this).find('.cat').text().indexOf('播客') >= 0) {
+			var item = $(this);
+			var bm = {};
+			bm.name = item.find('a').eq(0).attr('title');
+			bm.url = urla(item.find('a').eq(0).attr('href'));
+			bm.logo = item.find('a img').attr('src');
+			bm.newSection = '';
+			item.find('.post-meta span').remove();
+			bm.updateTime = item.find('.post-meta').text().trim();
+			bm.status = '';
+			list.push(bm);
+		}
+	});
+	return JSON.stringify(list);
+}
+
+function search_parse(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+
+	$('#main .box').each(function () {
+		var item = $(this);
+		var bm = {};
+		bm.name = item.find('a').eq(0).attr('title');
+		bm.url = urla(item.find('a').eq(0).attr('href'));
+		bm.logo = 'http://ww2.sinaimg.cn/mw690/76384e27gw1dxg1rrfyptj.jpg';
+		bm.author = '';
+		bm.newSection = '';
+		item.find('.post-meta span').remove();
+		bm.updateTime = item.find('.post-meta').text().trim();
+		bm.status = '';
+		bm.btag = "单期节目";
+		list.push(bm);
+	});
+	return JSON.stringify(list);
+}
+
+function book_parse1(url, html) {
+	var $ = cheerio.load(html);
+	var data = {};
+	data.name = $('#main .archive_header .cat').text().replace('浏览分类 ： ', '');
+	data.author = '';
+	data.logo = 'http://ww2.sinaimg.cn/mw690/76384e27gw1dxg1rrfyptj.jpg';
+	data.intro ='';
+	data.updateTime = '';
+	data.isSectionsAsc = 0;
+	data.sections = [];
+
+	$('#main .box').each(function () {
+		if ($(this).find('.cat').text().indexOf('播客') >= 0) {
+			var item = $(this);
+			item.find('.post-meta span').remove();
+			var sm = {
+				name : item.find('a').eq(0).attr('title') + item.find('.post-meta').text().trim(),
+				url : urla(item.find('a').eq(0).attr('href'))
+			};
+			data.sections.push(sm);
+		}
+	});
+	return JSON.stringify(data);
+}
+var sgc={};
+function book_parseUrl2(url, html) {
+	var $ = cheerio.load(html);
+	var url0 = $('#main .entry iframe').attr('src');
+	var url1 = $('#main .entry object').attr('data');
+	
+	if (url0 && url0.indexOf('ximalaya') >= 0) {
+		url = 'http://www.ximalaya.com/tracks/' + url0.match(/id=(\d+)/)[1] + '.ext.text';
+	} else if (url1 && url1.indexOf('ximalaya') >= 0) {
+		url = 'http://www.ximalaya.com/tracks/' + url1.match(/id=(\d+)/)[1] + '.ext.text';
+	}else{}
+	
+	var logo = $('#main .entry img').eq(0).attr('src');
+	if (logo)
+		url = url + '?' + logo.replace('http://', '');
+	sgc.name=$('h1.title').text();
+	return url;
+}
+
+function book_parse2(url, html) {
+	var logo = '';
+	if (url.match(/\?(.+)$/i))
+		logo = 'http://' + url.match(/\?(.+)$/i)[1];
+	if (url.indexOf('ximalaya') >= 0)
+		url = html.match(/url=(.+?)&/i)[1];
+	return JSON.stringify({
+		name: sgc.name,
+		logo: logo,
+		list: [{
+				url: url,
+				logo: logo,
+				type: ".mp3",
+				mime: "audio/x-mpeg"
+			}]
+	});
+}
+function section_parseUrl(url, html) {
+	var $ = cheerio.load(html);
+	var url0 = $('#main .entry iframe').attr('src');
+	var url1 = $('#main .entry object').attr('data');
+	
+	if (url0 && url0.indexOf('ximalaya') >= 0) {
+		url = 'http://www.ximalaya.com/tracks/' + url0.match(/id=(\d+)/)[1] + '.ext.text';
+	} else if (url1 && url1.indexOf('ximalaya') >= 0) {
+		url = 'http://www.ximalaya.com/tracks/' + url1.match(/id=(\d+)/)[1] + '.ext.text';
+	}else{}
+	
+	var logo = $('#main .entry img').eq(0).attr('src');
+	if (logo)
+		url = url + '?' + logo.replace('http://', '');
+
+	return url;
+}
+
+function section_parse(url, html) {
+	var logo = '';
+	if (url.match(/\?(.+)$/i))
+		logo = 'http://' + url.match(/\?(.+)$/i)[1];
+	if (url.indexOf('ximalaya') >= 0)
+		url = html.match(/url=(.+?)&/i)[1];
+	return JSON.stringify([{
+				url : url,
+				logo : logo,
+				type : ".mp3",
+				mime : "audio/x-mpeg"
+	}]);
+}
+
+]]>
+		</code>
+    </script>
+</sited>

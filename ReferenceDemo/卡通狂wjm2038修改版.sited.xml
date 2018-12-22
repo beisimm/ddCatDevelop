@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<site ver="6" debug="1" engine="11" sds="http://sited.noear.org/api.3/">
+    <title>動漫狂</title>
+    <intro>[漫画]動漫狂行動版...</intro>
+	<author>Mrchen</author>
+    <url>http://www.cartoonmad.com</url>
+    <expr>\.cartoonmad\.com|\.cartoonmad\.com</expr>
+    <logo></logo>
+    <encode>utf-8</encode>
+    <main dtype="1" durl="http://www.cartoonmad.com">
+        <reward title="支持" mail="codemarker@foxmail.com">
+            <item txt="插件开发者@Mrchen的账号" />
+            <item />
+            <item title="支付宝[*宇坤]" url="magicdmer@163.com" />
+            <item />
+            <item title="点击进入页面，长按二维码微信支付" expr="http://f.hiphotos.baidu.com/image/pic/item/838ba61ea8d3fd1fe45a91cb384e251f94ca5feb.jpg" logo="http://f.hiphotos.baidu.com/image/pic/item/838ba61ea8d3fd1fe45a91cb384e251f94ca5feb.jpg" />
+            <item />
+            <item txt="你的支持是我开发完善的一大动力！"/>
+        </reward>
+        
+        <home>
+            <hots  cache="1d"   title="热播" method="get"  parse="hots_parse" url="http://www.cartoonmad.com/m/?page=1&amp;act=2"/>
+            <updates cache="1d" title="更新" method="get" parse="updates_parse" url="http://www.cartoonmad.com/m/?page=1&amp;act=1" />
+			<tags  title="分类" method="get" >
+                <item group="题材" title="格斗" url="http://www.cartoonmad.com/m/?act=5&amp;tkey=%E6%A0%BC%E9%AC%A5&amp;page=@page" />
+				<item title="魔法" url="http://www.cartoonmad.com/m/?act=5&amp;tkey=%e9%ad%94%e6%b3%95&amp;page=@page" />
+				<item title="侦探" url="http://www.cartoonmad.com/m/?act=5&amp;tkey=%e5%81%b5%e6%8e%a2&amp;page=@page" />
+				<item title="竞技" url="http://www.cartoonmad.com/m/?act=5&amp;tkey=%e7%ab%b6%e6%8a%80&amp;page=@page" />
+				<item title="恐怖" url="http://www.cartoonmad.com/m/?act=5&amp;tkey=%e6%81%90%e6%80%96&amp;page=@page" />
+				<item title="战国" url="http://www.cartoonmad.com/m/?act=5&amp;tkey=%e6%88%b0%e5%9c%8b&amp;page=@page" />
+				<item title="魔幻" url="http://www.cartoonmad.com/m/?act=5&amp;tkey=%e9%ad%94%e5%b9%bb&amp;page=@page" />
+				<item title="冒险" url="http://www.cartoonmad.com/m/?act=5&amp;tkey=%e5%86%92%e9%9a%aa&amp;page=@page" />
+				<item title="校园" url="http://www.cartoonmad.com/m/?act=5&amp;tkey=%e6%a0%a1%e5%9c%92&amp;page=@page" />
+				<item title="搞笑" url="http://www.cartoonmad.com/m/?act=5&amp;tkey=%e6%90%9e%e7%ac%91&amp;page=@page" />
+				<item title="少女" url="http://www.cartoonmad.com/m/?act=5&amp;tkey=%e5%b0%91%e5%a5%b3&amp;page=@page" />
+				<item title="少男" url="http://www.cartoonmad.com/m/?act=5&amp;tkey=%e5%b0%91%e7%94%b7&amp;page=@page" />
+				<item title="科幻" url="http://www.cartoonmad.com/m/?act=5&amp;tkey=%e7%a7%91%e5%b9%bb&amp;page=@page" />
+				<item title="港产" url="http://www.cartoonmad.com/m/?act=5&amp;tkey=%e6%b8%af%e7%94%a2&amp;page=@page" />
+				<item title="其他" url="http://www.cartoonmad.com/m/?act=5&amp;tkey=%e5%85%b6%e4%bb%96&amp;page=@page" />
+            </tags>
+        </home>
+        <search cache="1d"  method="get"  parse="search_parse" url="http://www.cartoonmad.com/m/?act=7&amp;keyword=@key"  />
+        <tag cache="1d" method="get" parse="tags_parse" />
+        <book cache="1d"  encode="BIG5" method="get"  parse="book_parse" expr="\/\d+" />
+        <section cache="1" method="get" parseUrl='section_parseUrl' header="referer;cookie" parse="section_parse" />
+    </main>
+    <jscript>
+	    <require>
+			<item encode="utf-8" url="http://sited.noear.org/addin/js/cheerio.js" lib="cheerio" />
+		</require>
+        <code>
+            <![CDATA[
+	            
+function urla(u){
+	var host = "http://www.cartoonmad.com";
+	if (u.indexOf("http")<0) {
+		if (u.substr(0, 1) != '/')
+			u = host + '/' + u;
+		else
+			u = host + u;
+	}
+	u = u.replace('/m','');
+	return encodeURI(u);
+}
+
+function updates_parse(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+
+	$('.comic_prev').each(function () {
+		var img = $(this).find('img');
+		
+		var bm = {};
+		bm.name = $(this).find('.a1').text();
+		bm.url = urla(img.parent().attr('href'));
+		bm.logo = img.attr('src');
+
+		list.push(bm);
+	});
+
+	return JSON.stringify(list);
+}
+
+
+function tags_parse(url,html) {
+	var $ = cheerio.load(html);
+	var list = [];
+	
+	$('.comic_prev').each(function () {
+		var img = $(this).find('img');
+		
+		var bm = {};
+		bm.name = $(this).find('.a1').text();
+		bm.url = urla(img.parent().attr('href'));
+		bm.logo = img.attr('src');
+
+		list.push(bm);
+	});
+	
+	return JSON.stringify(list);
+}
+
+
+
+function hots_parse(url,html) {
+	
+	var $ = cheerio.load(html);
+	var list = [];
+	
+	$('.comic_prev').each(function () {
+		var img = $(this).find('img');
+		
+		var bm = {};
+		bm.name = $(this).find('.a1').text();
+		bm.url = urla(img.parent().attr('href'));
+		bm.logo = img.attr('src');
+
+		list.push(bm);
+	});
+
+	return JSON.stringify(list);
+}
+
+function search_parse(url,html) {
+    var $ = cheerio.load(html);
+	var list = [];
+	
+	$('.comic_prev').each(function () {
+		var img = $(this).find('img');
+		
+		var bm = {};
+		bm.name = $(this).find('.a1').text();
+		bm.url = urla(img.parent().attr('href'));
+		bm.logo = img.attr('src');
+
+		list.push(bm);
+	});
+	
+	return JSON.stringify(list);
+}
+
+
+function book_parse(url,html) {
+	var $ = cheerio.load(html);
+	var data = {};
+
+	data.name = $('.covertxt').children('font').text();
+	data.author = '';
+	data.logo = $('.covertxt').parent().children('img').attr('src');
+	data.updateTime = "";
+	data.intro = $("meta[name='description']").attr('content');
+    data.isSectionsAsc = 1;
+    
+	data.sections = [];
+
+	$("table[width='688'] a").each(function () {
+		var s = {
+			name: $(this).text(),
+			url: urla($(this).attr('href'))
+		};
+
+		data.sections.push(s);
+	});
+
+	return JSON.stringify(data);
+}
+
+function section_parseUrl(url,html){
+	var $ = cheerio.load(html);
+	
+	var host = "http://www.cartomad.com/m/comic/";
+	
+	var pageOneHref = $("img[oncontextmenu]").parent().attr('href');
+	var pageBase = parseInt(pageOneHref.match(/\d+/)[0]);
+	pageBase -= 1;
+	
+	
+	var strPageNum = $(".pages").eq(-2).text();
+	var pageNums = parseInt(strPageNum);
+		
+	var urls = url;
+	
+	for (var i = 1; i < pageNums; i++) {
+		var pageNum = pageBase + i;
+		var url2 = host + pageNum + ".html";
+		urls+= ";" + url2;
+	}
+	
+	return urls;
+}
+
+function section_parse(url,html) {
+	var $ = cheerio.load(html);
+    
+	var list = [];
+	
+	var imgUrl = $("img[oncontextmenu]").attr("src");
+	
+	list.push(imgUrl);
+
+    
+    return JSON.stringify(list);
+	
+}
+
+
+
+    ]]>
+        </code>
+    </jscript>
+</site>

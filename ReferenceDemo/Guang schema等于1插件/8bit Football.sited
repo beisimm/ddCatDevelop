@@ -1,0 +1,221 @@
+<!--?xml version="1.0" encoding="UTF-8" ?-->
+<sited ver="1" debug="1" engine="27" schema="1">
+	<meta>
+		<ua></ua>
+		<guid></guid>
+		<title>8bit Football</title>
+		<author>Guang</author>
+		<contact>未想好我空着</contact>	
+		<intro>[资讯]A blog where creator shares illustrations about football (or soccer) based on 8 bit graphics as we used to play in video games in the 90's.</intro>
+		<url>http://8bit-football.com/</url>
+		<expr>8bit-football\.com</expr>
+		<logo>http://8bit-football.com/wp-content/uploads/2016/01/8bitfootball_logo.png</logo>
+		<encode>UTF-8</encode>
+		<reward title="Email" mail="wistn@qq.com">
+			<item txt="欢迎打赏插件开发者Guang，反馈问题。" />
+			<item />
+			<item txt="点击或扫描二维码对[❤❤广]支付宝打赏" expr="https://qr.alipay.com/aex05979jbnzvi4fs3hx691" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7nyz88j20by0by0sy.jpg" />
+			<item />
+			<item txt="扫描二维码对我的微信打赏" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7oa4khj206b06bt9m.jpg" />
+			<item />
+			<item url="点击本行可联系QQ" expr="http://wpa.qq.com/msgrd?v=3&amp;uin=476375486&amp;site=qq&amp;menu=yes" />
+			<item />
+		</reward>
+	</meta>
+	<main dtype="6" btag="资讯">
+		<home>
+            <hots cache="1d" showImg="0"  title="National" method="get" parse="hots_parse" url="http://8bit-football.com/" />
+            <updates cache="1d" showImg="1"  title="Updates" method="get" parse="updates_parse" url="http://8bit-football.com/" />
+			<tags title="Club">
+				<tags cache="1d" method="get" parse="tags_parse" url="http://8bit-football.com/"/>
+			</tags>
+        </home>
+        <search cache="1d"  method="get"  parse="search_parse" url="http://8bit-football.com/?s=@key"  />		
+		<tag cache="1d" showImg="0"  method="get" parse="tag_parse" expr="category" />		 
+		<book cache="1d"  method="get" parse="book_parse"   expr="page|\d+\/\d+\/\d+" />			
+    </main>
+    <script>
+	    <require>
+			<item url="http://sited.noear.org/addin/js/cheerio.js" lib="cheerio" />
+		</require>
+        <code>
+            <![CDATA[
+function urla(u) {
+	var host = "http://8bit-football.com";
+	if (u.indexOf("http") < 0) {
+		if (u.substr(0, 1) != '/')
+			u = host + '/' + u;
+		else
+			u = host + u;
+	}
+	return encodeURI(u);
+}
+
+function hots_parse(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+	$('#menu-item-3865>ul>li').each(function () {
+		var item = $(this);
+
+		var bm = {};
+		bm.name = item.text();
+		bm.url = item.children('a').attr('href');
+		bm.logo = '';
+		list.push(bm);
+	});
+
+	return JSON.stringify(list);
+}
+
+function updates_parse(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+	$('#main article').each(function () {
+		var item = $(this);
+
+		var bm = {};
+		bm.name = item.find('.entry-title').text();
+		bm.url = item.find('.entry-title>a').attr('href');
+		bm.logo = item.find('.entry-content>p>img').eq(0).attr('src');
+		bm.newSection = '';
+		bm.updateTime = item.find('.entry-title').next().find('time').eq(0).text().trim();
+		if (item.find('.entry-content>p>img').length) {
+			list.push(bm);
+		}
+	});
+
+	return JSON.stringify(list);
+}
+function tags_parse(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+
+	$('#menu-item-3864>ul>li').each(function () {
+		var bm = null;
+		var group0 = $(this).children('a').text();
+		$(this).children('ul').children('li').each(function () {
+			if (bm) {
+				bm = {};
+			} else {
+				bm = {
+					group : group0
+				};
+			}
+			var item = $(this);
+			bm.title = item.children('a').text();
+			bm.url = item.children('a').attr('href');
+
+			list.push(bm);
+		});
+
+	});
+
+	return JSON.stringify(list);
+}
+
+function tag_parse(url, html) {
+	var name = url.match(/http.+\/(.+?)\/$/i)[1];
+	var $ = cheerio.load(html);
+	var list = [];
+
+	var pages = $('#nav-below').children('a').eq(-2).text();
+	if (pages) {
+		for (i = 1; i <= pages; i++) {
+			var bm = {};
+			bm.name = name + '-page' + i;
+			bm.url = url + 'page/' + i;
+			bm.logo = '';
+			bm.author = '';
+			bm.status = '';
+			bm.newSection = '';
+			bm.updateTime = '';
+			list.push(bm);
+		}
+	} else {
+
+		var bm = {};
+		bm.name = name + '-page1';
+		bm.url = url + 'page/1';
+		bm.logo = '';
+		bm.author = '';
+		bm.status = '';
+		bm.newSection = '';
+		bm.updateTime = '';
+		list.push(bm);
+	}
+
+	return JSON.stringify(list);
+}
+
+function search_parse(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+	$('main article').each(function () {
+		var item = $(this);
+
+		var bm = {};
+		bm.name = item.find('.entry-title').text();
+		bm.url = item.find('.entry-title>a').attr('href');
+		bm.logo = item.find('.post-image img').attr('src');
+		bm.author = '';
+		bm.newSection = '';
+		bm.updateTime = item.find('.entry-title').next().find('time').eq(0).text().trim();
+		bm.status = '';
+		bm.btag = "资讯";
+
+		if (bm.logo) {
+			list.push(bm);
+		}
+
+	});
+
+	return JSON.stringify(list);
+}
+
+function book_parse(url, html) {
+	var $ = cheerio.load(html);
+
+	var list = [];
+
+	$('#main article').each(function () {
+		var item = $(this);
+		list.push({
+			d : '',
+			t : 1
+		}, {
+			d : item.find('.entry-title').text() + ' ' + item.find('.entry-title').next().find('time').eq(0).text().trim(),
+			t : 1,
+			b : 1
+		});
+
+		item.find('.entry-content>p').each(function () {
+			var item = $(this);
+			var txt = item.text();
+			if (txt.length > 0) {
+				list.push({
+					d : txt,
+					t : 1
+				});
+			}
+
+			if (item.children('img').length) {
+				list.push({
+					d : item.children('img').attr('src'),
+					t : 9
+				});
+			}
+			if (item.find('img').length) {
+				list.push({
+					d : item.find('img').attr('src'),
+					t : 9
+				});
+			}
+		});
+	});
+
+	return JSON.stringify(list);
+}
+]]>
+		</code>
+    </script>
+</sited>

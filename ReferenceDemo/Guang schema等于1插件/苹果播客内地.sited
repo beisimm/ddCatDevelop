@@ -1,0 +1,116 @@
+<!--?xml version="1.0" encoding="UTF-8" ?-->
+<sited ver="2" debug="1" engine="27" schema="1">
+    <meta>
+		<ua></ua>
+		<guid></guid>
+		<title>苹果播客内地</title>
+		<author>Guang</author>
+		<contact>未想好我空着</contact>
+		<intro>[FM]献给Moo。里面是iTunes苹果播客(内地)每项分类的热门Podcasts（海外内容可能打不开需要翻_墙），不能搜索。</intro>
+		<url>https://itunes.apple.com/cn/genre/podcasts/id26?mt=2&amp;_sd=pgbk_cn3</url>
+		<expr>\/\/itunes\.apple\.com\/cn\/.*?pgbk_cn3</expr>	
+		<logo></logo>
+		<encode>UTF-8</encode>
+		<reward title="反馈" mail="wistn@qq.com">
+			<item txt="欢迎打赏插件开发者Guang，反馈问题。" />
+			<item />
+			<item txt="点击或扫描二维码对[❤❤广]支付宝打赏" expr="https://qr.alipay.com/aex05979jbnzvi4fs3hx691" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7nyz88j20by0by0sy.jpg" />
+			<item />
+			<item txt="扫描二维码对我的微信打赏" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7oa4khj206b06bt9m.jpg" />
+			<item />
+			<item url="点击本行可联系QQ" expr="http://wpa.qq.com/msgrd?v=3&amp;uin=476375486&amp;site=qq&amp;menu=yes" />
+			<item />
+		</reward>
+	</meta>
+	<main dtype="3" btag="电台" durl="https://itunes.apple.com/cn/genre/bo-ke/id26?mt=2">
+		<home>
+			<tags title="分类">
+	            <tags cache="1d" method="get" parse="tags_parse" url="https://itunes.apple.com/cn/genre/bo-ke/id26?mt=2"/>
+			</tags>
+		</home>
+        <tag cache="1d" method="get" parse="tag_parse" showImg
+		="0" expr="\/genre\/bo-ke-"/>
+		<book cache="1d" method="get" parse="book_parse" expr="\/podcast\/"/>
+        <section cache="1"  method="@null"  parse="section_parse" style="11"/>	
+    </main>
+    <script>
+	    <require>
+			<item url="http://sited.noear.org/addin/js/cheerio.js" lib="cheerio" />
+		</require>
+		<code>
+        <![CDATA[
+function urla(url){
+	var memo="苹果播客内地/苹果播客合集/苹果app商店插件expr兼容原因，前2者要先安装插件才能收藏打开/网址填写/扫码进入book，后者要先安装插件才能收藏打开，先安装插件但网址填写/扫码只能进入插件首页可能因为自动加上&ign-mpt=uo=4";	
+	if(url.indexOf('?')>0){
+		return url+"&_sd=pgbk_cn3";
+	}else{
+		return url+"?_sd=pgbk_cn3";
+	}
+}
+
+function tags_parse(url, html) {
+	var list = [];
+	var $ = cheerio.load(html);
+
+	$('.grid3-column>ul>li a').each(function () {
+		var item = $(this);
+		var bm = {};
+		bm.title = item.text();
+		bm.url = item.attr('href');
+		list.push(bm);
+	});
+	return JSON.stringify(list);
+}
+function tag_parse(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+	$('.grid3-column a').each(function () {
+		var item = $(this);
+		var bm = {};
+		bm.name = item.text();
+		bm.url = urla(item.attr('href'));
+		bm.logo = '';
+		bm.author = '';
+		bm.newSection = '';
+		bm.updateTime = '';
+		bm.status = '';
+		list.push(bm);
+	});
+	return JSON.stringify(list);
+}
+
+function book_parse(url, html) {
+	var $ = cheerio.load(html);
+	var data = {};
+
+	data.name = $('#title h1').text();
+	data.author = $('#title h2').text().replace(/By\s*/i, '');
+	data.logo = $('.product img').attr('src-swap');
+	data.intro = $('.product-review>p').text();
+	data.updateTime = "";
+	data.isSectionsAsc = 0;
+	data.sections = [];
+	$('.tracklist-content-box tbody>tr').each(function () {
+		var item = $(this);
+		if (item.attr('audio-preview-url')) {
+			var playurl = item.attr('audio-preview-url');
+		} else {
+			var playurl = item.attr('video-preview-url');
+		}
+		var sm = {
+			name: item.attr('preview-title'),
+			url: playurl
+		};
+		data.sections.push(sm);
+	});
+
+	return JSON.stringify(data);
+}
+function section_parse(url) {
+	return url;
+}
+
+]]>
+		</code>
+    </script>
+</sited>

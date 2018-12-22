@@ -1,0 +1,266 @@
+<!--?xml version="1.0" encoding="UTF-8" ?-->
+<sited  ver="3" debug="1"  engine="27" schema="1">
+	<meta>
+		<ua></ua>
+		<guid></guid>
+		<title>外语听力室</title>
+		<author>Guang</author>
+		<contact>未想好我空着</contact>
+		<intro>[音频]tingroom英语学习助手，还包含日韩法德西意阿葡越俄芬泰丹语听力。经典英语教程广播电台，大中小学课文自学考试英语，娱乐美剧（有的栏目没音频，音频有正序有逆序插件不能预判；没搜索功能）</intro>
+		<url>http://www.tingroom.com/</url>
+		<expr>\.tingroom\.com/</expr>
+		<logo>http://www.tingroom.com/templets/images/top-logo.gif</logo>
+		<encode>UTF-8</encode>
+		<reward title="反馈" mail="wistn@qq.com">
+			<item txt="欢迎打赏插件开发者Guang，反馈问题。" />
+			<item />
+			<item txt="点击或扫描二维码对[❤❤广]支付宝打赏" expr="https://qr.alipay.com/aex05979jbnzvi4fs3hx691" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7nyz88j20by0by0sy.jpg" />
+			<item />
+			<item txt="扫描二维码对我的微信打赏" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7oa4khj206b06bt9m.jpg" />
+			<item />
+			<item url="点击本行可联系QQ" expr="http://wpa.qq.com/msgrd?v=3&amp;uin=476375486&amp;site=qq&amp;menu=yes" />
+			<item />
+		</reward>
+	</meta>
+	<main dtype="3" btag="音频">	
+		<home>
+			<updates cache="1d" title="其他语" method="get" showImg="0" parse="updates_parse" url="http://daohang.tingroom.com/" />
+			<tags title="英语">
+				<item group="经典英语教程" title="新概念系列" url="http://daohang.tingroom.com/sec_list_91.html" />
+				<item title="李阳疯狂英语" url="http://daohang.tingroom.com/sec_list_117.html" />
+				<item title="赖世雄系列" url="http://daohang.tingroom.com/sec_list_98.html" />
+				<item title="刘毅单词" url="http://daohang.tingroom.com/sec_list_108.html" />
+				<item title="新东方系列" url="http://daohang.tingroom.com/sec_list_111.html" />
+				<item title="其他经典教程" url="http://daohang.tingroom.com/sec_list_119.html" />
+				<item group="各媒体英语"  title="电台广播" url="http://daohang.tingroom.com/sec_list_179.html" />
+				<item group="学校英语" title="幼儿英语" url="http://daohang.tingroom.com/sec_list_18.html" />
+				<item title="小学英语" url="http://daohang.tingroom.com/sec_list_19.html" />
+				<item title="初中英语" url="http://daohang.tingroom.com/sec_list_20.html" />
+				<item title="高中英语" url="http://daohang.tingroom.com/sec_list_21.html" />
+				<item title="大学英语" url="http://daohang.tingroom.com/sec_list_22.html" />
+				<item title="大学以上英语" url="http://daohang.tingroom.com/sec_list_171.html" />
+				<item group="考试英语" title="全国公共英语等级考试" url="http://daohang.tingroom.com/sec_list_163.html" />
+				<item title="三级" url="http://daohang.tingroom.com/sec_list_27.html" />
+				<item title="四级" url="http://daohang.tingroom.com/sec_list_28.html" />
+				<item title="六级" url="http://daohang.tingroom.com/sec_list_29.html" />
+				<item title="中高考英语" url="http://daohang.tingroom.com/sec_list_127.html" />
+				<item title="考研英语" url="http://daohang.tingroom.com/sec_list_125.html" />
+				<item title="考博英语" url="http://daohang.tingroom.com/sec_list_137.html" />
+				<item title="专四专八" url="http://daohang.tingroom.com/sec_list_134.html" />
+				<item title="雅思/GRE/托福等" url="http://daohang.tingroom.com/sec_list_130.html" />
+				<item title="英语口译考试" url="http://daohang.tingroom.com/sec_list_173.html" />
+				<item group="自学英语" title="零基础" url="http://daohang.tingroom.com/sec_list_23.html" />
+				<item title="初级" url="http://daohang.tingroom.com/sec_list_24.html" />
+				<item title="中级" url="http://daohang.tingroom.com/sec_list_25.html" />
+				<item title="高级" url="http://daohang.tingroom.com/sec_list_26.html" />
+				<item title="自学考试" url="http://daohang.tingroom.com/sec_list_151.html" />
+				<item title="自学英语教材" url="http://daohang.tingroom.com/sec_list_169.html" />
+				<item group="英语基础" title="音标和发音" url="http://daohang.tingroom.com/sec_list_30.html" />
+				<item title="英语语法" url="http://daohang.tingroom.com/sec_list_184.html" />
+				<item title="学习技巧" url="http://daohang.tingroom.com/sec_list_193.html" />
+				<item title="英语词汇" url="http://daohang.tingroom.com/sec_list_31.html" />
+				<item title="基础句型" url="http://daohang.tingroom.com/sec_list_32.html" />
+				<item group="听说读写译" title="听力" url="http://daohang.tingroom.com/sec_list_102.html" />
+				<item title="口语" url="http://daohang.tingroom.com/sec_list_103.html" />
+				<item title="阅读" url="http://daohang.tingroom.com/sec_list_104.html" />
+				<item title="写作" url="http://daohang.tingroom.com/sec_list_105.html" />
+				<item title="翻译" url="http://daohang.tingroom.com/sec_list_106.html" />
+				<item group="行业英语" title="商务英语" url="http://daohang.tingroom.com/sec_list_145.html" />
+				<item title="各行业英语" url="http://daohang.tingroom.com/sec_list_156.html" />
+				<item group="娱乐英语" title="娱乐英语录音" url="http://daohang.tingroom.com/sec_list_166.html" />
+				<item title="听电影学英语系列" url="http://daohang.tingroom.com/sec_list_182.html" />
+				<item title="英语歌曲" url="http://daohang.tingroom.com/sec_list_175.html" />
+			</tags>
+		</home>
+		<tag>
+			<tag cache="1d" method="get" showImg="0" parse="tag_parse_en" expr="daohang\.tingroom\.com\/.+html$" />
+			<tag cache="1d" method="get" showImg="0" parse="tag_parse_other" expr="tingroom\.com\/tingli\/$" />
+		</tag>
+		<book>
+			<book cache="1d" method="get" showImg="0" parseUrl="book_parseUrl1" parse="book_parse1" expr="com\/lesson\/|com\/jiaocai\/|com\/song\/"  />
+			<book cache="1d" method="get" showImg="0" parseUrl="book_parseUrl2" parse="book_parse2" expr="tingroom\.com\/tingli\/.+\/$" />
+		</book>
+		<section cache="1d" method="get" parseUrl="section_parseUrl" parse="section_parse" style="12" />
+	</main>
+	<script>
+		<require>
+			<item url="http://sited.noear.org/addin/js/cheerio.js" lib="cheerio" /></require>
+		<code>
+			<![CDATA[
+function urla(u) {
+	var host = "http://www.tingroom.com";
+	if (u.indexOf("http") < 0) {
+		if (u.substr(0, 1) != '/')
+			u = host + '/' + u;
+		else
+			u = host + u;
+	}
+	return encodeURI(u);
+}			
+function updates_parse(url, html) {
+	var list = [];	
+	var bm = {name : '日语听力',url : 'http://jp.tingroom.com/tingli/'};list.push(bm);
+	bm = {name : '韩语听力',url : 'http://kr.tingroom.com/tingli/'};list.push(bm); 
+	bm = {name : '法语听力',url : 'http://fr.tingroom.com/tingli/'};list.push(bm); 
+	bm = {name : '德语听力',url : 'http://de.tingroom.com/tingli/'};list.push(bm); 
+	bm = {name : '西班牙语听力',url : 'http://sp.tingroom.com/tingli/'};list.push(bm); 
+	bm = {name : '意大利语听力',url : 'http://italy.tingroom.com/tingli/'};list.push(bm); 
+	bm = {name : '阿拉伯语听力',url : 'http://arab.tingroom.com/tingli/'};list.push(bm); 
+	bm = {name : '葡萄牙语听力',url : 'http://pt.tingroom.com/tingli/'};list.push(bm); 
+	bm = {name : '越南语听力',url : 'http://vie.tingroom.com/tingli/'};list.push(bm); 
+	bm = {name : '俄语听力',url : 'http://ru.tingroom.com/tingli/'};list.push(bm); 
+	bm = {name : '芬兰语听力',url : 'http://finnish.tingroom.com/tingli/'};list.push(bm); 
+	bm = {name : '泰语听力',url : 'http://thai.tingroom.com/tingli/'};list.push(bm); 
+	bm = {name : '丹麦语听力',url : 'http://dk.tingroom.com/tingli/'};list.push(bm);
+	return JSON.stringify(list);
+}
+
+function tag_parse_en(url, html) {
+    var $ = cheerio.load(html);
+    var list = [];
+    $('#url_list li a').each(function() {
+        var item = $(this);
+        var bm = {};
+        bm.name = item.text();
+        bm.url =item.attr('href');
+        bm.logo = '';
+        bm.author ='';
+        bm.newSection = '';
+        bm.updateTime = '';
+        bm.status = '';
+        if(bm.url.match(/com\/lesson\/(?!index\.html).+\//i)||bm.url.match(/com\/jiaocai\/(?!index\.html).+\//i)||bm.url.match(/com\/song\/(?!index\.html).+\//i))list.push(bm);
+    });
+    return JSON.stringify(list);
+}
+function tag_parse_other(url, html) {
+    var $ = cheerio.load(html);
+    var list = [];
+	
+	if(url.match(/\/\/kr\.tingroom\.com/i)||url.match(/\/\/thai\.tingroom\.com/i)){
+		$('.more').siblings().children('a').each(function() {
+			var item = $(this);
+			var bm = {};
+			bm.name = item.text();
+			bm.url =item.attr('href');
+			bm.logo = '';
+			bm.author ='';
+			bm.newSection = '';
+			bm.updateTime = '';
+			bm.status = '';
+			list.push(bm);
+		});	
+	}else{
+		$('dt.box_head>a').each(function() {
+			var item = $(this);
+			var bm = {};
+			bm.name = item.text();
+			bm.url =item.attr('href');
+			bm.logo = '';
+			bm.author ='';
+			bm.newSection = '';
+			bm.updateTime = '';
+			bm.status = '';
+			list.push(bm);
+		});
+	}
+    return JSON.stringify(list);
+}
+
+function book_parseUrl1(url, html) {
+    var $ = cheerio.load(html);
+	var urls = url;
+    var pages =  Number($('.pagelist>li').eq(-3).text().match(/\d+/));
+    if (pages) {
+        for (i = 2; i <= pages; i++) {
+			urls += (';' + url.replace('index.html','') + 'list_' + i+ '.html');			
+        }
+    }
+    return urls;
+}
+function book_parseUrl2(url, html) {
+    var $ = cheerio.load(html);
+	var urls = url;
+    var pages = Number($('.pages>a').eq(-2).text().match(/\d+/));
+    if (pages) {
+        for (i = 2; i <= pages; i++) {
+			urls += (';' + url.replace('index.html','') + 'list_' + i+ '.html');			
+        }
+    }
+    return urls;
+}
+function book_parse1(url, html) {
+    var $ = cheerio.load(html);
+    var data = {};
+	if(!url.match(/\d+\.html$/i)) {
+		data.name = $('#picz_menu a').eq(-1).text() ;
+		data.author ='';
+		data.logo = '';
+		data.intro = $('#share').next().text();
+		data.updateTime = "";
+	}
+    data.isSectionsAsc=1;	
+    data.sections = [];
+
+    $('.listbox li>a').each(function() {
+        var bm = {
+            name: $(this).text(),
+            url: urla($(this).attr('href'))
+        };
+            data.sections.push(bm);
+    });
+	return JSON.stringify(data);
+}
+
+function book_parse2(url, html) {
+	var $ = cheerio.load(html);
+	var data = {};
+	if ($('.place').length) {
+		data.name = $('.place a').eq(2).text();
+	} else if ($('.placenav').length) {
+		data.name = $('.placenav a').eq(-1).text();
+	}
+
+	data.author = '';
+	data.logo = '';
+	data.intro = '';
+	data.updateTime = '';
+	data.isSectionsAsc = 1;
+	data.sections = [];
+
+	if ($('.listbox').length) {
+		$('.listbox li').each(function () {
+			var bm = {
+				name: $(this).children('a').eq(-1).text(),
+				url: $(this).children('a').eq(-1).attr('href')
+			};
+			data.sections.push(bm);
+		});
+	} else if ($('.newslist').length) {
+		$('.newslist li a').each(function () {
+			var bm = {
+				name: $(this).text(),
+				url: $(this).attr('href')
+			};
+			data.sections.push(bm);
+		});
+	}
+	return JSON.stringify(data);
+}
+function section_parseUrl(url, html) {
+    var $ = cheerio.load(html);
+	return urla($('IFRAME').attr('src'));
+}
+function section_parse(url, html) {
+    var url0 = html.match(/=(http.+?mp3)"/i)[1];
+        return JSON.stringify([{
+            url: url0,
+            logo: '',
+            type: ".mp3",
+            mime: "audio/x-mpeg"
+        }]);
+}
+
+]]>
+		</code>
+    </script>
+</sited>

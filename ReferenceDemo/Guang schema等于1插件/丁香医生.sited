@@ -1,0 +1,364 @@
+<!--?xml version="1.0" encoding="UTF-8" ?-->
+<sited ver="3" debug="1"  engine="30" schema="1">
+    <meta>
+		<ua></ua>
+		<guid></guid>
+		<title>丁香医生</title>
+		<author>Guang</author>
+		<contact>未想好我空着</contact>
+		<intro>[资讯]有医学科普文章(可搜索)、名医问答、用药参考(可搜索)。丁香医生网站是专注提供医学健康内容与医疗健康服务的平台</intro>
+		<url>http://dxy.com/</url>
+		<expr>dxy\.com</expr>
+		<logo>http://image.coolapk.com/apk_logo/2016/0608/12202_1465380552_2139.png</logo>
+		<encode>UTF-8</encode>
+		<reward title="反馈" mail="wistn@qq.com">
+			<item txt="欢迎打赏插件开发者Guang，反馈问题。" />
+			<item />
+			<item txt="点击或扫描二维码对[❤❤广]支付宝打赏" expr="https://qr.alipay.com/aex05979jbnzvi4fs3hx691" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7nyz88j20by0by0sy.jpg" />
+			<item />
+			<item txt="扫描二维码对我的微信打赏" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7oa4khj206b06bt9m.jpg" />
+			<item />
+		</reward>
+	</meta>
+	<main dtype="6" btag="资讯">
+		<home>
+			<hots cache="1" showImg="0"  w="1.8" h="1" title="科普" method="get"  parse="hots_parse" url="http://dxy.com/" />		
+			<updates cache="1d" showImg="0" title="名医问答" method="get"  parse="updates_parse" url="http://dxy.com/faq" />				
+			<tags title="查药" showImg="2" cache="1d" method="get" parse="tags_parse_yao" url="http://yao.dxy.com/#0" />
+		</home>
+		<search cache="1d" method="get" parse="search_parse_column"  url="http://dxy.com/search/index?keyword=@key">
+			<search cache="1d" method="get" parse="search_parse_yao" url="http://yao.dxy.com/search.htm?type=5&amp;keyword=@key"  />
+		</search>
+		<tag>
+			<tag  cache="1d" method="get" parse="tag_parse_columns" expr="\/view\/i\/columns\/"/>
+			<tag cache="1d" showImg="0" method="get" parse="tag_parse_yao" expr="yao\.dxy\.com\/category"/>
+		</tag>
+		<book>
+			<book cache="1d" method="get" parse="book_parse_faq" expr="\/faq" dtype="2" btype="6"/>
+			<book cache="1d" method="get" parse="book_parse_column" expr="\/column\/\d+" dtype="6"/>
+			<book cache="1d" method="get" parse="book_parse_yao" expr="yao\.dxy\.com\/drug" dtype="6"/>
+		</book>			
+		<section cache="1d"  method="get" parse="section_parse_faq"  dtype="2" />	
+    </main>
+    <script>
+	    <require>
+			<item url="http://sited.noear.org/addin/js/cheerio.js" lib="cheerio" />
+		</require>
+		<code>
+        <![CDATA[
+function urla(u) {
+	var host = "http://dxy.com";	
+	if (u.indexOf("http") < 0) {
+		if (u.substr(0, 1) != '/')
+			u = host + '/' + u;
+		else
+			u = host + u;
+	}
+	var memo="view-source:http://yao.dxy.com/drug/147156.htm $('p.info').eq(6)控制台是空白，F12不空白靠";
+	return encodeURI(u);
+}
+
+function hots_parse(url, html) {
+	var list = [];	
+	var bm = {		name : '一图读懂',		url : 'http://dxy.com/view/i/columns/article/list?page_index=@page&items_per_page=12&channel_id=10'	};	list.push(bm);
+	bm = {		name : '真相',		url : 'http://dxy.com/view/i/columns/truth/article/list?page_index=@page&items_per_page=12'	};	list.push(bm);
+	bm = {		name : '两性',		url : 'http://dxy.com/view/i/columns/article/list?page_index=@page&items_per_page=12&channel_id=13'	};	list.push(bm);
+	bm = {		name : '不孕不育',		url : 'http://dxy.com/view/i/columns/article/list?page_index=@page&items_per_page=12&channel_id=12'	};	list.push(bm);
+	bm = {		name : '肿瘤',		url : 'http://dxy.com/view/i/columns/article/list?page_index=@page&items_per_page=12&channel_id=8'	};	list.push(bm);
+	bm = {		name : '慢病',		url : 'http://dxy.com/view/i/columns/article/list?page_index=@page&items_per_page=12&channel_id=7'	};	list.push(bm);
+	bm = {		name : '营养',		url : 'http://dxy.com/view/i/columns/article/list?page_index=@page&items_per_page=12&channel_id=6'	};	list.push(bm);
+	bm = {		name : '母婴',		url : 'http://dxy.com/view/i/columns/article/list?page_index=@page&items_per_page=12&channel_id=5'	};	list.push(bm);
+	return JSON.stringify(list);
+}
+
+function updates_parse(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+
+	$('.faq-table th a').each(function () {
+		var item = $(this);
+		var bm = {};
+		bm.name = '名医问答' + item.text();
+		bm.url = 'http://dxy.com/faq' + item.attr('href');
+		bm.logo = '';
+
+		if(item.attr('href')!='# ')list.push(bm);
+	});
+
+	return JSON.stringify(list);
+}		
+
+function tag_parse_columns(url, html) {
+	var json = JSON.parse(html);
+	var list = [];
+
+	for (var i in json.data.items) {
+		var item = json.data.items[i];
+		if (item.id) {
+			var bm = {};
+			bm.name = item.title;
+			bm.url = 'http://dxy.com/column/' + item.id;
+			bm.logo = 'http:' + item.cover;
+			bm.author = '';
+			bm.status = '';
+			bm.newSection = '';
+			bm.updateTime = item.author+item.publish_time;
+			list.push(bm);
+		}
+	}
+	return JSON.stringify(list);
+}
+
+function tags_parse_yao(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+	var groupnum=$('.nav>a').length;
+	for (i = 0; i < groupnum; i++) {
+
+		var bm = null;
+
+		var groupname = $('.nav>a').eq(i).text();
+		$('.drugs-list').eq(i).find('.tit').each(function () {
+			if (bm) {
+				bm = {};
+			} else {
+				bm = {
+					group : groupname
+				};
+			}
+
+			var item = $(this);
+			bm.title = item.children('a').text();
+			bm.url = item.children('a').attr('href') + '?&page=@page';
+			list.push(bm);
+		});
+	}
+
+	return JSON.stringify(list);
+}
+function tag_parse_yao(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+
+	$('.drugs-ser-list>.item').each(function () {
+
+		var slf = $(this);
+
+		var bm = {};
+		bm.name = slf.children('h3').text().replace(/(\s)+/g, '$1').trim();
+		bm.url = slf.find('a').attr('href');
+		bm.logo = '';
+
+		bm.author = '';
+		bm.newSection = '';
+		bm.updateTime = slf.children('.info').eq(0).text().replace(/(\s)+/g, '$1').trim();
+		bm.status = '';
+		list.push(bm);
+	});
+
+	return JSON.stringify(list);
+}
+
+function search_parse_column(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+	$('.col-article-list>ul>li').each(function () {
+
+		var slf = $(this);
+
+		var bm = {};
+		bm.name = slf.find('.hd a').text();
+		bm.url = urla(slf.find('.hd a').attr('href'));
+		bm.logo = 'http:'+slf.find('img').attr('src');
+		bm.author = slf.find('.author a').text();
+		bm.status = '';		
+		bm.newSection = '';
+		bm.updateTime = '';	
+		bm.btag = "科普资讯";
+		list.push(bm);
+	});
+	return JSON.stringify(list);
+}
+
+function search_parse_yao(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+	$('.drugs-ser-list>.item').each(function () {
+
+		var slf = $(this);
+
+		var bm = {};
+		bm.name = slf.children('h3').text().replace(/(\s)+/g, '$1').trim();
+		bm.url = slf.find('a').attr('href');
+		bm.logo = 'http://image.coolapk.com/apk_logo/2016/0608/12202_1465380552_2139.png';
+		bm.author = '';
+		bm.status = '';		
+		bm.newSection = '';
+		bm.updateTime = slf.children('.info').eq(0).text().replace(/(\s)+/g, '$1').trim();
+		bm.btag = "用药查询";
+		list.push(bm);
+	});
+	return JSON.stringify(list);
+}
+
+function book_parse_column(url, html) {
+	var $ = cheerio.load(html);	
+    var data = {};
+	data.name = $('.pg-article-hd h1').text();
+	data.list = [];
+	
+	data.list.push({
+		d : $('.pg-article-inner .info').text().replace(/\s+/g,''),
+		t : 1
+	});	
+		
+	$('.editor-body').children().each(function () {
+
+		if ($(this).text().trim().length > 0) {
+			data.list.push({
+				d : $(this).text().trim(),
+				t : 1
+			});
+		}
+
+		$(this).children('img').each(function () {
+
+			data.list.push({
+				d : 'http:'+$(this).attr('src'),
+				t : 9
+			});
+		});
+		$(this).find('img').each(function () {
+
+			data.list.push({
+				d : 'http:'+$(this).attr('src'),
+				t : 9
+			});
+		});
+	});	
+	if( $('.editor-document').text().trim().length>0){
+	data.list.push({
+		d : $('.editor-document').text().replace(/(\s)+/g,'$1').trim(),
+		t : 1
+	});	
+	}
+	return JSON.stringify(data);
+}
+
+function book_parse_yao(url, html) {
+	var $ = cheerio.load(html);
+	var data = {};
+	data.name = $('.content-title').text().trim();
+	data.list = [];
+	$('.content-drugs-describe .warning').each(function () {
+		data.list.push({
+			d: $(this).text(),
+			t: 1,
+			b: 1
+		});
+	});
+	$('.item').each(function () {
+
+		data.list.push({
+			d : $(this).children('.hd').text(),
+			t : 1,
+			b : 1
+		});
+		$(this).children('.hd').remove();
+		$(this).find('img').each(function () {
+
+			data.list.push({
+				d : $(this).attr('rel'),
+				t : 9
+			});
+		});
+		if ($(this).text().trim().length > 0) {
+			data.list.push({
+				d:$(this).text().replace(/\s+\n/g, '\n').replace(/\n\s+/g, '\n').trim(),
+				t : 1
+			});
+		}
+	});
+	return JSON.stringify(data);
+}
+
+function book_parse_faq(url, html) {
+	var data = {};
+	var $ = cheerio.load(html);
+	var id = url.match(/faq#(.+)/i)[1];
+
+	data.name = '名医问答' + id;
+	data.author = '';
+	data.logo = 'http://image.coolapk.com/apk_logo/2016/0608/12202_1465380552_2139.png';
+	data.intro = '旨在用问答的形式帮助普通患者处理疾病，比如疾病的成因、危害、用药，日常生活注意点等方面。';
+	data.updateTime = '';
+	data.isSectionsAsc = 1;
+	data.sections = [];
+
+	var group = eval("$('a#" + id + "').parent().parent()");
+	if (id == 'Z') {
+		group.nextAll().find('a').each(function () {
+			var item = $(this);
+			var sm = {
+				name : item.text(),
+				url : urla(item.attr('href'))
+			};
+			data.sections.push(sm);
+		});
+	} else {
+		$('.faq-table th').parent().attr('class', 'groups');
+		var groupindex = $('.faq-table>tr.groups').index(group);
+		var nextgroup = $('.faq-table>tr.groups').eq(groupindex + 1);
+
+		var itemindex = $('.faq-table>tr').index(group);
+		var num = $('.faq-table>tr').index(nextgroup) - itemindex - 1;
+
+		for (i = 1; i <= num; i++) {
+			$('.faq-table>tr').eq(itemindex + i).find('a').each(function () {
+				var item = $(this);
+				var sm = {
+					name : item.text(),
+					url : urla(item.attr('href'))
+				};
+				data.sections.push(sm);
+			});
+		}
+
+	}
+	return JSON.stringify(data);
+}
+	
+function section_parse_faq(url, html) {
+	var list = [];
+	var $ = cheerio.load(html);
+
+	$('.editor-style').children().each(function () {
+
+		if ($(this).text().trim().length > 0) {
+			list.push({
+				d : $(this).text().trim(),
+				t : 1
+			});
+		}
+
+		$(this).children('img').each(function () {
+
+			list.push({
+				d : 'http:'+$(this).attr('src'),
+				t : 9
+			});
+		});
+		$(this).find('img').each(function () {
+
+			list.push({
+				d : 'http:'+$(this).attr('src'),
+				t : 9
+			});
+		});
+	});	
+	return JSON.stringify(list);
+}
+    ]]>
+		</code>
+    </script>
+</sited>

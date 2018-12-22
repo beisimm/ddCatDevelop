@@ -1,0 +1,328 @@
+<!--?xml version="1.0" encoding="UTF-8" ?-->
+<sited ver="1" debug="1"  engine="30" schema="1">
+    <meta>
+		<ua></ua>
+		<guid></guid>
+		<title>推酷</title>
+		<author>Guang</author>
+		<contact>未想好我空着</contact>
+		<intro>[资讯]面向IT人，推荐感兴趣的科技资讯、产品设计、网络营销、技术文章等内容。插件只能搜索主题不能直接搜索文章名，有些文章空白因为原网页自动跳转其他网站，表格内容难处理见谅</intro>
+		<url>http://www.tuicool.com/</url>
+		<expr>tuicool\.com</expr>
+		<logo></logo>//http://image.coolapk.com/apk_logo/2015/0722/12202_1437549615_0791.png
+		<encode>UTF-8</encode>
+		<about title="反馈" mail="wistn@qq.com">
+			<item txt="欢迎打赏插件开发者Guang，反馈问题。" />
+			<item />
+			<item txt="点击或扫描二维码对[❤❤广]支付宝打赏" expr="https://qr.alipay.com/aex05979jbnzvi4fs3hx691" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7nyz88j20by0by0sy.jpg" />
+			<item />
+			<item txt="扫描二维码对我的微信打赏" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7oa4khj206b06bt9m.jpg" />
+			<item />
+		</about>
+	</meta>
+	<main dtype="6" btag="资讯" durl="http://www.tuicool.com/ah/0?lang=0">
+		<home>
+			<updates cache="1d" showImg="1" title="更新" method="get"  parse="updates_parse" url="http://www.tuicool.com/ah/0?lang=0" />		
+			<tags  title="分类">
+				<item group="热门主题" title="推荐主题" url="http://www.tuicool.com/topics?tab=1&amp;id=1" />
+				<item title="移动互联" url="http://www.tuicool.com/topics?tab=1&amp;id=2" />
+				<item title="科技业界" url="http://www.tuicool.com/topics?tab=1&amp;id=3" />
+				<item title="手机数码" url="http://www.tuicool.com/topics?tab=1&amp;id=4" />
+				<item title="产品设计" url="http://www.tuicool.com/topics?tab=1&amp;id=5" />
+				<item title="编程语言" url="http://www.tuicool.com/topics?tab=1&amp;id=6" />
+				<item title="架构存储" url="http://www.tuicool.com/topics?tab=1&amp;id=7" />
+				<item title="技术纵横" url="http://www.tuicool.com/topics?tab=1&amp;id=8" />
+				<item group="中文文章" title="科技" url="http://www.tuicool.com/ah/101000000/@page?lang=1" />
+				<item title="创投" url="http://www.tuicool.com/ah/101040000/@page?lang=1" />
+				<item title="数码" url="http://www.tuicool.com/ah/101050000/@page?lang=1" />
+				<item title="技术" url="http://www.tuicool.com/ah/20/@page?lang=1" />
+				<item title="设计" url="http://www.tuicool.com/ah/108000000/@page?lang=1" />
+				<item title="营销" url="http://www.tuicool.com/ah/114000000/@page?lang=1" />
+				<item group="英文文章" title="科技" url="http://www.tuicool.com/ah/101000000/@page?lang=2" />
+				<item title="创投" url="http://www.tuicool.com/ah/101040000/@page?lang=2" />
+				<item title="数码" url="http://www.tuicool.com/ah/101050000/@page?lang=2" />
+				<item title="技术" url="http://www.tuicool.com/ah/20/@page?lang=2" />
+				<item title="设计" url="http://www.tuicool.com/ah/108000000/@page?lang=2" />
+				<item title="营销" url="http://www.tuicool.com/ah/114000000/@page?lang=2" />
+				<item group="中英都有" title="科技" url="http://www.tuicool.com/ah/101000000/@page?lang=0" />
+				<item title="创投" url="http://www.tuicool.com/ah/101040000/@page?lang=0" />
+				<item title="数码" url="http://www.tuicool.com/ah/101050000/@page?lang=0" />
+				<item title="技术" url="http://www.tuicool.com/ah/20/@page?lang=0" />
+				<item title="设计" url="http://www.tuicool.com/ah/108000000/@page?lang=0" />
+				<item title="营销" url="http://www.tuicool.com/ah/114000000/@page?lang=0" />			
+			</tags>
+		</home>
+		<search cache="1d" method="get" parse="search_parse" url="http://www.tuicool.com/search?kw=@key" />
+		<tag>
+			<tag  cache="1d" method="get" parse="tag_parse_topics" expr="\/topics\?tab"/>
+			<tag cache="1d" method="get" parse="tag_parse_articles" addPage="-1" expr="\/ah\/" />
+		</tag>
+		<book>
+			<book cache="1d" method="get" parse="book_parse_topics" expr="\/topics\/.+" dtype="2" btype="6" >
+				<sections cache="1d" method="get" buildUrl="book_s_buildUrl" parseUrl="book_s_parseUrl" parse="book_s_parse" />
+			</book>
+			<book cache="0" method="get" parse="book_parse_articles" expr="\/articles\/" dtype="6"/>
+		</book>			
+		<section cache="0"  method="get" parse="section_parse_topics"  dtype="2" />	
+    </main>
+    <script>
+	    <require>
+			<item url="http://sited.noear.org/addin/js/cheerio.js" lib="cheerio" />
+		</require>
+		<code>
+        <![CDATA[
+function urla(u) {
+	var host = "http://www.tuicool.com";	
+	if (u.indexOf("http") < 0) {
+		if (u.substr(0, 1) != '/')
+			u = host + '/' + u;
+		else
+			u = host + u;
+	}var memo="网站自适应，插件读取网站pc ua代码";
+	return encodeURI(u);
+}
+
+function updates_parse(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+
+	$('.list_article .list_article_item').each(function () {
+		var item = $(this);
+		var bm = {};
+		bm.name = item.find('.title a').text();
+		bm.url = urla(item.find('.title a').attr('href'));
+		bm.logo = item.find('img').attr('src');
+		bm.newSection = '';
+		bm.updateTime = item.find('.tip span').eq(0).text().trim()+item.find('.tip span').eq(1).text().trim()+item.find('.tip span').eq(2).text().trim();
+		list.push(bm);
+	});
+
+	return JSON.stringify(list);
+}		
+
+function tag_parse_articles(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+
+	$('.list_article .list_article_item').each(function () {
+		var item = $(this);
+		var bm = {};
+		bm.name = item.find('.title a').text();
+		bm.url = urla(item.find('.title a').attr('href'));
+		bm.logo = item.find('img').attr('src');
+		bm.author = '';
+		bm.status = '';		
+		bm.newSection = '';
+		bm.updateTime = item.find('.tip span').eq(0).text().trim()+item.find('.tip span').eq(1).text().trim()+item.find('.tip span').eq(2).text().trim();
+		list.push(bm);
+	});
+	return JSON.stringify(list);
+}
+
+function tag_parse_topics(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+	$('.topic-list .topic_hot_list').each(function () {
+		var item = $(this);
+		var bm = {};
+		bm.name = item.children('.title').text().trim();
+		bm.url = urla(item.children('.title').attr('href'));
+		bm.logo = item.children('.icon').children('img').attr('src');
+		bm.author = '';
+		bm.status = '';		
+		bm.newSection = '';
+		bm.updateTime = '';
+		list.push(bm);
+	});
+	return JSON.stringify(list);
+}
+
+function search_parse(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+	$('.search-result-ul>li').each(function () {
+		var slf = $(this);
+		var bm = {};
+		bm.name = slf.text().trim();
+		bm.url = urla(slf.children().attr('href'));
+		bm.logo = slf.find('img').attr('src');
+		bm.author = '';
+		bm.status = '';		
+		bm.newSection = '';
+		bm.updateTime = '';	
+		bm.btag = "资讯";
+		list.push(bm);
+	});
+	return JSON.stringify(list);
+}
+
+function book_parse_articles(url, html) {
+	html = html.replace(/\s+(<a.+?>)/gi,' $1').replace(/<\/a>\s+/gi, '</a> ');
+	var $ = cheerio.load(html);	
+    var data = {};
+	data.name = $('h1').text();
+	data.list = [];
+	if (url.indexOf('www.tuicool.com/articles/') < 0) {
+		data.list.push({
+			d: '原网页会跳转到其他网站 ' + url + ' 只能网页方式浏览',
+			t: 1
+		});
+	} else {
+		data.list.push({
+			d: $('.article_meta .timestamp').text().trim() + $('.article_meta span.from').text().trim(),
+			t: 1
+		});
+		data.list.push({
+			d: $('.article_meta .source').text().trim(),
+			t: 1
+		});
+		if ($('.article_body').children().length==1) {
+			$('.article_body').children().children().each(function () {
+				if ($(this).text().trim().length > 0) {
+					data.list.push({
+						d: $(this).text().trim(),
+						t: 1
+					});
+				}
+				$(this).children('img').each(function () {
+					data.list.push({
+						d: $(this).attr('src'),
+						t: 9
+					});
+				});
+				$(this).find('img').each(function () {
+					data.list.push({
+						d: $(this).attr('src'),
+						t: 9
+					});
+				});
+			});
+		} else {
+			$('.article_body').children().each(function () {
+				if ($(this).text().trim().length > 0) {
+					data.list.push({
+						d: $(this).text().trim(),
+						t: 1
+					});
+				}
+				$(this).children('img').each(function () {
+					data.list.push({
+						d: $(this).attr('src'),
+						t: 9
+					});
+				});
+				$(this).find('img').each(function () {
+					data.list.push({
+						d: $(this).attr('src'),
+						t: 9
+					});
+				});
+			});
+		}
+	}
+	return JSON.stringify(data);
+}
+
+function book_parse_topics(url, html) {
+	var data = {};
+	var $ = cheerio.load(html);
+	data.name = $('.topic_head_name span').text();
+	data.author = '';
+	data.logo = $('.round_img').attr('src');
+	data.intro = '';
+	data.updateTime = '';
+	data.isSectionsAsc = 0;
+	data.sections = [];
+	return JSON.stringify(data);
+}
+
+function book_s_buildUrl(url) {
+	return url;
+}
+function book_s_parseUrl(url, html) {
+	return url + '?st=0&lang=1&pn=0;' + url + '?st=0&lang=1&pn=1;' + url + '?st=0&lang=2&pn=0;' + url + '?st=0&lang=2&pn=1';
+}
+
+function book_s_parse(url, html) {
+	var $ = cheerio.load(html);
+	var data = {};
+	data.sections = [];
+	$('.aricle_item_info').each(function () {
+		var item = $(this);
+		var sm = {
+			name: item.find('span').eq(-1).text().trim() + item.children('.title').text().trim(),
+			url: urla(item.children('.title').children().attr('href'))
+		};
+		data.sections.push(sm);
+	});
+	return JSON.stringify(data);
+}
+function section_parse_topics(url, html) {
+	html = html.replace(/\s+(<a.+?>)/gi,' $1').replace(/<\/a>\s+/gi, '</a> ');
+	var $ = cheerio.load(html);	
+	var list = [];
+
+	if (url.indexOf('www.tuicool.com/articles/') < 0) {
+		list.push({
+			d: '原网页会跳转到其他网站 ' + url + ' 只能网页方式浏览',
+			t: 1
+		});
+	} else {
+		list.push({
+			d: $('.article_meta .timestamp').text().trim() + $('.article_meta span.from').text().trim(),
+			t: 1
+		});
+		list.push({
+			d: $('.article_meta .source').text().trim(),
+			t: 1
+		});		
+		if ($('.article_body').children().length==1) {
+			$('.article_body').children().children().each(function () {
+				if ($(this).text().trim().length > 0) {
+					list.push({
+						d: $(this).text().trim(),
+						t: 1
+					});
+				}
+				$(this).children('img').each(function () {
+					list.push({
+						d: $(this).attr('src'),
+						t: 9
+					});
+				});
+				$(this).find('img').each(function () {
+					list.push({
+						d: $(this).attr('src'),
+						t: 9
+					});
+				});
+			});
+		} else {
+			$('.article_body').children().each(function () {
+				if ($(this).text().trim().length > 0) {
+					list.push({
+						d: $(this).text().trim(),
+						t: 1
+					});
+				}
+				$(this).children('img').each(function () {
+					list.push({
+						d: $(this).attr('src'),
+						t: 9
+					});
+				});
+				$(this).find('img').each(function () {
+					list.push({
+						d: $(this).attr('src'),
+						t: 9
+					});
+				});
+			});
+		}
+	}
+	return JSON.stringify(list);
+}
+    ]]>
+		</code>
+    </script>
+</sited>

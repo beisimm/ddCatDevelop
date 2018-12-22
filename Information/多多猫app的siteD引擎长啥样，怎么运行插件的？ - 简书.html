@@ -1,0 +1,1787 @@
+<!DOCTYPE html>
+<!-- saved from url=(0038)https://www.jianshu.com/p/bd12429cbfb9 -->
+<html><!--<![endif]--><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">
+
+  <!-- Start of Baidu Transcode -->
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta name="applicable-device" content="pc,mobile">
+  <meta name="MobileOptimized" content="width">
+  <meta name="HandheldFriendly" content="true">
+  <meta name="mobile-agent" content="format=html5;url=https://www.jianshu.com/p/bd12429cbfb9">
+  <!-- End of Baidu Transcode -->
+
+    <meta name="description" content="在开始前，先讲个故事： 在很久很久以前，一位懵懂的少年用着一款uwp的手机，他很喜欢看漫画，但是他望着这款装着软件都没几个的系统的手机，他很茫然。为此，他联系了很多开发者，希望有人能开发一个看漫画app，结果too young too simple。但是这位少年并没有因此而放弃，他产生了一个“大神由此而诞生”的想法，没错自己写一个。就这样，多多猫app的“前身”就这样诞生了。但是“前身”还只...">
+
+  <meta name="360-site-verification" content="604a14b53c6b871206001285921e81d8">
+  <meta property="wb:webmaster" content="294ec9de89e7fadb">
+  <meta property="qc:admins" content="104102651453316562112116375">
+  <meta property="qc:admins" content="11635613706305617">
+  <meta property="qc:admins" content="1163561616621163056375">
+  <meta name="google-site-verification" content="cV4-qkUJZR6gmFeajx_UyPe47GW9vY6cnCrYtCHYNh4">
+  <meta name="google-site-verification" content="HF7lfF8YEGs1qtCE-kPml8Z469e2RHhGajy6JPVy5XI">
+  <meta http-equiv="mobile-agent" content="format=html5; url=https://www.jianshu.com/p/bd12429cbfb9">
+
+  <!-- Apple -->
+  <meta name="apple-mobile-web-app-title" content="简书">
+
+    <!--  Meta for Smart App Banner -->
+  <meta name="apple-itunes-app" content="app-id=888237539, app-argument=jianshu://notes/13622075">
+  <!-- End -->
+
+  <!--  Meta for Twitter Card -->
+  <meta content="summary" property="twitter:card">
+  <meta content="@jianshucom" property="twitter:site">
+  <meta content="多多猫app的siteD引擎长啥样，怎么运行插件的？" property="twitter:title">
+  <meta content="在开始前，先讲个故事： 在很久很久以前，一位懵懂的少年用着一款uwp的手机，他很喜欢看漫画，但是他望着这款装着软件都没几个的系统的手机，他很茫然。为此，他联系了很多开发者，希..." property="twitter:description">
+  <meta content="https://www.jianshu.com/p/bd12429cbfb9" property="twitter:url">
+  <!-- End -->
+
+  <!--  Meta for OpenGraph -->
+  <meta property="fb:app_id" content="865829053512461">
+  <meta property="og:site_name" content="简书">
+  <meta property="og:title" content="多多猫app的siteD引擎长啥样，怎么运行插件的？">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://www.jianshu.com/p/bd12429cbfb9">
+  <meta property="og:description" content="在开始前，先讲个故事： 在很久很久以前，一位懵懂的少年用着一款uwp的手机，他很喜欢看漫画，但是他望着这款装着软件都没几个的系统的手机，他很茫然。为此，他联系了很多开发者，希望有人能开发一个看漫...">
+  <!-- End -->
+
+  <!--  Meta for Facebook Applinks -->
+  <meta property="al:ios:url" content="jianshu://notes/13622075">
+  <meta property="al:ios:app_store_id" content="888237539">
+  <meta property="al:ios:app_name" content="简书">
+
+  <meta property="al:android:url" content="jianshu://notes/13622075">
+  <meta property="al:android:package" content="com.jianshu.haruki">
+  <meta property="al:android:app_name" content="简书">
+  <!-- End -->
+
+
+    <title>多多猫app的siteD引擎长啥样，怎么运行插件的？ - 简书</title>
+
+  <meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="2tAB5qcNMp55zxVCn7JoYD+xbgFh80/C+kmtiC+7m/Z2bELHAVWEHPYLDCim7mwjh2VrO7SPLkNJWEx1ZMeyvQ==">
+
+  <link rel="stylesheet" media="all" href="./多多猫app的siteD引擎长啥样，怎么运行插件的？ - 简书_files/web-4d59548b691b7b5c11d8.css">
+  
+  <link rel="stylesheet" media="all" href="./多多猫app的siteD引擎长啥样，怎么运行插件的？ - 简书_files/entry-649d8b5ffe985fcfe898.css">
+
+  <link href="https://cdn2.jianshu.io/assets/favicons/favicon-e743bfb1821442341c3ab15bdbe804f7ad97676bd07a770ccc9483473aa76f06.ico" rel="shortcut icon" type="image/x-icon">
+      <link rel="apple-touch-icon-precomposed" href="https://cdn2.jianshu.io/assets/apple-touch-icons/57-a6f1f1ee62ace44f6dc2f6a08575abd3c3b163288881c78dd8d75247682a4b27.png" sizes="57x57">
+      <link rel="apple-touch-icon-precomposed" href="https://cdn2.jianshu.io/assets/apple-touch-icons/72-fb9834bcfce738fd7b9c5e31363e79443e09a81a8e931170b58bc815387c1562.png" sizes="72x72">
+      <link rel="apple-touch-icon-precomposed" href="https://cdn2.jianshu.io/assets/apple-touch-icons/76-49d88e539ff2489475d603994988d871219141ecaa0b1a7a9a1914f4fe3182d6.png" sizes="76x76">
+      <link rel="apple-touch-icon-precomposed" href="https://cdn2.jianshu.io/assets/apple-touch-icons/114-24252fe693524ed3a9d0905e49bff3cbd0228f25a320aa09053c2ebb4955de97.png" sizes="114x114">
+      <link rel="apple-touch-icon-precomposed" href="https://cdn2.jianshu.io/assets/apple-touch-icons/120-1bb7371f5e87f93ce780a5f1a05ff1b176828ee0d1d130e768575918a2e05834.png" sizes="120x120">
+      <link rel="apple-touch-icon-precomposed" href="https://cdn2.jianshu.io/assets/apple-touch-icons/152-bf209460fc1c17bfd3e2b84c8e758bc11ca3e570fd411c3bbd84149b97453b99.png" sizes="152x152">
+
+  <!-- Start of 访问统计 -->
+    <script src="./多多猫app的siteD引擎长啥样，怎么运行插件的？ - 简书_files/push.js"></script><script src="./多多猫app的siteD引擎长啥样，怎么运行插件的？ - 简书_files/hm.js"></script><script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?0c0e9d9b1e7d617b3e6842e85b9fb068";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+  <!-- End of 访问统计 -->
+<style type="text/css">@charset "UTF-8";.image-package .image-container{position:relative;z-index:2;background-color:#eee;-webkit-transition:background-color .1s linear;-o-transition:background-color .1s linear;transition:background-color .1s linear;margin:0 auto}body.reader-night-mode .image-package .image-container{background-color:#545454}.image-package .image-container-fill{z-index:1}.image-package .image-container .image-view{position:absolute;top:0;left:0;width:100%;height:100%;overflow:hidden}.image-package .image-container .image-view-error:after{content:"图片获取失败，请点击重试";position:absolute;top:50%;left:50%;width:100%;-webkit-transform:translate(-50%,-50%);-ms-transform:translate(-50%,-50%);transform:translate(-50%,-50%);color:#888;font-size:14px}.image-package .image-container .image-view img.image-loading{opacity:.3}.image-package .image-container .image-view img{-webkit-transition:all .15s linear;-o-transition:all .15s linear;transition:all .15s linear;z-index:2;opacity:1}</style><style type="text/css">fieldset[disabled] .multiselect {
+  pointer-events: none;
+}
+
+.multiselect__spinner {
+  position: absolute;
+  right: 1px;
+  top: 1px;
+  width: 48px;
+  height: 35px;
+  background: #fff;
+  display: block;
+}
+
+.multiselect__spinner:after,
+.multiselect__spinner:before {
+  position: absolute;
+  content: "";
+  top: 50%;
+  left: 50%;
+  margin: -8px 0 0 -8px;
+  width: 16px;
+  height: 16px;
+  border-radius: 100%;
+  border-color: #41b883 transparent transparent;
+  border-style: solid;
+  border-width: 2px;
+  box-shadow: 0 0 0 1px transparent;
+}
+
+.multiselect__spinner:before {
+  animation: a 2.4s cubic-bezier(.41,.26,.2,.62);
+  animation-iteration-count: infinite;
+}
+
+.multiselect__spinner:after {
+  animation: a 2.4s cubic-bezier(.51,.09,.21,.8);
+  animation-iteration-count: infinite;
+}
+
+.multiselect__loading-enter-active,
+.multiselect__loading-leave-active {
+  transition: opacity .4s ease-in-out;
+  opacity: 1;
+}
+
+.multiselect__loading-enter,
+.multiselect__loading-leave-active {
+  opacity: 0;
+}
+
+.multiselect,
+.multiselect__input,
+.multiselect__single {
+  font-family: inherit;
+  font-size: 14px;
+  -ms-touch-action: manipulation;
+  touch-action: manipulation;
+}
+
+.multiselect {
+  box-sizing: content-box;
+  display: block;
+  position: relative;
+  width: 100%;
+  min-height: 40px;
+  text-align: left;
+  color: #35495e;
+}
+
+.multiselect * {
+  box-sizing: border-box;
+}
+
+.multiselect:focus {
+  outline: none;
+}
+
+.multiselect--disabled {
+  opacity: .6;
+}
+
+.multiselect--active {
+  z-index: 1;
+}
+
+.multiselect--active:not(.multiselect--above) .multiselect__current,
+.multiselect--active:not(.multiselect--above) .multiselect__input,
+.multiselect--active:not(.multiselect--above) .multiselect__tags {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.multiselect--active .multiselect__select {
+  transform: rotate(180deg);
+}
+
+.multiselect--above.multiselect--active .multiselect__current,
+.multiselect--above.multiselect--active .multiselect__input,
+.multiselect--above.multiselect--active .multiselect__tags {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.multiselect__input,
+.multiselect__single {
+  position: relative;
+  display: inline-block;
+  min-height: 20px;
+  line-height: 20px;
+  border: none;
+  border-radius: 5px;
+  background: #fff;
+  padding: 0 0 0 5px;
+  width: 100%;
+  transition: border .1s ease;
+  box-sizing: border-box;
+  margin-bottom: 8px;
+  vertical-align: top;
+}
+
+.multiselect__tag~.multiselect__input,
+.multiselect__tag~.multiselect__single {
+  width: auto;
+}
+
+.multiselect__input:hover,
+.multiselect__single:hover {
+  border-color: #cfcfcf;
+}
+
+.multiselect__input:focus,
+.multiselect__single:focus {
+  border-color: #a8a8a8;
+  outline: none;
+}
+
+.multiselect__single {
+  padding-left: 6px;
+  margin-bottom: 8px;
+}
+
+.multiselect__tags-wrap {
+  display: inline;
+}
+
+.multiselect__tags {
+  min-height: 40px;
+  display: block;
+  padding: 8px 40px 0 8px;
+  border-radius: 5px;
+  border: 1px solid #e8e8e8;
+  background: #fff;
+}
+
+.multiselect__tag {
+  position: relative;
+  display: inline-block;
+  padding: 4px 26px 4px 10px;
+  border-radius: 5px;
+  margin-right: 10px;
+  color: #fff;
+  line-height: 1;
+  background: #41b883;
+  margin-bottom: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 100%;
+  text-overflow: ellipsis;
+}
+
+.multiselect__tag-icon {
+  cursor: pointer;
+  margin-left: 7px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  font-weight: 700;
+  font-style: normal;
+  width: 22px;
+  text-align: center;
+  line-height: 22px;
+  transition: all .2s ease;
+  border-radius: 5px;
+}
+
+.multiselect__tag-icon:after {
+  content: "\D7";
+  color: #266d4d;
+  font-size: 14px;
+}
+
+.multiselect__tag-icon:focus,
+.multiselect__tag-icon:hover {
+  background: #369a6e;
+}
+
+.multiselect__tag-icon:focus:after,
+.multiselect__tag-icon:hover:after {
+  color: #fff;
+}
+
+.multiselect__current {
+  min-height: 40px;
+  overflow: hidden;
+  padding: 8px 12px 0;
+  padding-right: 30px;
+  white-space: nowrap;
+  border-radius: 5px;
+  border: 1px solid #e8e8e8;
+}
+
+.multiselect__current,
+.multiselect__select {
+  line-height: 16px;
+  box-sizing: border-box;
+  display: block;
+  margin: 0;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.multiselect__select {
+  position: absolute;
+  width: 40px;
+  height: 38px;
+  right: 1px;
+  top: 1px;
+  padding: 4px 8px;
+  text-align: center;
+  transition: transform .2s ease;
+}
+
+.multiselect__select:before {
+  position: relative;
+  right: 0;
+  top: 65%;
+  color: #999;
+  margin-top: 4px;
+  border-style: solid;
+  border-width: 5px 5px 0;
+  border-color: #999 transparent transparent;
+  content: "";
+}
+
+.multiselect__placeholder {
+  color: #adadad;
+  display: inline-block;
+  margin-bottom: 10px;
+  padding-top: 2px;
+}
+
+.multiselect--active .multiselect__placeholder {
+  display: none;
+}
+
+.multiselect__content-wrapper {
+  position: absolute;
+  display: block;
+  background: #fff;
+  width: 100%;
+  max-height: 240px;
+  overflow: auto;
+  border: 1px solid #e8e8e8;
+  border-top: none;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  z-index: 1;
+  -webkit-overflow-scrolling: touch;
+}
+
+.multiselect__content {
+  list-style: none;
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+  min-width: 100%;
+  vertical-align: top;
+}
+
+.multiselect--above .multiselect__content-wrapper {
+  bottom: 100%;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border-bottom: none;
+  border-top: 1px solid #e8e8e8;
+}
+
+.multiselect__content::webkit-scrollbar {
+  display: none;
+}
+
+.multiselect__element {
+  display: block;
+}
+
+.multiselect__option {
+  display: block;
+  padding: 12px;
+  min-height: 40px;
+  line-height: 16px;
+  text-decoration: none;
+  text-transform: none;
+  vertical-align: middle;
+  position: relative;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.multiselect__option:after {
+  top: 0;
+  right: 0;
+  position: absolute;
+  line-height: 40px;
+  padding-right: 12px;
+  padding-left: 20px;
+}
+
+.multiselect__option--highlight {
+  background: #41b883;
+  outline: none;
+  color: #fff;
+}
+
+.multiselect__option--highlight:after {
+  content: attr(data-select);
+  background: #41b883;
+  color: #fff;
+}
+
+.multiselect__option--selected {
+  background: #f3f3f3;
+  color: #35495e;
+  font-weight: 700;
+}
+
+.multiselect__option--selected:after {
+  content: attr(data-selected);
+  color: silver;
+}
+
+.multiselect__option--selected.multiselect__option--highlight {
+  background: #ff6a6a;
+  color: #fff;
+}
+
+.multiselect__option--selected.multiselect__option--highlight:after {
+  background: #ff6a6a;
+  content: attr(data-deselect);
+  color: #fff;
+}
+
+.multiselect--disabled {
+  background: #ededed;
+  pointer-events: none;
+}
+
+.multiselect--disabled .multiselect__current,
+.multiselect--disabled .multiselect__select,
+.multiselect__option--disabled {
+  background: #ededed;
+  color: #a6a6a6;
+}
+
+.multiselect__option--disabled {
+  cursor: text;
+  pointer-events: none;
+}
+
+.multiselect__option--disabled.multiselect__option--highlight {
+  background: #dedede!important;
+}
+
+.multiselect-enter-active,
+.multiselect-leave-active {
+  transition: all .15s ease;
+}
+
+.multiselect-enter,
+.multiselect-leave-active {
+  opacity: 0;
+}
+
+.multiselect__strong {
+  margin-bottom: 8px;
+  line-height: 20px;
+  display: inline-block;
+  vertical-align: top;
+}
+
+[dir=rtl] .multiselect {
+  text-align: right;
+}
+
+[dir=rtl] .multiselect__select {
+  right: auto;
+  left: 1px;
+}
+
+[dir=rtl] .multiselect__tags {
+  padding: 8px 8px 0 40px;
+}
+
+[dir=rtl] .multiselect__content {
+  text-align: right;
+}
+
+[dir=rtl] .multiselect__option:after {
+  right: auto;
+  left: 0;
+}
+
+[dir=rtl] .multiselect__clear {
+  right: auto;
+  left: 12px;
+}
+
+[dir=rtl] .multiselect__spinner {
+  right: auto;
+  left: 1px;
+}
+
+@keyframes a {
+  0% {
+    transform: rotate(0);
+  }
+
+  to {
+    transform: rotate(2turn);
+  }
+}</style><style type="text/css">
+#free-reward-panel .reward-users-modal main {
+  padding: 0;
+}
+</style><style type="text/css">
+@charset "UTF-8";
+/*
+ * 变量
+*/
+.reward-note-modal .v-modal {
+  width: 620px;
+  text-align: center;
+}
+.reward-note-modal .v-modal form {
+    margin: 0 auto 25px auto;
+    padding: 0 40px;
+}
+.reward-note-modal .v-modal .reward-intro {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 16px;
+}
+.reward-note-modal .v-modal .reward-intro .avatar {
+      cursor: default !important;
+      width: 36px;
+      height: 36px;
+      margin-right: 10px;
+      display: inline-block;
+}
+.reward-note-modal .v-modal .reward-intro .intro {
+      margin-right: 5px;
+      font-weight: bold;
+      vertical-align: middle;
+}
+.reward-note-modal .v-modal .reward-intro i {
+      color: #EA6F5A;
+      vertical-align: middle;
+}
+.reward-note-modal .v-modal .main-inputs {
+    margin: 25px 0;
+}
+.reward-note-modal .v-modal .main-inputs .amount-group {
+      margin: 0 -5px;
+}
+.reward-note-modal .v-modal .main-inputs .amount-group input {
+        display: none;
+}
+.reward-note-modal .v-modal .main-inputs .amount-group input:checked + .option {
+        color: #EA6F5A;
+        border-color: #EA6F5A;
+}
+.reward-note-modal .v-modal .main-inputs .amount-group .custom-amount:checked + .option .custom-text {
+        opacity: 0;
+}
+.reward-note-modal .v-modal .main-inputs .amount-group .custom-amount:checked + .option .custom-amount-input {
+        opacity: 1;
+}
+.reward-note-modal .v-modal .main-inputs .amount-group .option {
+        position: relative;
+        margin: 0 5px 15px;
+        width: 156px;
+        height: 56px;
+        line-height: 54px;
+        border: 1px solid #E6E6E6;
+        border-radius: 4px;
+        font-weight: normal;
+        color: #999999;
+        cursor: pointer;
+}
+.reward-note-modal .v-modal .main-inputs .amount-group .option i {
+          font-size: 16px;
+          vertical-align: middle;
+}
+.reward-note-modal .v-modal .main-inputs .amount-group .option .amount {
+          font-size: 28px;
+          vertical-align: middle;
+}
+.reward-note-modal .v-modal .main-inputs .amount-group .option .piece {
+          font-size: 13px;
+          vertical-align: sub;
+}
+.reward-note-modal .v-modal .main-inputs .amount-group .option .custom-amount-input {
+          position: absolute;
+          top: 0;
+          z-index: -1;
+          width: 100%;
+          opacity: 0;
+}
+.reward-note-modal .v-modal .main-inputs .amount-group .option .custom-amount-input i {
+            position: absolute;
+            top: 0;
+            left: 10px;
+}
+.reward-note-modal .v-modal .main-inputs .amount-group .option .custom-amount-input .piece {
+            position: absolute;
+            top: 4px;
+            right: 10px;
+}
+.reward-note-modal .v-modal .main-inputs .amount-group .option .custom-amount-input input {
+            display: block;
+            margin: 0 auto;
+            width: 80px;
+            height: 54px;
+            line-height: 54px;
+            border: none;
+            font-size: 28px;
+            text-align: center;
+            background: transparent;
+            -moz-appearance: textfield;
+}
+.reward-note-modal .v-modal .main-inputs .amount-group .option .custom-amount-input input::-webkit-outer-spin-button, .reward-note-modal .v-modal .main-inputs .amount-group .option .custom-amount-input input::-webkit-inner-spin-button {
+              -webkit-appearance: none !important;
+}
+.reward-note-modal .v-modal .main-inputs .message {
+      padding: 15px 20px;
+      margin-bottom: 0;
+      font-size: 14px;
+      border: 1px solid #E6E6E6;
+      color: #333333;
+      border-radius: 4px;
+      background-color: rgba(180, 180, 180, 0.1);
+}
+.reward-note-modal .v-modal .main-inputs .message textarea {
+        width: 100%;
+        height: 44px;
+        padding: 0;
+        margin: 0;
+        resize: none;
+        background: none !important;
+        border: none !important;
+        -webkit-box-sizing: border-box;
+                box-sizing: border-box;
+        -webkit-box-shadow: none;
+                box-shadow: none;
+}
+.reward-note-modal .v-modal .main-inputs .message textarea:focus {
+          outline: none;
+}
+.reward-note-modal .v-modal .reward-info .amount {
+    font-size: 28px;
+    font-weight: bold;
+    color: #EA6F5A;
+}
+.reward-note-modal .v-modal .reward-info .pay-method {
+    font-size: 14px;
+}
+.reward-note-modal .v-modal .reward-info .pay-method a {
+      color: #3194D0;
+}
+.reward-note-modal .v-modal .choose-pay {
+    margin: 0 -5px;
+}
+.reward-note-modal .v-modal .choose-pay input {
+      display: none;
+}
+.reward-note-modal .v-modal .choose-pay input:checked + .option {
+      color: #EA6F5A;
+      border-color: #EA6F5A;
+}
+.reward-note-modal .v-modal .choose-pay .option {
+      margin: 20px 5px 10px;
+      width: 156px;
+      height: 56px;
+      line-height: 54px;
+      text-align: center;
+      border: 1px solid #E6E6E6;
+      border-radius: 4px;
+      cursor: pointer;
+}
+.reward-note-modal .v-modal .choose-pay .option img {
+        height: 30px;
+}
+.reward-note-modal .v-modal .choose-pay .option img.day.alipay, .reward-note-modal .v-modal .choose-pay .option img.night.alipay {
+        min-width: 85px;
+}
+.reward-note-modal .v-modal .choose-pay .option img.day.wechat, .reward-note-modal .v-modal .choose-pay .option img.night.wechat {
+        min-width: 112px;
+}
+.reward-note-modal .v-modal .choose-pay .option img.night {
+        display: none;
+}
+.reward-note-modal .v-modal .choose-pay .tooltip {
+      width: 230px;
+}
+.reward-note-modal .v-modal .modal-footer {
+    padding: 0 15px 20px;
+    border: none;
+    background-color: transparent;
+    text-align: center;
+}
+.reward-note-modal .v-modal .modal-footer .btn {
+      padding: 8px 45px;
+      font-size: 24px;
+}
+.reward-note-modal .v-modal .btn-pay {
+    padding: 8px 25px;
+    font-size: 16px;
+    color: #ffffff;
+    background-color: #F5A623;
+}
+.weixin-pay, .success-pay {
+  text-align: center;
+}
+.weixin-pay .v-modal, .success-pay .v-modal {
+    width: 350px;
+}
+.weixin-pay .ic-successed, .success-pay .ic-successed {
+    font-size: 60px;
+    color: #3db922;
+}
+.weixin-pay h2, .weixin-pay h3, .success-pay h2, .success-pay h3 {
+    margin-bottom: 20px;
+    color: #333333;
+}
+.weixin-pay h2, .success-pay h2 {
+    margin: 0 0 40px 0;
+    font-size: 24px;
+}
+.weixin-pay .bind-text, .success-pay .bind-text {
+    position: relative;
+    margin-bottom: 30px;
+    font-size: 14px;
+    color: #999999;
+}
+.weixin-pay .bind-text:before, .weixin-pay .bind-text:after, .success-pay .bind-text:before, .success-pay .bind-text:after {
+      content: "";
+      border-top: 1px solid #999;
+      display: block;
+      position: absolute;
+      width: 40px;
+      top: 8px;
+}
+.weixin-pay .bind-text:before, .success-pay .bind-text:before {
+      left: 30px;
+}
+.weixin-pay .bind-text:after, .success-pay .bind-text:after {
+      right: 30px;
+}
+.weixin-pay .share-bind, .success-pay .share-bind {
+    display: block;
+    margin-bottom: 30px;
+}
+.weixin-pay .share-bind i, .success-pay .share-bind i {
+      margin-right: 4px;
+      font-size: 22px;
+      vertical-align: middle;
+}
+.weixin-pay .share-bind.wechat i, .success-pay .share-bind.wechat i {
+      color: #00BB29;
+}
+.weixin-pay .share-bind.weibo i, .success-pay .share-bind.weibo i {
+      color: #E05244;
+}
+.weixin-pay .wx-qr-code, .success-pay .wx-qr-code {
+    display: inline-block;
+}
+.weixin-pay .wx-qr-code img, .success-pay .wx-qr-code img {
+      margin: 0 auto;
+      padding: 10px;
+      width: 200px;
+      background-color: #ffffff;
+}
+.weixin-pay .pay-amount, .success-pay .pay-amount {
+    margin: 20px 0;
+    color: #787878;
+}
+.weixin-pay .pay-amount span, .success-pay .pay-amount span {
+      color: #F5A623;
+}
+</style><style type="text/css">
+@charset "UTF-8";
+/*
+ * 变量
+*/
+.v-modal-wrap {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  background-color: transparent;
+}
+.v-modal-wrap.modal-leave-active {
+    -webkit-transition: opacity 0.3s;
+    -o-transition: opacity 0.3s;
+    transition: opacity 0.3s;
+}
+.v-modal-wrap.modal-enter-active .v-modal-mask, .v-modal-wrap.modal-leave-active .v-modal-mask {
+    opacity: 0;
+}
+.v-modal-wrap.modal-enter-active .v-modal, .v-modal-wrap.modal-leave-active .v-modal {
+    -webkit-transform: translate(-50%, -70%);
+        -ms-transform: translate(-50%, -70%);
+            transform: translate(-50%, -70%);
+    opacity: 0;
+}
+.v-modal-wrap .v-modal-mask {
+    background-color: rgba(255, 255, 255, 0.7);
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    -webkit-transition: opacity 0.3s;
+    -o-transition: opacity 0.3s;
+    transition: opacity 0.3s;
+    opacity: 1;
+}
+.v-modal-wrap .v-modal {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+    border-radius: 6px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    -webkit-box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+    -webkit-transition: opacity 0.3s, -webkit-transform 0.3s;
+    transition: opacity 0.3s, -webkit-transform 0.3s;
+    -o-transition: opacity 0.3s, transform 0.3s;
+    transition: opacity 0.3s, transform 0.3s;
+    transition: opacity 0.3s, transform 0.3s, -webkit-transform 0.3s;
+    opacity: 1;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    overflow: hidden;
+}
+.v-modal-wrap .v-modal > header:before, .v-modal-wrap .v-modal > header:after, .v-modal-wrap .v-modal > main:before, .v-modal-wrap .v-modal > main:after, .v-modal-wrap .v-modal > footer:before, .v-modal-wrap .v-modal > footer:after {
+      content: '';
+      clear: both;
+      display: table;
+}
+.v-modal-wrap .v-modal > header {
+      padding: 20px;
+      border-bottom: 1px solid #F0F0F0;
+}
+.v-modal-wrap .v-modal > header h4 {
+        margin: 0;
+        color: #333;
+        text-align: left;
+}
+.v-modal-wrap .v-modal .close {
+      position: absolute;
+      right: 16px;
+      top: 20px;
+      font-size: 26px;
+      line-height: 20px;
+      color: rgba(0, 0, 0, 0.8);
+}
+.v-modal-wrap .v-modal .close:hover {
+        color: #000000;
+}
+.v-modal-wrap .v-modal > main {
+      padding: 20px 20px 20px 20px;
+      font-size: 15px;
+      color: #333;
+      -webkit-box-flex: 1;
+      -webkit-flex-grow: 1;
+          -ms-flex-positive: 1;
+              flex-grow: 1;
+      overflow-x: hidden;
+      overflow-y: auto;
+}
+.v-modal-wrap .v-modal > footer {
+      padding: 20px;
+      background-color: #fff;
+}
+.v-modal-wrap .v-modal > footer button {
+        padding: 0;
+        margin: 0;
+        background-color: transparent;
+        border: 0;
+        float: right;
+}
+.v-modal-wrap .v-modal > footer button:focus {
+          outline: 0;
+}
+.v-modal-wrap .v-modal > footer .submit {
+        padding: 4px 12px;
+        border: 1px solid;
+        border-radius: 20px;
+}
+.v-modal-wrap .v-modal > footer .cancel {
+        margin-top: 5px;
+}
+.v-modal-wrap .v-modal > footer .cancel:hover {
+          color: #333333;
+}
+.reader-night-mode .v-modal-wrap .v-modal-mask {
+  background-color: rgba(63, 63, 63, 0.7);
+}
+.reader-night-mode .v-modal-wrap .v-modal {
+  background-color: #3f3f3f;
+}
+.reader-night-mode .v-modal-wrap .v-modal header {
+    border-color: #2F2F2F;
+}
+.reader-night-mode .v-modal-wrap .v-modal header h4 {
+      color: #C8C8C8;
+}
+.reader-night-mode .v-modal-wrap .v-modal .close {
+    color: #C8C8C8;
+}
+.reader-night-mode .v-modal-wrap .v-modal .close:hover {
+      color: #ffffff;
+}
+.reader-night-mode .v-modal-wrap .v-modal main {
+    color: #C8C8C8;
+}
+.reader-night-mode .v-modal-wrap .v-modal footer {
+    background-color: #3f3f3f;
+}
+.reader-night-mode .v-modal-wrap .v-modal footer .cancel:hover {
+      color: #C8C8C8;
+}
+</style><style type="text/css">
+@charset "UTF-8";
+/*
+ * 变量
+*/
+.youdao-fixed-ad {
+  display: block;
+  position: relative;
+  width: 180px;
+  height: 180px;
+}
+.youdao-fixed-ad .img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+.youdao-fixed-ad .ad-badge {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    display: block;
+    font-size: 12px;
+    padding: 2px 5px 0 6px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    cursor: pointer;
+}
+</style><style type="text/css">
+@charset "UTF-8";
+/*
+ * 变量
+*/
+.like[data-v-6ddd02c6] {
+  display: inline-block;
+}
+.like .like-group[data-v-6ddd02c6] {
+    position: relative;
+    padding: 13px 0 15px 0;
+    font-size: 0;
+    border: 1px solid #EA6F5A;
+    border-radius: 40px;
+}
+.like .like-group[data-v-6ddd02c6]:hover {
+      background-color: rgba(236, 97, 73, 0.05);
+}
+.like .like-group .btn-like[data-v-6ddd02c6] {
+      display: inline-block;
+      font-size: 19px;
+}
+.like .like-group .btn-like[data-v-6ddd02c6]:before {
+        content: '';
+        position: absolute;
+        left: 12px;
+        top: 2px;
+        width: 50px;
+        height: 50px;
+        background-image: url(//cdn2.jianshu.io/assets/web/like_animation_steps-62a00a7b52377d3069927cdb8e61fd34.png);
+        background-position: left;
+        background-repeat: no-repeat;
+        background-size: 1000px 50px;
+}
+.like .like-group .btn-like a[data-v-6ddd02c6] {
+        position: relative;
+        padding: 18px 30px 18px 55px;
+        color: #EA6F5A;
+}
+.like .like-group .modal-wrap[data-v-6ddd02c6] {
+      font-size: 18px;
+      border-left: 1px solid rgba(236, 97, 73, 0.4);
+      display: inline-block;
+      margin-left: -15px;
+}
+.like .like-group .modal-wrap a[data-v-6ddd02c6] {
+        color: #EA6F5A;
+        padding: 18px 26px 18px 18px;
+}
+.like .like-group.like-animation[data-v-6ddd02c6], .like .like-group.active[data-v-6ddd02c6] {
+      background-color: #EA6F5A;
+}
+.like .like-group.like-animation .btn-like a[data-v-6ddd02c6], .like .like-group.active .btn-like a[data-v-6ddd02c6] {
+        color: white;
+}
+.like .like-group.like-animation .modal-wrap[data-v-6ddd02c6], .like .like-group.active .modal-wrap[data-v-6ddd02c6] {
+        border-left: 1px solid white;
+}
+.like .like-group.like-animation .modal-wrap a[data-v-6ddd02c6], .like .like-group.active .modal-wrap a[data-v-6ddd02c6] {
+          color: white;
+}
+.like .like-group.like-animation .btn-like[data-v-6ddd02c6]:before {
+      -webkit-animation: likeBlast-data-v-6ddd02c6 0.6s 1 steps(19);
+              animation: likeBlast-data-v-6ddd02c6 0.6s 1 steps(19);
+      background-position: right;
+}
+@-webkit-keyframes likeBlast {
+0% {
+    background-position: left;
+}
+100% {
+    background-position: right;
+}
+}
+@keyframes likeBlast-data-v-6ddd02c6 {
+0% {
+    background-position: left;
+}
+100% {
+    background-position: right;
+}
+}
+.like .like-group.active .btn-like[data-v-6ddd02c6]:before {
+      background-position: right;
+}
+</style><style type="text/css">
+@charset "UTF-8";
+/*
+ * 变量
+*/
+.main {
+  position: relative;
+  margin: 0 auto;
+  padding: 0 0 30px 0;
+  width: 620px;
+}
+.main .title {
+    padding-left: 8px;
+    border-left: 3px solid #EA6F5A;
+    line-height: 1;
+    font-size: 15px;
+}
+.main .collection-settings {
+    position: absolute;
+    top: 2px;
+    right: 0;
+    font-size: 13px;
+    color: #A0A0A0;
+}
+.main .collection-settings span {
+      padding-left: 4px;
+}
+.main .include-collection {
+    width: 100%;
+    padding-top: 20px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: row;
+        -ms-flex-direction: row;
+            flex-direction: row;
+    -webkit-box-pack: start;
+    -webkit-justify-content: flex-start;
+        -ms-flex-pack: start;
+            justify-content: flex-start;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-flex-wrap: wrap;
+        -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+}
+.main .include-collection .item {
+      display: inline-block;
+      margin: 0 12px 12px 0;
+      min-height: 32px;
+      background-color: white;
+      border: 1px solid #DCDCDC;
+      border-radius: 4px;
+      vertical-align: top;
+      overflow: hidden;
+}
+.main .include-collection .item img {
+        width: 32px;
+        height: 32px;
+}
+.main .include-collection .item .name {
+        display: inline-block;
+        padding: 0 10px;
+        font-size: 14px;
+}
+.main .include-collection .add-collection-wrap {
+      margin: 0 12px 12px 0;
+}
+.main .include-collection .add-collection {
+      padding: 8px 12px;
+      font-size: 14px;
+      border: 1px solid #DCDCDC;
+      border-radius: 4px;
+}
+.main .include-collection .add-collection i {
+        margin-right: 4px;
+        color: #969696;
+}
+.main .recommend-note a {
+    position: relative;
+    margin: 20px 2px 0 0;
+    width: 200px;
+    height: 160px;
+    display: inline-block;
+}
+.main .recommend-note a:after {
+      content: "";
+      position: absolute;
+      width: 200px;
+      height: 160px;
+      border-radius: 0 0 4px 4px;
+      -webkit-box-shadow: inset 0px -80px 50px -22px rgba(0, 0, 0, 0.6);
+              box-shadow: inset 0px -80px 50px -22px rgba(0, 0, 0, 0.6);
+      top: 0;
+      left: 0;
+      z-index: 1;
+}
+.main .recommend-note .name {
+    position: absolute;
+    bottom: 40px;
+    left: 10px;
+    right: 10px;
+    font-size: 17px;
+    font-weight: bold;
+    color: #ffffff;
+    z-index: 2;
+}
+.main .recommend-note .author {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+    z-index: 2;
+}
+.main .recommend-note .avatar {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+}
+.main .recommend-note .avatar img {
+      border-radius: 50%;
+}
+.main .recommend-note .author-name {
+    font-size: 12px;
+    color: #ffffff;
+    display: inline-block;
+    vertical-align: -1px;
+}
+.main .show-more {
+    margin: 0 12px 12px 0;
+    font-size: 14px;
+    color: #A0A0A0;
+}
+</style><link rel="stylesheet" href="./多多猫app的siteD引擎长啥样，怎么运行插件的？ - 简书_files/layer.css" id="layuicss-skinlayercss"></head>
+
+  <!-- 只给10%的用户添加代码 -->
+  <!-- ###第四范式-智能推荐：代码直接复制 无需修改参数### -->
+  <!-- ###功能：上报内容并反馈用户行为### -->
+  <!--
+  -->
+  <body lang="zh-CN" class="reader-black-font">
+    <!-- 全局顶部导航栏 -->
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+  <div class="width-limit">
+    <!-- 左上方 Logo -->
+    <a class="logo" href="https://www.jianshu.com/"><img src="./多多猫app的siteD引擎长啥样，怎么运行插件的？ - 简书_files/nav-logo-4c7bbafe27adc892f3046e6978459bac.png" alt="Nav logo"></a>
+
+    <!-- 右上角 -->
+      <!-- 未登录显示登录/注册/写文章 -->
+      <a class="btn write-btn" target="_blank" href="https://www.jianshu.com/writer#/">
+        <i class="iconfont ic-write"></i>写文章
+</a>      <a class="btn sign-up" id="sign_up" href="https://www.jianshu.com/sign_up">注册</a>
+      <a class="btn log-in" id="sign_in" href="https://www.jianshu.com/sign_in">登录</a>
+
+    <!-- 如果用户登录，显示下拉菜单 -->
+
+    <div class="style-mode"><a class="style-mode-btn"><i class="iconfont ic-navigation-mode"></i></a> <div class="popover-modal" style="left: 0px; display: none;"><div class="meta"><i class="iconfont ic-navigation-night"></i><span>夜间模式</span></div> <div class="switch day-night-group"><a class="switch-btn">开</a> <a class="switch-btn active">关</a></div> <hr> <div class="switch font-family-group"><a class="switch-btn font-song">宋体</a> <a class="switch-btn font-hei active">黑体</a></div> <div class="switch"><a class="switch-btn active">简</a> <a class="switch-btn">繁</a></div></div></div>
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#menu" aria-expanded="false">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+      </div>
+      <div class="collapse navbar-collapse" id="menu">
+        <ul class="nav navbar-nav">
+            <li class="tab ">
+              <a href="https://www.jianshu.com/">
+                <span class="menu-text">首页</span><i class="iconfont ic-navigation-discover menu-icon"></i>
+</a>            </li>
+            <li class="tab ">
+              <a id="web-nav-app-download-btn" class="app-download-btn" href="https://www.jianshu.com/apps?utm_medium=desktop&amp;utm_source=navbar-apps"><span class="menu-text">下载App</span><i class="iconfont ic-navigation-download menu-icon"></i></a>
+            </li>
+          <li class="search">
+            <form target="_blank" action="https://www.jianshu.com/search" accept-charset="UTF-8" method="get"><input name="utf8" type="hidden" value="✓">
+              <input type="text" name="q" id="q" value="" autocomplete="off" placeholder="搜索" class="search-input">
+              <a class="search-btn" href="javascript:void(null)"><i class="iconfont ic-search"></i></a>
+</form>          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>
+
+    
+<div class="note">
+  <div id="note-fixed-ad-container">
+      <a target="_blank" href="https://www.jianshu.com/apps/redirect?utm_source=side-banner-click" id="web-note-ad-fixed"><span class="close">×</span></a>
+    <div id="fixed-ad-container">
+      <!---->
+      <div id="_so_pdsBy_0"></div>
+    </div>
+  </div>
+  <div class="post">
+    <div class="article">
+        <h1 class="title">多多猫app的siteD引擎长啥样，怎么运行插件的？</h1>
+
+        <!-- 作者区域 -->
+        <div class="author">
+          <a class="avatar" href="https://www.jianshu.com/u/0f23eff04f16">
+            <img src="./多多猫app的siteD引擎长啥样，怎么运行插件的？ - 简书_files/7d786ba877f8" alt="96">
+</a>          <div class="info">
+            <span class="name"><a href="https://www.jianshu.com/u/0f23eff04f16">qdsfdhvh</a></span>
+            <!-- 关注用户按钮 -->
+            <a class="btn btn-success follow"><i class="iconfont ic-follow"></i><span>关注</span></a>
+            <!-- 文章数据信息 -->
+            <div class="meta">
+              <!-- 如果文章更新时间大于发布时间，那么使用 tooltip 显示更新时间 -->
+                <span class="publish-time" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="最后编辑于 2017.12.08 04:43">2017.06.19 07:33*</span>
+              <span class="wordage">字数 1691</span>
+            <span class="views-count">阅读 494</span><span class="comments-count">评论 1</span><span class="likes-count">喜欢 4</span><span class="rewards-count ">赞赏 2</span></div>
+          </div>
+          <!-- 如果是当前作者，加入编辑按钮 -->
+        </div>
+
+
+        <!-- 文章内容 -->
+        <div data-note-content="" class="show-content">
+          <div class="show-content-free">
+            <h5>在开始前，先讲个故事：</h5>
+<blockquote>
+<p>在很久很久以前，一位懵懂的少年用着一款uwp的手机，他很喜欢看漫画，但是他望着这款装着软件都没几个的系统的手机，他很茫然。为此，他联系了很多开发者，希望有人能开发一个看漫画app，结果too young too simple。但是这位少年并没有因此而放弃，他产生了一个“大神由此而诞生”的想法，没错自己写一个。就这样，多多猫app的“前身”就这样诞生了。但是“前身”还只是对一个网站（KuKu漫画）做简单的抓取，这显然是不够的，需要抓取更多的网站，随着网站的增多，app内部也需要一个完善的体系来适配这些“抓取的方法”，这就是历经岁月的摧残而诞生的siteD引擎<a href="https://link.jianshu.com/?t=https://github.com/noear/SiteD" target="_blank" rel="nofollow">github</a>。</p>
+</blockquote>
+<h5>故事讲完了，接下来我们就来大致了解下，这个siteD引擎到底是怎么运行插件的？</h5>
+<div class="image-package">
+<div class="image-container" style="max-width: 700px; max-height: 630px; background-color: transparent;">
+<div class="image-container-fill" style="padding-bottom: 64.22%;"></div>
+<div class="image-view" data-width="981" data-height="630"><img data-original-src="//upload-images.jianshu.io/upload_images/2098377-576930989f857612.png" data-original-width="981" data-original-height="630" data-original-format="image/png" data-original-filesize="87064" class="" style="cursor: zoom-in;" src="./多多猫app的siteD引擎长啥样，怎么运行插件的？ - 简书_files/2098377-576930989f857612.png"></div>
+</div>
+<div class="image-caption">siteD引擎结构图</div>
+</div>
+<p>插件导入引擎后，siteD引擎会首先读取插件的xml节点，将它转成引擎内部的SdSource类，之后所有的运行都基于这个类。</p>
+<pre class="hljs xml"><code class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">site</span> <span class="hljs-attr">ver</span>=<span class="hljs-string">"1"</span> <span class="hljs-attr">engine</span>=<span class="hljs-string">"30"</span> <span class="hljs-attr">schema</span>=<span class="hljs-string">"1"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">meta</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">main</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">main</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">site</span>&gt;</span>
+</code></pre>
+<p>对于最外层的site节点：因为他是第一个，引擎并没有通过Name来识别它，可以凭自己的喜好随意更改sitedd，loveyou等等。但是它附带的参数很重要，ver插件版本，engine引擎版本，schema则是引擎的更新中修改了节点name，当你把engine设置成25+时，必须添加schema="1"，不然引擎会以旧版的NodeName取抓取子节点。</p>
+<p>site中一共包含了三个子节点（meta、main、script）：<br>
+1.meta</p>
+<pre class="hljs xml"><code class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">meta</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">ua</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">ua</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">guid</span>&gt;</span>xxxxxxxxxxxxxxxxxxx<span class="hljs-tag">&lt;/<span class="hljs-name">guid</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>733漫画<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">intro</span>&gt;</span>733动漫网_好看的动漫_日本动漫_动漫大全_最新动漫<span class="hljs-tag">&lt;/<span class="hljs-name">intro</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">author</span>&gt;</span>Seiko<span class="hljs-tag">&lt;/<span class="hljs-name">author</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">url</span>&gt;</span>http://www.733dm.net<span class="hljs-tag">&lt;/<span class="hljs-name">url</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">expr</span>&gt;</span>733dm\.net<span class="hljs-tag">&lt;/<span class="hljs-name">expr</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">logo</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">logo</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">encode</span>&gt;</span>gb18030<span class="hljs-tag">&lt;/<span class="hljs-name">encode</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">meta</span>&gt;</span>
+</code></pre>
+<p>meta里面的数据还是比较明了的，顺便说下这里的url主要起展示作用，这里就简述下guid、expr：<br>
+guid——将插件上传到服务器时的唯一凭证，因此写好插件后，需要添加guid才能上传到服务器。<br>
+expr——siteD引擎用来判断用哪个插件来解析当前的url。就像你的收藏里有来自57的、汗汗的，总不能拿汗汗的插件来解析57的url。</p>
+<p>3.script（main比较复杂，先讲script）</p>
+<pre class="hljs xml"><code class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="actionscript">
+        &lt;require&gt;
+            &lt;item url=<span class="hljs-string">"http://sited.noear.org/addin/js/cheerio.js"</span> lib=<span class="hljs-string">"cheerio"</span> /&gt;
+            &lt;item url=<span class="hljs-string">"http://sited.noear.org/addin/js/base64.js"</span> /&gt;
+        &lt;/require&gt;
+        &lt;code&gt;
+        &lt;![CDATA[
+
+<span class="hljs-keyword">var</span> urla = (<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-keyword">var</span> host = <span class="hljs-string">"http://www.733dm.net"</span>;
+
+    <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(u)</span> </span>{
+        <span class="hljs-keyword">if</span> (u.indexOf(<span class="hljs-string">"http"</span>) &lt; <span class="hljs-number">0</span>) {
+            u = host + u;
+        }
+        <span class="hljs-keyword">return</span> encodeURI(u);
+    }
+})();
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">tg_burl</span><span class="hljs-params">(url, page)</span> </span>{
+    <span class="hljs-keyword">if</span> (page &gt; <span class="hljs-number">1</span>) {
+        url += <span class="hljs-string">"index_"</span> + page + <span class="hljs-string">".html"</span>;
+    }
+    <span class="hljs-keyword">return</span> url;
+}
+
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">ht_parse</span><span class="hljs-params">(url, html)</span> </span>{
+    <span class="hljs-keyword">var</span> $ = cheerio.load(html);
+    <span class="hljs-keyword">var</span> list = [];
+    
+    $(<span class="hljs-string">'ul.scroll'</span>).find(<span class="hljs-string">'img'</span>).each(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+        <span class="hljs-keyword">var</span> img  = $(<span class="hljs-keyword">this</span>);
+        
+        <span class="hljs-keyword">var</span> bm = {};
+        bm.name  = img.attr(<span class="hljs-string">'alt'</span>);
+        bm.url   = urla(img.parent().attr(<span class="hljs-string">'href'</span>));
+        bm.logo  = img.attr(<span class="hljs-string">'src'</span>);
+
+        list.push(bm);
+    });
+    <span class="hljs-keyword">return</span> JSON.stringify(list);
+}
+
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">up_parse</span><span class="hljs-params">(url, html)</span> </span>{
+    <span class="hljs-keyword">var</span> $ = cheerio.load(html);
+    <span class="hljs-keyword">var</span> list = [];
+    <span class="hljs-keyword">return</span> JSON.stringify(list);
+}
+
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">tg_parse</span><span class="hljs-params">(url, html)</span> </span>{
+    <span class="hljs-keyword">var</span> $ = cheerio.load(html);
+    <span class="hljs-keyword">var</span> list = [];
+    <span class="hljs-keyword">return</span> JSON.stringify(list);
+}
+
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">bk_parse</span><span class="hljs-params">(url, html)</span> </span>{
+    <span class="hljs-keyword">var</span> $ = cheerio.load(html);
+    <span class="hljs-keyword">var</span> data = {};
+    <span class="hljs-keyword">return</span> JSON.stringify(data);
+}
+
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">sn_parse</span><span class="hljs-params">(url, html)</span> </span>{
+    <span class="hljs-keyword">return</span> JSON.stringify(list);
+}
+
+        ]]&gt;
+        &lt;/code&gt;
+    </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+</code></pre>
+<p>很明显，这个节点就是放js代码的，code放自己写的代码，&lt;require&gt;放一些引用的库，如图上的cheerio和base64。至于lib的作用，siteD引擎里面已经包含了一些js库，lib就是用来识别的，不写也没事，因为第一次加载后，引擎就会缓存。</p>
+<br>
+<div class="image-package">
+<div class="image-container" style="max-width: 394px; max-height: 324px;">
+<div class="image-container-fill" style="padding-bottom: 82.23%;"></div>
+<div class="image-view" data-width="394" data-height="324"><img data-original-src="//upload-images.jianshu.io/upload_images/2098377-ece6c85c22f1fd81.png" data-original-width="394" data-original-height="324" data-original-format="image/png" data-original-filesize="20654" class="image-loading" style="cursor: zoom-in;"></div>
+</div>
+<div class="image-caption">引擎包含的库</div>
+</div>
+<p>2.main</p>
+<pre class="hljs xml"><code class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">main</span> <span class="hljs-attr">dtype</span>=<span class="hljs-string">"1"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">home</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">hots</span> <span class="hljs-attr">cache</span>=<span class="hljs-string">"1d"</span> <span class="hljs-attr">title</span>=<span class="hljs-string">"热门"</span> <span class="hljs-attr">method</span>=<span class="hljs-string">"get"</span>  <span class="hljs-attr">parse</span>=<span class="hljs-string">"ht_parse"</span> <span class="hljs-attr">url</span>=<span class="hljs-string">"http://www.733dm.net"</span> /&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">updates</span> <span class="hljs-attr">cache</span>=<span class="hljs-string">"1d"</span> <span class="hljs-attr">title</span>=<span class="hljs-string">"更新"</span> <span class="hljs-attr">method</span>=<span class="hljs-string">"get"</span> <span class="hljs-attr">parse</span>=<span class="hljs-string">"up_parse"</span> <span class="hljs-attr">url</span>=<span class="hljs-string">"http://www.733dm.net/mh/update.html"</span> /&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">tags</span>  <span class="hljs-attr">title</span>=<span class="hljs-string">"分类"</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">item</span> <span class="hljs-attr">title</span>=<span class="hljs-string">"国产"</span> <span class="hljs-attr">url</span>=<span class="hljs-string">"http://www.733dm.net/mh/guochan/"</span> <span class="hljs-attr">group</span>=<span class="hljs-string">"地区"</span> /&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">item</span> <span class="hljs-attr">title</span>=<span class="hljs-string">"日本"</span> <span class="hljs-attr">url</span>=<span class="hljs-string">"http://www.733dm.net/mh/riben/"</span> /&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">item</span> <span class="hljs-attr">title</span>=<span class="hljs-string">"欧美"</span> <span class="hljs-attr">url</span>=<span class="hljs-string">"http://www.733dm.net/mh/oumei/"</span> /&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">item</span> <span class="hljs-attr">title</span>=<span class="hljs-string">"韩国"</span> <span class="hljs-attr">url</span>=<span class="hljs-string">"http://www.733dm.net/mh/hanguo/"</span> /&gt;</span>
+
+                <span class="hljs-tag">&lt;<span class="hljs-name">item</span> <span class="hljs-attr">title</span>=<span class="hljs-string">"冒险"</span> <span class="hljs-attr">url</span>=<span class="hljs-string">"http://www.733dm.net/mh/maoxian/"</span> <span class="hljs-attr">group</span>=<span class="hljs-string">"分类"</span> /&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">item</span> <span class="hljs-attr">title</span>=<span class="hljs-string">"魔法"</span> <span class="hljs-attr">url</span>=<span class="hljs-string">"http://www.733dm.net/mh/mofa/"</span> /&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">item</span> <span class="hljs-attr">title</span>=<span class="hljs-string">"东方神鬼"</span> <span class="hljs-attr">url</span>=<span class="hljs-string">"http://www.733dm.net/mh/dongfangshengui/"</span> /&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">tags</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">home</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">search</span>  <span class="hljs-attr">cache</span>=<span class="hljs-string">"1d"</span> <span class="hljs-attr">method</span>=<span class="hljs-string">"get"</span> <span class="hljs-attr">parse</span>=<span class="hljs-string">"tg_parse"</span> <span class="hljs-attr">url</span>=<span class="hljs-string">"http://www.733dm.net/e/search/index.php?searchget=1&amp;amp;keyboard=@key&amp;amp;myorder=1&amp;amp;orderby=1&amp;amp;show=title,player,playadmin,bieming,pinyin&amp;amp;tbname=mh&amp;amp;tempid=3"</span> /&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">tag</span>     <span class="hljs-attr">cache</span>=<span class="hljs-string">"0"</span>  <span class="hljs-attr">method</span>=<span class="hljs-string">"get"</span> <span class="hljs-attr">parse</span>=<span class="hljs-string">"tg_parse"</span> <span class="hljs-attr">buildUrl</span>=<span class="hljs-string">"tg_burl"</span> /&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">book</span>    <span class="hljs-attr">cache</span>=<span class="hljs-string">"1d"</span> <span class="hljs-attr">method</span>=<span class="hljs-string">"get"</span> <span class="hljs-attr">parse</span>=<span class="hljs-string">"bk_parse"</span> /&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">section</span> <span class="hljs-attr">cache</span>=<span class="hljs-string">"1"</span>  <span class="hljs-attr">method</span>=<span class="hljs-string">"get"</span> <span class="hljs-attr">parse</span>=<span class="hljs-string">"sn_parse"</span> <span class="hljs-attr">header</span>=<span class="hljs-string">"cookie;referer"</span> /&gt;</span>
+</code></pre>
+<p>main里面的结构就比较多了，因为插件的全部内容都在这。main的参数还有很多，具体的可以看开发文档，我这边就讲些我觉得比较重要的。<a href="https://link.jianshu.com/?t=http://sited.noear.org/dev/" target="_blank" rel="nofollow">开发文档</a></p>
+<p>dtype：<br>
+插件类型，多多猫也是通过这个参数来判断给你漫画界面还是小说界面还是视频界面。注意：不同的插件类型你需要在js里返回的list也是不一样的，具体看开发文档。</p>
+<br>
+<div class="image-package">
+<div class="image-container" style="max-width: 317px; max-height: 217px;">
+<div class="image-container-fill" style="padding-bottom: 68.45%;"></div>
+<div class="image-view" data-width="317" data-height="217"><img data-original-src="//upload-images.jianshu.io/upload_images/2098377-819457ed560c278e.png" data-original-width="317" data-original-height="217" data-original-format="image/png" data-original-filesize="13644" class="image-loading" style="cursor: zoom-in;"></div>
+</div>
+<div class="image-caption">插件类型</div>
+</div><br>
+<p>home：你点开插件时跳转的界面（插件首页），用过多多猫的应该都知道，点开插件最多只有3种界面（热门hots、更新updates、分类tags）。<br>
+search：搜索界面<br>
+tag：分类界面<br>
+book：目录界面（当没有目录时（例：dtype=4），这个就变成了浏览界面）<br>
+section：浏览界面（看漫画or小说or视频）</p>
+
+<p>以上5个界面就是多多猫的主要界面，对比app来看，大致的结构还是比较明了的。接下来统一讲下里面的参数。<br>
+cache：缓存。0不缓存、1永久缓存、1d缓存一天、60m缓存1小时。<br>
+title、url：标题、链接。毕竟有些链接是需要你自己指明的，像hots、updates、search。从这些界面中衍生的则不需要这些参数，像tag、book、section。<br>
+method：请求类型。无非get、post，为了应付某些情况引擎加了一个@null（不请求）。<br>
+parse：指明你用的哪个方法来解析该节点。比如js代码中function bk_parse(url, html) {}是用来解析目录的，就在book节点里写parse="bk_parse"。<br>
+parseUrl：这是一个非常重要的方法，返回一组urls或一个url，对这组url都进行parse。后面对这个做了加强，可以返回一个CALL::GET::+url。这样引擎会在请求后返回parseUrl，不停循环直到抓到你想要的url或urls。</p>
+<p>剩下的buildUrl、header等就不细说了。这边就说下siteD的大致请求流程：（以section为例）</p>
+<blockquote>
+<p>从xx传来url-&gt;<br>
+expr@选择用哪个插件-&gt;<br>
+开始请求html（每次请求前都会buildUrl，重新生成header、cookie）-&gt;<br>
+parseUrl@是否需要进入parseUrl（每次parseUrl都会请求html）-&gt;<br>
+parse@解析当前页面，返回最终结果</p>
+</blockquote>
+<h5>插件的简介说的差不多了，下面说下引擎是怎么处理上面的数据的。</h5>
+<div class="image-package">
+<div class="image-container" style="max-width: 469px; max-height: 185px;">
+<div class="image-container-fill" style="padding-bottom: 39.45%;"></div>
+<div class="image-view" data-width="469" data-height="185"><img data-original-src="//upload-images.jianshu.io/upload_images/2098377-6281b84f5c8d1dd3.png" data-original-width="469" data-original-height="185" data-original-format="image/png" data-original-filesize="12155" class="image-loading" style="cursor: zoom-in;"></div>
+</div>
+<div class="image-caption">引擎中对应的代码</div>
+</div><br>
+<p>里面的xml就是插件。<br>
+doInit()    # 解析xml<br>
+doLoad() # 将解析后的数据转换成能用的类，怎么转换的就不细说了，去看siteD开源代码吧。（SdNodeSet、SdNode、SdJscript）</p>
+
+<p>1.SdNodeSet是下面的爸爸，例如上面的mian、script、meta。<br>
+2.SdNode每个节点，也是解析时需要用的的对象，例如book、section。<br>
+3.Sdscript这个是处理js代码的，需要注意的是这个类只起到处理作用，最后的代码都会导入到SdEngine（伟大的J2V8引擎在这个类里）。</p>
+<p>插件转换成SdSource后，引用下面的方法，就能开始解析了。（由于siteD代码这块非常复杂，不适合讲解，这边就贴出我的只含有部分功能的简版了，挑战自己的可以去github看源码）</p>
+<p>以首页热门为例，上面说到了，</p>
+<pre class="hljs xml"><code class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">hots</span> <span class="hljs-attr">cache</span>=<span class="hljs-string">"1d"</span> <span class="hljs-attr">title</span>=<span class="hljs-string">"热门"</span> <span class="hljs-attr">method</span>=<span class="hljs-string">"get"</span>  <span class="hljs-attr">parse</span>=<span class="hljs-string">"ht_parse"</span> <span class="hljs-attr">url</span>=<span class="hljs-string">"http://www.733dm.net"</span> /&gt;</span>
+</code></pre>
+<p>被转成了SdNode类，加上url两个参数，对应解析方法为：</p>
+<pre class="hljs java"><code class="java"><span class="hljs-function"><span class="hljs-keyword">public</span> Flowable&lt;YhPair&gt; <span class="hljs-title">doGetNodeViewModel</span><span class="hljs-params">(<span class="hljs-keyword">final</span> SdNode cfg, <span class="hljs-keyword">final</span> String url)</span> </span>{
+        <span class="hljs-keyword">return</span> Observable.create(<span class="hljs-keyword">new</span> ObservableOnSubscribe&lt;String&gt;() {
+                    <span class="hljs-meta">@Override</span>
+                    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">subscribe</span><span class="hljs-params">(@NonNull ObservableEmitter&lt;String&gt; e)</span> <span class="hljs-keyword">throws</span> Exception </span>{
+                        String html = getHtml(cfg, url);      <span class="hljs-comment">//这里url已经是处理好的，直接请求html（每次请求都会重新判断类型，添加header、cookie）。</span>
+                        <span class="hljs-keyword">if</span> (!TextUtils.isEmpty(cfg.parseUrl)) {    <span class="hljs-comment">//是否进入parseUrl循环</span>
+                            String parseUrl = rxParseUrl(cfg, url, html).blockingFirst();  <span class="hljs-comment">//导入v8引擎跑出结果。</span>
+
+                            <span class="hljs-keyword">while</span> (parseUrl.startsWith(Util.NEXT_CALL)) {       <span class="hljs-comment">//是否是以"CALL::"开头的，进入循环（尚未测试，可能无效）</span>
+                                parseUrl = parseUrl.replace(Util.NEXT_CALL, <span class="hljs-string">""</span>);
+                                log(<span class="hljs-string">"doGetNodeViewModel-isNextUrl"</span>, parseUrl);
+                                String html2 = getHtml(cfg, parseUrl);                         <span class="hljs-comment">//请求html</span>
+                                parseUrl = rxParseUrl(cfg, url, html2).blockingFirst();  <span class="hljs-comment">//导入v8引擎跑出结果。</span>
+                            }
+
+                            String[] urls = parseUrl.split(<span class="hljs-string">";"</span>);  <span class="hljs-comment">//将urls转换成数组，并对每个url请求处理</span>
+                            <span class="hljs-keyword">for</span> (String u1 : urls) {
+                                String html3 = getHtml(cfg, u1);
+                                log(<span class="hljs-string">"doGetNodeViewModel-isParseUrl"</span>, html3);
+                                e.onNext(html3);
+                            }
+                        } <span class="hljs-keyword">else</span> {
+                            e.onNext(html); <span class="hljs-comment">//不需要做啥，直接发送html，直接进行parse处理</span>
+                        }
+                        e.onComplete();
+                    }
+                })
+                .flatMap(<span class="hljs-keyword">new</span> Function&lt;String, ObservableSource&lt;YhPair&gt;&gt;() {
+                    <span class="hljs-meta">@Override</span>
+                    <span class="hljs-function"><span class="hljs-keyword">public</span> ObservableSource&lt;YhPair&gt; <span class="hljs-title">apply</span><span class="hljs-params">(@NonNull String html)</span> <span class="hljs-keyword">throws</span> Exception </span>{
+                        String json = rxParse(cfg, url, html);  <span class="hljs-comment">//进行parse解析</span>
+                        log(<span class="hljs-string">"rxPrase-json"</span>, json);
+                        <span class="hljs-keyword">return</span> Observable.just(<span class="hljs-keyword">new</span> YhPair(cfg, json)); <span class="hljs-comment">//将json结果和cfg打包</span>
+                    }
+                }).subscribeOn(Schedulers.io()).toFlowable(BackpressureStrategy.BUFFER);
+    }
+</code></pre>
+<p>引用上面的方法，接着进行处理：</p>
+<pre class="hljs java"><code class="java">SourceApi.getInstance().rxgetSource(source) <span class="hljs-comment">//获得插件对应的SdSource</span>
+<span class="hljs-comment">//                .delay(200, TimeUnit.MILLISECONDS)</span>
+                .flatMap(<span class="hljs-keyword">new</span> Function&lt;YhSource, Publisher&lt;YhPair&gt;&gt;() {
+                    <span class="hljs-meta">@Override</span>
+                    <span class="hljs-function"><span class="hljs-keyword">public</span> Publisher&lt;YhPair&gt; <span class="hljs-title">apply</span><span class="hljs-params">(@NonNull YhSource sd)</span> <span class="hljs-keyword">throws</span> Exception </span>{
+                        <span class="hljs-keyword">return</span> sd.doGetNodeViewModel(sd.Hots(), sd.Hots().url); <span class="hljs-comment">//由于代码没有全贴，这里简写了。</span>
+                    }
+                })
+                .flatMap(<span class="hljs-keyword">new</span> Function&lt;YhPair, Publisher&lt;List&lt;HotsBean&gt;&gt;&gt;() {
+                    <span class="hljs-meta">@Override</span>
+                    <span class="hljs-keyword">public</span> Publisher&lt;List&lt;HotsBean&gt;&gt; apply(<span class="hljs-meta">@NonNull</span> YhPair pair) <span class="hljs-keyword">throws</span> Exception {
+                        List&lt;HotsBean&gt; list = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+
+                        JsonArray array = <span class="hljs-keyword">new</span> JsonParser().parse(pair.getJson()).getAsJsonArray(); <span class="hljs-comment">//处理v8返回的json数据，这里用的gson工具。</span>
+                        <span class="hljs-keyword">for</span> (JsonElement el : array) {
+                            JsonObject n = el.getAsJsonObject();
+                            String name = getString(n, <span class="hljs-string">"name"</span>);
+                            String logo = getString(n, <span class="hljs-string">"logo"</span>);
+                            String url = getString(n, <span class="hljs-string">"url"</span>);
+
+                            HotsBean bean = <span class="hljs-keyword">new</span> HotsBean();
+                            bean.setName(name);
+                            bean.setLogo(logo);
+                            bean.setUrl(url);
+                            bean.setSource(source);
+                            list.add(bean);
+                        }
+                        <span class="hljs-keyword">return</span> Flowable.just(list);
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(<span class="hljs-keyword">new</span> Consumer&lt;List&lt;HotsBean&gt;&gt;() {
+                    <span class="hljs-meta">@Override</span>
+                    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">accept</span><span class="hljs-params">(@NonNull List&lt;HotsBean&gt; list)</span> <span class="hljs-keyword">throws</span> Exception </span>{
+                        <span class="hljs-keyword">if</span> (list.size() &gt; <span class="hljs-number">0</span>) {
+                            mView.onSuccess(list); <span class="hljs-comment">//全部解析好了，发送给界面。</span>
+                        } <span class="hljs-keyword">else</span> {
+                            mView.onFailed();
+                        }
+                    }
+                }, <span class="hljs-keyword">new</span> Consumer&lt;Throwable&gt;() {
+                    <span class="hljs-meta">@Override</span>
+                    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">accept</span><span class="hljs-params">(@NonNull Throwable throwable)</span> <span class="hljs-keyword">throws</span> Exception </span>{
+                        mView.onFailed();
+                    }
+                });
+</code></pre>
+
+          </div>
+        </div>
+    </div>
+
+    <!-- 如果是付费文章，未购买，则显示购买按钮 -->
+
+    <!-- 连载目录项 -->
+
+    <!-- 如果是付费文章 -->
+      <!-- 如果是付费连载，已购买，且作者允许赞赏，则显示付费信息和赞赏 -->
+        <div id="free-reward-panel" class="support-author"><p>小礼物走一走，来简书关注我</p> <div class="btn btn-pay">赞赏支持</div> <div class="supporter"><ul class="support-list"><li><a target="_blank" href="https://www.jianshu.com/u/d1e4dd43140c" class="avatar"><img src="./多多猫app的siteD引擎长啥样，怎么运行插件的？ - 简书_files/bc262dc8f12c"></a></li><li><a target="_blank" href="https://www.jianshu.com/u/6e2133dd22ee" class="avatar"><img src="./多多猫app的siteD引擎长啥样，怎么运行插件的？ - 简书_files/12-aeeea4bedf10f2a12c0d50d626951489.jpg"></a></li></ul> <!----></div> <!----> <!----></div>
+
+      <div class="show-foot">
+        <a class="notebook" href="https://www.jianshu.com/nb/4323694">
+          <i class="iconfont ic-search-notebook"></i>
+          <span>随笔</span>
+</a>        <div class="copyright" data-toggle="tooltip" data-html="true" data-original-title="转载请联系作者获得授权，并标注“简书作者”。">
+          © 著作权归作者所有
+        </div>
+        <div class="modal-wrap" data-report-note="">
+          <a id="report-modal">举报文章</a>
+        </div>
+      </div>
+
+      <!-- 文章底部作者信息 -->
+        <div class="follow-detail">
+          <div class="info">
+            <a class="avatar" href="https://www.jianshu.com/u/0f23eff04f16">
+              <img src="./多多猫app的siteD引擎长啥样，怎么运行插件的？ - 简书_files/7d786ba877f8" alt="96">
+</a>            <a class="btn btn-success follow"><i class="iconfont ic-follow"></i><span>关注</span></a>
+            <a class="title" href="https://www.jianshu.com/u/0f23eff04f16">qdsfdhvh</a>
+          <p>写了 3725 字，被 5 人关注，获得了 9 个喜欢</p></div>
+        </div>
+
+    <div class="meta-bottom">
+      <div data-v-6ddd02c6="" class="like"><div data-v-6ddd02c6="" class="btn like-group"><div data-v-6ddd02c6="" class="btn-like"><a data-v-6ddd02c6="">喜欢</a></div> <div data-v-6ddd02c6="" class="modal-wrap"><a data-v-6ddd02c6="">4</a></div></div> <!----></div>
+      <div class="share-group">
+        <a class="share-circle" data-action="weixin-share" data-toggle="tooltip" data-original-title="分享到微信">
+          <i class="iconfont ic-wechat"></i>
+        </a>
+        <a class="share-circle" data-action="weibo-share" data-toggle="tooltip" href="javascript:void((function(s,d,e,r,l,p,t,z,c){var%20f=&#39;http://v.t.sina.com.cn/share/share.php?appkey=1881139527&#39;,u=z||d.location,p=[&#39;&amp;url=&#39;,e(u),&#39;&amp;title=&#39;,e(t||d.title),&#39;&amp;source=&#39;,e(r),&#39;&amp;sourceUrl=&#39;,e(l),&#39;&amp;content=&#39;,c||&#39;gb2312&#39;,&#39;&amp;pic=&#39;,e(p||&#39;&#39;)].join(&#39;&#39;);function%20a(){if(!window.open([f,p].join(&#39;&#39;),&#39;mb&#39;,[&#39;toolbar=0,status=0,resizable=1,width=440,height=430,left=&#39;,(s.width-440)/2,&#39;,top=&#39;,(s.height-430)/2].join(&#39;&#39;)))u.href=[f,p].join(&#39;&#39;);};if(/Firefox/.test(navigator.userAgent))setTimeout(a,0);else%20a();})(screen,document,encodeURIComponent,&#39;&#39;,&#39;&#39;,&#39;&#39;, &#39;推荐 qdsfdhvh 的文章《多多猫app的siteD引擎长啥样，怎么运行插件的？》（ 分享自 @简书 ）&#39;,&#39;https://www.jianshu.com/p/bd12429cbfb9?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=reader_share&amp;utm_source=weibo&#39;,&#39;页面编码gb2312|utf-8默认gb2312&#39;));" data-original-title="分享到微博">
+          <i class="iconfont ic-weibo"></i>
+        </a>
+        <a class="share-circle" data-toggle="tooltip" id="longshare" target="_blank" data-original-title="" title="">
+            <div class="qrcode" id="qrcode">
+             <img src="./多多猫app的siteD引擎长啥样，怎么运行插件的？ - 简书_files/download-index-side-qrcode-cb13fc9106a478795f8d10f9f632fccf.png" alt="Download index side qrcode">
+             <p>下载app生成长微博图片</p>
+             </div>
+          <i class="iconfont ic-picture"></i>
+        </a>
+        <a class="share-circle more-share" tabindex="0" data-toggle="popover" data-placement="top" data-html="true" data-trigger="focus" href="javascript:void(0);" data-content="
+          &lt;ul class=&quot;share-list&quot;&gt;
+            &lt;li&gt;&lt;a href=&quot;javascript:void(function(){var d=document,e=encodeURIComponent,r=&#39;http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=&#39;+e(&#39;https://www.jianshu.com/p/bd12429cbfb9?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=reader_share&amp;utm_source=qzone&#39;)+&#39;&amp;title=&#39;+e(&#39;推荐 qdsfdhvh 的文章《多多猫app的siteD引擎长啥样，怎么运行插件的？》&#39;),x=function(){if(!window.open(r,&#39;qzone&#39;,&#39;toolbar=0,resizable=1,scrollbars=yes,status=1,width=600,height=600&#39;))location.href=r};if(/Firefox/.test(navigator.userAgent)){setTimeout(x,0)}else{x()}})();&quot;&gt;&lt;i class=&quot;social-icon-sprite social-icon-zone&quot;&gt;&lt;/i&gt;&lt;span&gt;分享到QQ空间&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&quot;javascript:void(function(){var d=document,e=encodeURIComponent,r=&#39;https://twitter.com/share?url=&#39;+e(&#39;https://www.jianshu.com/p/bd12429cbfb9?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=reader_share&amp;utm_source=twitter&#39;)+&#39;&amp;text=&#39;+e(&#39;推荐 qdsfdhvh 的文章《多多猫app的siteD引擎长啥样，怎么运行插件的？》（ 分享自 @jianshucom ）&#39;)+&#39;&amp;related=&#39;+e(&#39;jianshucom&#39;),x=function(){if(!window.open(r,&#39;twitter&#39;,&#39;toolbar=0,resizable=1,scrollbars=yes,status=1,width=600,height=600&#39;))location.href=r};if(/Firefox/.test(navigator.userAgent)){setTimeout(x,0)}else{x()}})();&quot;&gt;&lt;i class=&quot;social-icon-sprite social-icon-twitter&quot;&gt;&lt;/i&gt;&lt;span&gt;分享到Twitter&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&quot;javascript:void(function(){var d=document,e=encodeURIComponent,r=&#39;https://www.facebook.com/dialog/share?app_id=483126645039390&amp;display=popup&amp;href=https://www.jianshu.com/p/bd12429cbfb9?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=reader_share&amp;utm_source=facebook&#39;,x=function(){if(!window.open(r,&#39;facebook&#39;,&#39;toolbar=0,resizable=1,scrollbars=yes,status=1,width=450,height=330&#39;))location.href=r};if(/Firefox/.test(navigator.userAgent)){setTimeout(x,0)}else{x()}})();&quot;&gt;&lt;i class=&quot;social-icon-sprite social-icon-facebook&quot;&gt;&lt;/i&gt;&lt;span&gt;分享到Facebook&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&quot;javascript:void(function(){var d=document,e=encodeURIComponent,r=&#39;https://plus.google.com/share?url=&#39;+e(&#39;https://www.jianshu.com/p/bd12429cbfb9?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=reader_share&amp;utm_source=google_plus&#39;),x=function(){if(!window.open(r,&#39;google_plus&#39;,&#39;toolbar=0,resizable=1,scrollbars=yes,status=1,width=450,height=330&#39;))location.href=r};if(/Firefox/.test(navigator.userAgent)){setTimeout(x,0)}else{x()}})();&quot;&gt;&lt;i class=&quot;social-icon-sprite social-icon-google&quot;&gt;&lt;/i&gt;&lt;span&gt;分享到Google+&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&quot;javascript:void(function(){var d=document,e=encodeURIComponent,s1=window.getSelection,s2=d.getSelection,s3=d.selection,s=s1?s1():s2?s2():s3?s3.createRange().text:&#39;&#39;,r=&#39;http://www.douban.com/recommend/?url=&#39;+e(&#39;https://www.jianshu.com/p/bd12429cbfb9?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=reader_share&amp;utm_source=douban&#39;)+&#39;&amp;title=&#39;+e(&#39;多多猫app的siteD引擎长啥样，怎么运行插件的？&#39;)+&#39;&amp;sel=&#39;+e(s)+&#39;&amp;v=1&#39;,x=function(){if(!window.open(r,&#39;douban&#39;,&#39;toolbar=0,resizable=1,scrollbars=yes,status=1,width=450,height=330&#39;))location.href=r+&#39;&amp;r=1&#39;};if(/Firefox/.test(navigator.userAgent)){setTimeout(x,0)}else{x()}})()&quot;&gt;&lt;i class=&quot;social-icon-sprite social-icon-douban&quot;&gt;&lt;/i&gt;&lt;span&gt;分享到豆瓣&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        " data-original-title="" title="">更多分享</a>
+      </div>
+    </div>
+      <a id="web-note-ad-1" target="_blank" href="https://www.jianshu.com/apps/redirect?utm_source=note-bottom-click"><img src="./多多猫app的siteD引擎长啥样，怎么运行插件的？ - 简书_files/web-note-ad-1-c2e1746859dbf03abe49248893c9bea4.png" alt="Web note ad 1"></a>
+    <!--
+    <div id="note-comment-above-ad-container">
+      <span id="youdao-comment-ad" class="ad-badge">广告</span>
+    </div>
+    -->
+    <div id="vue_comment"></div>
+  </div>
+
+  <div class="side-tool"><ul><li data-placement="left" data-toggle="tooltip" data-container="body" data-original-title="回到顶部" style="display: none;"><a class="function-button"><i class="iconfont ic-backtop"></i></a></li> <!----> <!----> <!----> <!----> <li data-placement="left" data-toggle="tooltip" data-container="body" data-original-title="分享文章" id="share"><a tabindex="0" role="button" data-toggle="popover" data-placement="left" data-html="true" data-trigger="focus" href="javascript:void(0);" data-content="&lt;ul class=&#39;share-list&#39; style=&quot;width:220px&quot;&gt;
+                  &lt;li&gt;&lt;a class=&quot;weixin-share&quot;&gt;&lt;i class=&quot;social-icon-sprite social-icon-weixin&quot;&gt;&lt;/i&gt;&lt;span&gt;分享到微信&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+                  &lt;li&gt;&lt;a href=&quot;javascript:void((function(s,d,e,r,l,p,t,z,c){var%20f=&#39;http://v.t.sina.com.cn/share/share.php?appkey=1881139527&#39;,u=z||d.location,p=[&#39;&amp;url=&#39;,e(u),&#39;&amp;title=&#39;,e(t||d.title),&#39;&amp;source=&#39;,e(r),&#39;&amp;sourceUrl=&#39;,e(l),&#39;&amp;content=&#39;,c||&#39;gb2312&#39;,&#39;&amp;pic=&#39;,e(p||&#39;&#39;)].join(&#39;&#39;);function%20a(){if(!window.open([f,p].join(&#39;&#39;),&#39;mb&#39;,[&#39;toolbar=0,status=0,resizable=1,width=440,height=430,left=&#39;,(s.width-440)/2,&#39;,top=&#39;,(s.height-430)/2].join(&#39;&#39;)))u.href=[f,p].join(&#39;&#39;);};if(/Firefox/.test(navigator.userAgent))setTimeout(a,0);else%20a();})(screen,document,encodeURIComponent,&#39;&#39;,&#39;&#39;,&#39;&#39;, &#39;推荐 qdsfdhvh 的文章《多多猫app的siteD引擎长啥样，怎么运行插件的？》（ 分享自 @简书 ）&#39;,&#39;https://www.jianshu.com/p/bd12429cbfb9?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=reader_share&amp;utm_source=weibo&#39;,&#39;页面编码gb2312|utf-8默认gb2312&#39;));&quot;&gt;&lt;i class=&#39;social-icon-sprite social-icon-weibo&#39;&gt;&lt;/i&gt;&lt;span&gt;分享到微博&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+                  
+                  &lt;li&gt;&lt;a href=&quot;javascript:void(function(){var d=document,e=encodeURIComponent,r=&#39;http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=&#39;+e(&#39;https://www.jianshu.com/p/bd12429cbfb9?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=reader_share&amp;utm_source=qzone&#39;)+&#39;&amp;title=&#39;+e(&#39;推荐 qdsfdhvh 的文章《多多猫app的siteD引擎长啥样，怎么运行插件的？》&#39;),x=function(){if(!window.open(r,&#39;qzone&#39;,&#39;toolbar=0,resizable=1,scrollbars=yes,status=1,width=600,height=600&#39;))location.href=r};if(/Firefox/.test(navigator.userAgent)){setTimeout(x,0)}else{x()}})();&quot;&gt;&lt;i class=&#39;social-icon-sprite social-icon-zone&#39;&gt;&lt;/i&gt;&lt;span&gt;分享到QQ空间&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+                  &lt;li&gt;&lt;a href=&quot;javascript:void(function(){var d=document,e=encodeURIComponent,r=&#39;https://twitter.com/share?url=&#39;+e(&#39;https://www.jianshu.com/p/bd12429cbfb9?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=reader_share&amp;utm_source=twitter&#39;)+&#39;&amp;text=&#39;+e(&#39;推荐 qdsfdhvh 的文章《多多猫app的siteD引擎长啥样，怎么运行插件的？》（ 分享自 @jianshucom ）&#39;)+&#39;&amp;related=&#39;+e(&#39;jianshucom&#39;),x=function(){if(!window.open(r,&#39;twitter&#39;,&#39;toolbar=0,resizable=1,scrollbars=yes,status=1,width=600,height=600&#39;))location.href=r};if(/Firefox/.test(navigator.userAgent)){setTimeout(x,0)}else{x()}})();&quot;&gt;&lt;i class=&#39;social-icon-sprite social-icon-twitter&#39;&gt;&lt;/i&gt;&lt;span&gt;分享到Twitter&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+                  &lt;li&gt;&lt;a href=&quot;javascript:void(function(){var d=document,e=encodeURIComponent,r=&#39;https://www.facebook.com/dialog/share?app_id=483126645039390&amp;display=popup&amp;href=https://www.jianshu.com/p/bd12429cbfb9?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=reader_share&amp;utm_source=facebook&#39;,x=function(){if(!window.open(r,&#39;facebook&#39;,&#39;toolbar=0,resizable=1,scrollbars=yes,status=1,width=450,height=330&#39;))location.href=r};if(/Firefox/.test(navigator.userAgent)){setTimeout(x,0)}else{x()}})();&quot;&gt;&lt;i class=&#39;social-icon-sprite social-icon-facebook&#39;&gt;&lt;/i&gt;&lt;span&gt;分享到Facebook&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+                  &lt;li&gt;&lt;a href=&quot;javascript:void(function(){var d=document,e=encodeURIComponent,r=&#39;https://plus.google.com/share?url=&#39;+e(&#39;https://www.jianshu.com/p/bd12429cbfb9?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=reader_share&amp;utm_source=google_plus&#39;),x=function(){if(!window.open(r,&#39;google_plus&#39;,&#39;toolbar=0,resizable=1,scrollbars=yes,status=1,width=450,height=330&#39;))location.href=r};if(/Firefox/.test(navigator.userAgent)){setTimeout(x,0)}else{x()}})();&quot;&gt;&lt;i class=&#39;social-icon-sprite social-icon-google&#39;&gt;&lt;/i&gt;&lt;span&gt;分享到Google+&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+                  &lt;li&gt;&lt;a href=&quot;javascript:void(function(){var d=document,e=encodeURIComponent,s1=window.getSelection,s2=d.getSelection,s3=d.selection,s=s1?s1():s2?s2():s3?s3.createRange().text:&#39;&#39;,r=&#39;http://www.douban.com/recommend/?url=&#39;+e(&#39;https://www.jianshu.com/p/bd12429cbfb9?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=reader_share&amp;utm_source=douban&#39;)+&#39;&amp;title=&#39;+e(&#39;多多猫app的siteD引擎长啥样，怎么运行插件的？&#39;)+&#39;&amp;sel=&#39;+e(s)+&#39;&amp;v=1&#39;,x=function(){if(!window.open(r,&#39;douban&#39;,&#39;toolbar=0,resizable=1,scrollbars=yes,status=1,width=450,height=330&#39;))location.href=r+&#39;&amp;r=1&#39;};if(/Firefox/.test(navigator.userAgent)){setTimeout(x,0)}else{x()}})()&quot;&gt;&lt;i class=&#39;social-icon-sprite social-icon-douban&#39;&gt;&lt;/i&gt;&lt;span&gt;分享到豆瓣&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+                &lt;/ul&gt;" data-original-title="" title="" class="function-button"><i class="iconfont ic-share"></i></a> <!----></li> <!----></ul></div>
+</div>
+<div class="note-bottom">
+  <!---->
+  <div data-vcomp="recommended-notes" data-note-id="13622075"></div>
+  <!-- 相关文章 -->
+  <div class="seo-recommended-notes">
+
+        <div class="note have-img">
+          <a class="cover" target="_blank" href="https://www.jianshu.com/p/46fd0faecac1?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation">
+            <img src="./多多猫app的siteD引擎长啥样，怎么运行插件的？ - 简书_files/7328262-54f7992145380c10.png" alt="240">
+</a>          <a class="title" target="_blank" href="https://www.jianshu.com/p/46fd0faecac1?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation">Spring Cloud</a>
+          <p class="description">Spring Cloud为开发人员提供了快速构建分布式系统中一些常见模式的工具（例如配置管理，服务发现，断路器，智能路由，微代理，控制总线）。分布式系统的协调导致了样板模式, 使用Spring Cloud开发人员可以快速地支持实现这些模式的服务和应用程序。他们将在任何分布式...</p>
+          <a class="author" target="_blank" href="https://www.jianshu.com/u/d90908cb0d85?utm_campaign=maleskine&amp;utm_content=user&amp;utm_medium=seo_notes&amp;utm_source=recommendation">
+            <div class="avatar">
+              <img src="./多多猫app的siteD引擎长啥样，怎么运行插件的？ - 简书_files/2-9636b13945b9ccf345bc98d0d81074eb.jpg" alt="48">
+            </div>
+            <span class="name">卡卡罗2017</span>
+</a>        </div>
+
+        <div class="note ">
+                    <a class="title" target="_blank" href="https://www.jianshu.com/p/fa0b6f594c36?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation">iOS 第三方库、插件、知名博客总结</a>
+          <p class="description">用到的组件1、通过CocoaPods安装项目名称项目信息 AFNetworking网络请求组件 FMDB本地数据库组件 SDWebImage多个缩略图缓存组件 UICKeyChainStore存放用户账号密码组件 Reachability监测网络状态 DateTools友好...</p>
+          <a class="author" target="_blank" href="https://www.jianshu.com/u/524ab6e6e423?utm_campaign=maleskine&amp;utm_content=user&amp;utm_medium=seo_notes&amp;utm_source=recommendation">
+            <div class="avatar">
+              <img src="./多多猫app的siteD引擎长啥样，怎么运行插件的？ - 简书_files/8a3ac379-c9b7-4a88-b02c-2c9d985cc1dd.jpeg" alt="48">
+            </div>
+            <span class="name">大灰狼的小绵羊哥哥</span>
+</a>        </div>
+
+        <div class="note ">
+                    <a class="title" target="_blank" href="https://www.jianshu.com/p/e4ffa5808ad6?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation">iOS ● 非常全的三方库、插件、大牛博客等等</a>
+          <p class="description">github排名:https://github.com/trending, github搜索：https://github.com/search. 此文章转自github:https://github.com/Tim9Liu9/TimLiu-iOS git-recipesG...</p>
+          <a class="author" target="_blank" href="https://www.jianshu.com/u/61e274f99757?utm_campaign=maleskine&amp;utm_content=user&amp;utm_medium=seo_notes&amp;utm_source=recommendation">
+            <div class="avatar">
+              <img src="./多多猫app的siteD引擎长啥样，怎么运行插件的？ - 简书_files/81aed9a026b5.jpg" alt="48">
+            </div>
+            <span class="name">MyiOS</span>
+</a>        </div>
+
+        <div class="note ">
+                    <a class="title" target="_blank" href="https://www.jianshu.com/p/4a21a41ce3d5?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation">【IOS】iOS开发常用三方库、插件、知名博客等等</a>
+          <p class="description">此文章转自github:https://github.com/Tim9Liu9/TimLiu-iOS 介绍 这是一个用于iOS开发的各种开源库、开源资料、开源技术等等的索引库. 具体内容 ============================= 版本管理@ 依赖管理@ G...</p>
+          <a class="author" target="_blank" href="https://www.jianshu.com/u/b68a84c0ced8?utm_campaign=maleskine&amp;utm_content=user&amp;utm_medium=seo_notes&amp;utm_source=recommendation">
+            <div class="avatar">
+              <img src="./多多猫app的siteD引擎长啥样，怎么运行插件的？ - 简书_files/3262235b-2333-4da8-8b39-4086145d06b7.jpg" alt="48">
+            </div>
+            <span class="name">雨影</span>
+</a>        </div>
+
+        <div class="note ">
+                    <a class="title" target="_blank" href="https://www.jianshu.com/p/48941c44ad32?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation">iOS第三方库、插件、大牛博客[OC版]</a>
+          <p class="description">这是一个用于iOS开发的各种开源库、开源资料、开源技术等等的索引库.转载自:https://github.com/Tim9Liu9/TimLiu-iOSgithub排名 https://github.com/trendinggithub搜索：https://github.c...</p>
+          <a class="author" target="_blank" href="https://www.jianshu.com/u/5567c741f6a7?utm_campaign=maleskine&amp;utm_content=user&amp;utm_medium=seo_notes&amp;utm_source=recommendation">
+            <div class="avatar">
+              <img src="./多多猫app的siteD引擎长啥样，怎么运行插件的？ - 简书_files/516fe1cc-97ba-4a80-980e-79f3c04e8543.JPG" alt="48">
+            </div>
+            <span class="name">iOS_xuanhe</span>
+</a>        </div>
+
+        <div class="note ">
+                    <a class="title" target="_blank" href="https://www.jianshu.com/p/ce6c82ef59ef?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation">每日小结2017.11.27</a>
+          <p class="description">今天有读英语，原来读英语真的是件有意思的事情，在没有厌倦之前抓紧时间读吧！ 有练字，感觉有进步，认真写会有感觉的！ 其他的任务没有什么进展，花了太多时间在看小说了。</p>
+          <a class="author" target="_blank" href="https://www.jianshu.com/u/eca8e230a8c8?utm_campaign=maleskine&amp;utm_content=user&amp;utm_medium=seo_notes&amp;utm_source=recommendation">
+            <div class="avatar">
+              <img src="./多多猫app的siteD引擎长啥样，怎么运行插件的？ - 简书_files/b9cf4d22-9b6a-4396-96d7-000e64eb16f9.jpg" alt="48">
+            </div>
+            <span class="name">Cheer_up</span>
+</a>        </div>
+
+        <div class="note have-img">
+          <a class="cover" target="_blank" href="https://www.jianshu.com/p/6fcc1037797e?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation">
+            <img src="./多多猫app的siteD引擎长啥样，怎么运行插件的？ - 简书_files/5241662-8937fa46d01ff6c0.png" alt="240">
+</a>          <a class="title" target="_blank" href="https://www.jianshu.com/p/6fcc1037797e?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation">第五次作业-股票数据分析</a>
+          <p class="description">数据是未来的石油。上周参加了Tiger创办的[解密大数据社群]，受益匪浅。 中途参加正在补课中。 基本指标的定义 开盘价，指某种证券在证券交易所每个营业日的第一笔交易的成交价格。 交易日，指开放式基金销售机构在规定时间受理投资者申购、转换、赎回或其它业务申请的工作日。周末和...</p>
+          <a class="author" target="_blank" href="https://www.jianshu.com/u/b41a1e1c7d15?utm_campaign=maleskine&amp;utm_content=user&amp;utm_medium=seo_notes&amp;utm_source=recommendation">
+            <div class="avatar">
+              <img src="./多多猫app的siteD引擎长啥样，怎么运行插件的？ - 简书_files/0af4f5a9-b972-4ecf-963f-241d9d0939ad.png" alt="48">
+            </div>
+            <span class="name">杨核桃</span>
+</a>        </div>
+
+        <div class="note ">
+                    <a class="title" target="_blank" href="https://www.jianshu.com/p/d9c10b69a4f1?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation">孩子的技能习得需要家长花时间训练  ——《孩子，挑战》第十三章：花时间训练 读后感</a>
+          <p class="description">最近我电话回老家时，听母亲提起我小侄女上早教班了。这让我非常疑惑：我清楚地记得，表弟曾经非常坚定地说过，上学前不会让孩子上任何早教班的。究竟怎么回事呢？仔细了解情况后，发现是因为表弟带孩子幼儿园面试时被打击了，比较突出的问题是：三岁的小姑娘不会扣扣子、拿到玩具不会和别的小朋...</p>
+          <a class="author" target="_blank" href="https://www.jianshu.com/u/ffbc7317a1ed?utm_campaign=maleskine&amp;utm_content=user&amp;utm_medium=seo_notes&amp;utm_source=recommendation">
+            <div class="avatar">
+              <img src="./多多猫app的siteD引擎长啥样，怎么运行插件的？ - 简书_files/8e5a2ae4-e21b-4f59-889a-bc463f60253b.jpg" alt="48">
+            </div>
+            <span class="name">火花danjuan</span>
+</a>        </div>
+
+        <div class="note ">
+                    <a class="title" target="_blank" href="https://www.jianshu.com/p/f05fa99cea55?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation">伯凡日知录内容分享</a>
+          <p class="description">今天给大家分享一下吴伯凡老师专栏中的知识点。圣人执左契而不责。责是什么意思呢？责加一个单立人就是债，债的本义就是别人欠了你的，你要求他偿还。那左契又是什么？古时代的人做生意签合同，当时没有纸张，在骨头上刻下相同的两行字，刻的过程叫做契，然后把骨头曲线锯为左右两部分，债权人就...</p>
+          <a class="author" target="_blank" href="https://www.jianshu.com/u/f574e958f21a?utm_campaign=maleskine&amp;utm_content=user&amp;utm_medium=seo_notes&amp;utm_source=recommendation">
+            <div class="avatar">
+              <img src="./多多猫app的siteD引擎长啥样，怎么运行插件的？ - 简书_files/7ba491034dd4" alt="48">
+            </div>
+            <span class="name">做自己生命中的贵人</span>
+</a>        </div>
+
+        <div class="note ">
+                    <a class="title" target="_blank" href="https://www.jianshu.com/p/bf4eafaf55e0?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation">5.茶还是要喝的</a>
+          <p class="description">早上6点40分起，在仅能容纳我转个身的厨房变出一桌丰盛的早餐。面对一张臭脸的儿子一顿狠骂，收拾好桌子，洗好碗筷，坐下来。 喝茶。 无论生活多么忙乱，茶还是要喝的。对于儿子的教育，一顿狠骂也是需要的。所谓菩萨心肠金刚手段，是必需的。 儿子早上8点起床，自己平衡不好各项事情，在...</p>
+          <a class="author" target="_blank" href="https://www.jianshu.com/u/f6b0c3240a47?utm_campaign=maleskine&amp;utm_content=user&amp;utm_medium=seo_notes&amp;utm_source=recommendation">
+            <div class="avatar">
+              <img src="./多多猫app的siteD引擎长啥样，怎么运行插件的？ - 简书_files/c9ce06fc-aa89-42ea-a6ee-825263a8c945.jpg" alt="48">
+            </div>
+            <span class="name">欣小零</span>
+</a>        </div>
+  </div>
+</div>
+
+    <script type="application/json" data-name="page-data">{"user_signed_in":false,"locale":"zh-CN","os":"windows","read_mode":"day","read_font":"font2","note_show":{"is_author":false,"is_following_author":false,"is_liked_note":false,"follow_state":0,"uuid":"e8da1ee3-bed8-4b5a-85b5-6ab165df6dc9"},"note":{"id":13622075,"slug":"bd12429cbfb9","user_id":2098377,"notebook_id":4323694,"commentable":true,"likes_count":4,"views_count":494,"public_wordage":1691,"comments_count":1,"featured_comments_count":0,"total_rewards_count":2,"is_author":false,"paid_type":"free","paid":false,"paid_content_accessible":false,"author":{"nickname":"qdsfdhvh","total_wordage":3725,"followers_count":5,"total_likes_count":9}}}</script>
+    
+    <script src="./多多猫app的siteD引擎长啥样，怎么运行插件的？ - 简书_files/babel-polyfill-6cd2d6b53fe3184b71cc.js" crossorigin="anonymous"></script>
+    <script src="./多多猫app的siteD引擎长啥样，怎么运行插件的？ - 简书_files/web-base-5af2dc27f58e18f4d699.js" crossorigin="anonymous"></script>
+<script src="./多多猫app的siteD引擎长啥样，怎么运行插件的？ - 简书_files/web-5553a109ebb0928a58e7.js" crossorigin="anonymous"></script>
+    
+    <script src="./多多猫app的siteD引擎长啥样，怎么运行插件的？ - 简书_files/entry-4ccd791b25276ed536e7.js" crossorigin="anonymous"></script>
+    <script>
+  (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+          bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      }
+      else {
+          bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+  })();
+</script>
+
+  
+
+<!----><!----><div id="qtk-flagship" version="v18.12.18"></div></body></html>

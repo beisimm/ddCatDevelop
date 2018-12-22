@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<site ver="11" debug="1" engine="11">
+	<ua></ua>
+	<guid>3c869fb34f114635898cb082db8d5d87</guid>
+    <title>动漫之家（手机版）</title>
+    <intro>动漫之家漫画网提供海量漫画,更新最快在线漫画欣赏,详尽的动漫资料库、动画资讯、用户评论社区于一体,它与在线动画站、动漫之家论坛三站合一，将成为国内更新最快,动漫视听享受最全,资料库最详尽的社区型动漫爱好者的交流互动平台</intro>
+    <author>苹果星人</author>
+    <url>https://m.dmzj.com</url>
+    <expr>m\.dmzj\.com</expr>
+	<encode>utf-8</encode>
+	<main dtype="1">
+		<reward title="反馈" mail="1920632764@qq.com">
+			<item txt="如果有问题，请用邮件反馈：" />
+			<item />
+			<item txt="1920632764@qq.com"/>
+		</reward>
+		
+		<home>
+			<hots  cache="1d"  title="热门" method="get"  parse="hots_parse" url="https://m.dmzj.com" />
+
+		</home>
+		<book  cache="1d"   method="get"  parse="book_parse" />
+		<section cache="1" method="get"  parse="section_parse" header="cookie;referer"/>
+    </main>
+    <jscript>
+	    <require>
+			<item url="http://sited.noear.org/addin/js/cheerio.js" />
+		</require>
+		<code>
+        <![CDATA[
+
+
+function urla(u) {
+	if(u){
+		var host = "https://m.dmzj.com";
+		if (u.indexOf("http")<0) {
+			if (u.substr(0, 1) != '/')
+				u = host + '/' + u;
+			else
+				u = host + u;
+		}
+		return encodeURI(u);
+	}
+	return "";
+}
+
+function htmlEsc(obj) {
+	var arrEntities = {
+		'lt': '<',
+		'gt': '>',
+		'nbsp': ' ',
+		'amp': '&',
+		'quot': '"'
+	};
+	for(var i in obj){
+		var str = obj[i];
+		if(typeof(str) == 'object')
+			str = htmlEsc(str);
+		if(typeof(str) != 'string')
+			continue;
+		obj[i] = str.replace(/<[^<>]+?>/g, '').replace(/&(lt|gt|nbsp|amp|quot);/ig, function(all, t) {
+		return arrEntities[t];
+		}).trim();
+	}
+	return obj;
+}
+
+function home(url){
+    return "https://m.dmzj.com"+url;
+}
+function chapter_url(comic_id,chapter_id)
+{
+	return 'https://m.dmzj.com/view/'+comic_id+'/'+chapter_id+'.html';
+}
+
+
+
+function bookUrl(url){
+	if(url){
+	    if(url.indexOf("http")>=0)
+	        return url;
+	    else
+	        return home(url) +"/"+ url;
+    }else{
+	    return "";
+    }
+}
+
+function hots_parse(url,html) {
+
+var $ = cheerio.load(html);
+	var list=[];
+
+		$('.imgBox li').each(function(){
+
+		var img= $(this).find('img');
+		var name= $(this).children('.txtA');
+		var author=  $(this).children('.info');
+		var bm = {};
+		bm.name =  name.text();
+		bm.url  = home(img.parent().attr('href'));
+		bm.logo = img.attr('src');
+		bm.author = author.text();
+		bm.newSection = '';
+		bm.updateTime = '';
+		bm.status='';
+		if(bm.url.indexOf('/tags/')>0)
+		{
+		}
+		else list.push(bm);
+	});
+
+	return JSON.stringify(list);
+}
+
+function updates_parse(url,html) {
+    var $ = cheerio.load(html);
+	var list = [];
+	
+	$('.newpic_content').find('.boxdiv1').each(function(){
+		var item = $(this);
+		var jA = item.find('a.pictextst');
+		
+		var bm = {};
+		bm.name = jA.text();
+		bm.url = bookUrl(jA.attr('href'));
+		bm.newSection = jA.parent('li').next().next().next().children().eq(0).text();
+		bm.updateTime = item.find('.color_red').text();
+		list.push(bm);
+	});
+	return JSON.stringify(list);
+
+}
+
+
+
+function book_parse(url,html) {
+
+ var $ = cheerio.load(html);
+
+ 		var data={};
+
+		var name=$("#comicName");
+		var author=$(".introName");
+		var pic=$("#Cover > img");
+		var desc=$(".txtDesc");
+		var utime=$(".txtItme > .date");
+
+ 		data.name      = name.text();
+ 		data.logo      = pic.attr('src');
+    	data.author    = author.text();
+    	data.intro=desc.text();
+    	data.updateTime=utime.text();
+
+    	var b=html;
+		var expr=/initIntroData\(\[.+]\);/;
+    	b=b.match(expr);
+    	b=b[0];
+    	b=b.replace('initIntroData(','');
+    	b=b.replace(');','');
+    	var jsonObjs=JSON.parse(b);
+    	var jsonObj=jsonObjs[0];
+
+    	data.sections=[];
+    	data.isSectionsAsc=0;
+    	for(var i=0;i<jsonObj.data.length;i++)
+    	{
+    		var sm={url:chapter_url(jsonObj.data[i].comic_id,jsonObj.data[i].id),name:jsonObj.data[i].chapter_name};
+    		data.sections.push(sm);
+    	}
+		return JSON.stringify(data);
+}
+
+function section_parse(url,html) {
+	var list = [];
+		var b=html;
+		var expr=/"page_url":\[.+]/;
+    	b=b.match(expr);
+    	b=b[0];
+    	b=b.replace('"page_url":','');
+	return b;
+
+
+}
+
+
+    ]]>
+		</code>
+    </jscript>
+</site>

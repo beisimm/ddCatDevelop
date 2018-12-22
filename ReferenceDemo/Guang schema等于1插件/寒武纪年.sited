@@ -1,0 +1,215 @@
+<!--?xml version="1.0" encoding="UTF-8" ?-->
+<sited ver="3" debug="1"  engine="30" schema="1">
+    <meta>
+		<ua></ua>
+		<guid></guid>
+		<title>寒武纪年</title>
+		<author>Guang</author>
+		<contact>未想好我空着</contact>
+		<intro>[小说]不腐不开心！起源于寒武纪年贴吧。女性向原创小说的在线阅读基地，阅读小说的梦之岛。励志做精品耽美小说网站。(vip章节建议到原网站观看)</intro>
+		<url>http://wap.hanwujinian.com/</url>
+		<expr>hanwujinian\.com</expr>
+		<logo>http://is4.mzstatic.com/image/thumb/Purple71/v4/4b/f6/0f/4bf60f78-42c4-8cba-2204-ac39810ea75f/source/175x175bb.jpg</logo>
+		<encode>GB18030</encode>
+		<about title="反馈" mail="wistn@qq.com">
+			<item txt="欢迎打赏插件开发者Guang，反馈问题。" />
+			<item />
+			<item txt="点击或扫描二维码对[❤❤广]支付宝打赏" expr="https://qr.alipay.com/aex05979jbnzvi4fs3hx691" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7nyz88j20by0by0sy.jpg" />
+			<item />
+			<item txt="扫描二维码对我的微信打赏" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7oa4khj206b06bt9m.jpg" />
+			<item />
+		</about>
+	</meta>
+	<main dtype="2" btag="小说">
+		<home>	
+            <hots cache="1d" showImg="0" title="排行" method="get"  parse="hots_parse" url="http://wap.hanwujinian.com/modules/article/top.php" />
+            <updates cache="1d" showImg="0" title="更新" method="get"  parse="updates_parse" url="http://wap.hanwujinian.com/" />
+			<tags  title="分类">
+				<item title="近现代文" url="http://wap.hanwujinian.com/modules/article/articlefilter.php?order=lastupdate&amp;page=@page&amp;sortid=1" />
+				<item title="武侠宫廷" url="http://wap.hanwujinian.com/modules/article/articlefilter.php?order=lastupdate&amp;page=@page&amp;sortid=17" />
+				<item title="悬疑惊悚" url="http://wap.hanwujinian.com/modules/article/articlefilter.php?order=lastupdate&amp;page=@page&amp;sortid=18" />
+				<item title="穿越重生" url="http://wap.hanwujinian.com/modules/article/articlefilter.php?order=lastupdate&amp;page=@page&amp;sortid=2" />
+				<item title="仙侠异世" url="http://wap.hanwujinian.com/modules/article/articlefilter.php?order=lastupdate&amp;page=@page&amp;sortid=20" />
+				<item title="科幻星际" url="http://wap.hanwujinian.com/modules/article/articlefilter.php?order=lastupdate&amp;page=@page&amp;sortid=21" />
+				<item title="影视同人" url="http://wap.hanwujinian.com/modules/article/articlefilter.php?order=lastupdate&amp;page=@page&amp;sortid=4" />
+				<item title="动漫同人" url="http://wap.hanwujinian.com/modules/article/articlefilter.php?order=lastupdate&amp;page=@page&amp;sortid=5" />
+				<item title="游戏同人" url="http://wap.hanwujinian.com/modules/article/articlefilter.php?order=lastupdate&amp;page=@page&amp;sortid=6" />
+				<item title="小说同人" url="http://wap.hanwujinian.com/modules/article/articlefilter.php?order=lastupdate&amp;page=@page&amp;sortid=7" />
+				<item title="历史同人" url="http://wap.hanwujinian.com/modules/article/articlefilter.php?order=lastupdate&amp;page=@page&amp;sortid=9" />
+				<item title="武侠玄幻" url="http://wap.hanwujinian.com/modules/article/articlefilter.php?order=lastupdate&amp;page=@page&amp;sortid=8" />
+				<item title="现代生活" url="http://wap.hanwujinian.com/modules/article/articlefilter.php?order=lastupdate&amp;page=@page&amp;sortid=12" />
+				<item title="悬疑恐怖" url="http://wap.hanwujinian.com/modules/article/articlefilter.php?order=lastupdate&amp;page=@page&amp;sortid=13" />
+				<item title="科幻未来" url="http://wap.hanwujinian.com/modules/article/articlefilter.php?order=lastupdate&amp;page=@page&amp;sortid=14" />
+				<item title="历史传记" url="http://wap.hanwujinian.com/modules/article/articlefilter.php?order=lastupdate&amp;page=@page&amp;sortid=15" />
+				<item title="百合区" url="http://wap.hanwujinian.com/modules/article/articlefilter.php?order=lastupdate&amp;page=@page&amp;sortid=10" />
+				<item title="文评杂谈" url="http://wap.hanwujinian.com/modules/article/articlefilter.php?order=lastupdate&amp;page=@page&amp;sortid=11" />
+				<item title="言情区" url="http://wap.hanwujinian.com/modules/article/articlefilter.php?order=lastupdate&amp;page=@page&amp;sortid=22" />
+			</tags>
+		</home>
+		<search cache="1d"  method="post"  parse="search_parse"  url="http://wap.hanwujinian.com/modules/article/search.php"  args="searchkey=@key;searchtype=all"/>
+        <tag cache="1d" showImg="0" method="get" parse="tag_parse" />
+		<book cache="1d" method="get" buildUrl="book_buildUrl" parse="book_parse"  expr="articleinfo\.php\?id">
+			<sections cache="1d" method="get" buildUrl="book_s_buildUrl" parseUrl="book_s_parseUrl" parse="book_s_parse" />
+		</book>
+        <section cache="1"  method="get"  parse="section_parse" />	
+    </main>
+    <script>
+	    <require>
+			<item url="http://sited.noear.org/addin/js/cheerio.js" lib="cheerio" />
+		</require>
+		<code>
+			<![CDATA[
+function urla(u) {
+	var host = "http://wap.hanwujinian.com";
+	if (u.indexOf("http") < 0) {
+		if (u.substr(0, 1) != '/')
+			u = host + '/' + u;
+		else
+			u = host + u;
+	}
+	return encodeURI(u);
+}
+
+function hots_parse(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+	$('.name').each(function () {
+		var item = $(this);
+		var bm = {};
+		bm.name = item.text();
+		bm.url = item.attr('href');
+		bm.logo = '';
+		list.push(bm);
+	});
+	return JSON.stringify(list);
+}
+function updates_parse(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+	$('.zldssw .bl .zl_bookimg a').each(function () {
+		var item = $(this);
+		var bm = {};
+		bm.name = item.attr('title');
+		bm.url = item.attr('href');
+		bm.logo = '';
+		bm.newSection = '';
+		bm.updateTime = '';
+		list.push(bm);
+	});
+	$('.zldssw .bl li a').each(function () {
+		var item = $(this);
+		var bm = {};
+		bm.name = item.text();
+		bm.url = item.attr('href');
+		bm.logo = '';
+		bm.newSection = '';
+		bm.updateTime = '';
+		list.push(bm);
+	});
+	return JSON.stringify(list);
+}
+
+function tag_parse(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+	$('li.column-2').each(function () {
+		var item = $(this);
+		var bm = {};
+		bm.name = item.find('a').eq(0).text();
+		bm.url = item.find('a').eq(0).attr('href');
+		bm.logo = '';
+		bm.author = '';
+		bm.status = '';
+		bm.newSection = '';
+		bm.updateTime = item.find('p').eq(0).text().trim();
+		list.push(bm);
+	});
+	return JSON.stringify(list);
+}
+function search_parse(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+	$('tbody>tr').each(function () {
+		var item = $(this);
+		var bm = {};
+		bm.name = item.children('td').eq(2).find('a').eq(0).text();
+		bm.url = item.children('td').eq(2).find('a').eq(0).attr('href');
+		bm.logo = 'http://is4.mzstatic.com/image/thumb/Purple71/v4/4b/f6/0f/4bf60f78-42c4-8cba-2204-ac39810ea75f/source/175x175bb.jpg';
+		bm.author = item.children('td').eq(3).find('a').eq(0).text();
+		bm.status = '';
+		bm.newSection = '';
+		bm.updateTime = '';
+		bm.btag = "小说";
+		list.push(bm);
+	});
+	return JSON.stringify(list);
+}
+function book_buildUrl(url){
+return url.replace(/^.+?com/,'http://wap.hanwujinian.com');
+}
+function book_parse(url, html) {
+	var $ = cheerio.load(html);
+	var data = {};
+	data.name = $('h2').text();
+	data.author = $('.info').text().replace(/^\s+作者：(\S+)\s[\s\S]+$/i, '$1');
+	data.logo = $('.detail img').attr('src');
+	data.intro = $('.book-intro').text().trim();
+	data.updateTime = "";
+	data.isSectionsAsc = 1;
+	data.sections = [];
+	return JSON.stringify(data);
+}
+
+function book_s_buildUrl(url) {
+	return url.replace(/^.+?articleinfo\.php\?id/, 'http://wap.hanwujinian.com/modules/article/reader.php?aid');
+}
+function book_s_parseUrl(url, html) {
+	var $ = cheerio.load(html);
+	var urls = url;
+
+	if ($('.pagelink em').text().match(/\/(\d+)/)) {
+		var num = $('.pagelink em').text().match(/\/(\d+)/)[1];
+
+		for (var i = 2; i <= Number(num); i++) {
+			urls += (';' + url + '&page=' + i);
+		}
+	}
+	return urls;
+}
+function book_s_parse(url, html) {
+	var $ = cheerio.load(html);
+	var data = {};
+	data.sections = [];
+	$('.chapter-list ul a').each(function () {
+		var item = $(this);		
+		var sm = {
+			name : item.text(),
+			url : item.attr('href')
+		};
+		if(!sm.url.match(/modules\/article/))sm.name+='[vip章节要原网站观看]';
+		data.sections.push(sm);
+
+	});
+	return JSON.stringify(data);
+}
+function section_parse(url, html) {
+	html = html.replace(/<br>/gi, '$$').replace(/<\/p>/gi, '$$');
+	var $ = cheerio.load(html);
+	var c = $('#ChapterView>.bd');
+	var list = [];
+	var tList = c.text().split('$');
+	tList.forEach(function (item) {
+		var t1 = item.trim();
+		if (t1.length > 0) {
+			list.push({
+				d : t1,
+				t : 1
+			});
+		}
+	});
+	return JSON.stringify(list);
+}
+]]>
+		</code>
+    </script>
+</sited>

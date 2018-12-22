@@ -1,0 +1,120 @@
+<!--?xml version="1.0" encoding="UTF-8" ?-->
+<sited  ver="1" debug="1"  engine="30" schema="1">
+	<meta>
+		<ua></ua>
+		<guid></guid>
+		<title>元照法詞典</title>
+		<author>Guang</author>
+		<contact>未想好我空着</contact>
+		<intro>[资讯]元照英美法詞典 (法律字典)可搜索英语法律词汇。</intro>
+		<url>http://lawyer.get.com.tw/Dic/</url>
+		<expr>lawyer\.get\.com\.tw</expr>
+		<logo>http://www.angle.com.tw/app/DicAAL/File/Image/DicAAL_iconBig.gif</logo>
+		<encode>UTF-8</encode>
+		<about title="反馈" mail="wistn@qq.com">
+			<item url="我邮箱是wistn@qq.com" />
+			<item />
+			<item url="欢迎打赏插件开发者Guang，反馈问题。"/>			
+			<item txt="点击或扫描二维码对[❤❤广]支付宝打赏"  expr="https://qr.alipay.com/aex05979jbnzvi4fs3hx691" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7nyz88j20by0by0sy.jpg"/>
+			<item />
+			<item txt="扫描二维码对我的微信打赏" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7oa4khj206b06bt9m.jpg"/>
+			<item />
+		</about>
+	</meta>
+	<main dtype="6" btag="资讯">
+		<home>
+			<tags title="首字母" cache="1d" method="get" parse="tags_parse" url="http://lawyer.get.com.tw/Dic/"/>
+		</home>
+		<search cache="1d" method="post" args="sFilter=@key" parse="search_parse" url="http://lawyer.get.com.tw/Dic/" />
+        <tag cache="1d" showImg="0" method="get" parse="tag_parse" expr="Default"/>		
+		<book cache="1d" method="get" parse="book_parse" expr="DictionaryDetail" /></main>
+	<script>
+		<require>
+			<item url="http://sited.noear.org/addin/js/cheerio.js" lib="cheerio" /></require>
+		<code>
+			<![CDATA[
+function urla(u) {
+	var host = "http://lawyer.get.com.tw/Dic";
+	if (u.indexOf("http") < 0) {
+		if (u.substr(0, 1) != '/') u = host + '/' + u;
+		else u = host + u;
+	}
+	return encodeURI(u);
+}
+
+function tags_parse(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+	$('#dic_menu a').each(function () {
+		var item = $(this);
+		var bm = {};
+		bm.title = item.text();
+		bm.url = urla(item.attr('href').replace('aspx?','aspx?iPageNo=@page&'));
+		list.push(bm);
+	});
+	return JSON.stringify(list);
+}
+
+function tag_parse(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+	$('td.dic tr').slice(1).each(function () {
+		var item = $(this);
+		var bm = {};
+		bm.name = item.find('a').eq(0).text();
+		bm.url = item.find('a').eq(0).attr('href').replace(/^.+?Dictionary/i,'http://lawyer.get.com.tw/Dic/Dictionary');
+		bm.logo = '';
+		bm.newSection = '';
+		bm.updateTime = item.find('a').eq(1).text();
+		bm.author = '';
+		bm.status = '';
+		list.push(bm);
+	});
+	return JSON.stringify(list);
+}
+
+function search_parse(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];	
+	$('td.dic tr').slice(1).each(function () {
+		var item = $(this);
+		var bm = {};
+		bm.name = item.find('a').eq(0).text();
+		bm.url = item.find('a').eq(0).attr('href').replace(/^.+?Dictionary/i,'http://lawyer.get.com.tw/Dic/Dictionary');
+		bm.logo = 'http://www.angle.com.tw/app/DicAAL/File/Image/DicAAL_iconBig.gif';
+		bm.newSection = '';
+		bm.updateTime = item.find('a').eq(1).text();
+		bm.author = '';
+		bm.status = '';
+		bm.btag = "资讯";
+		list.push(bm);
+	});
+	return JSON.stringify(list);
+}
+
+function book_parse(url, html) {
+	var memo = '原网站<div id="SearchItem">没闭合导致$table不完整，只能正则匹配';
+	var text = html.match(/<table class="dic"[\s\S]+?<table[\s\S]+?(<tr>[\s\S]+?)<\/table>/i)[1].replace(/<br.*?>/gi, '$$').replace(/<th.*?>/gi, '').replace(/<\/th>/gi, '$$').replace(/<td.*?>/gi, '').replace(/<\/td>/gi, '$$').replace(/<tr.*?>/gi, '').replace(/<\/tr>/gi, '').replace(/<\/div>/gi, '').replace(/<div.*?>/gi, '');
+	var list = [];
+	var tList = text.split('$');
+
+	tList.forEach(function (item) {
+		var t1 = item.trim();
+		if (t1.length > 0) {
+			list.push({
+				d: item.trim(),
+				t: 1
+			});
+		}
+	});
+
+	return JSON.stringify({
+		name: list[1].d,
+		logo: 'http://www.angle.com.tw/app/DicAAL/File/Image/DicAAL_iconBig.gif',
+		list: list
+	});
+}
+]]>
+	</code>
+    </script>
+</sited>

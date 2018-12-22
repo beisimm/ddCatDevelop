@@ -1,0 +1,316 @@
+<!--?xml version="1.0" encoding="UTF-8" ?-->
+<sited ver="3" debug="1" engine="30" schema="1">
+    <meta>
+		<ua></ua>
+		<guid></guid>
+		<title>苹果app商店</title>
+		<author>Guang</author>
+		<contact>未想好我空着</contact>
+		<intro>[资讯]里面是苹果官方ios app store(内地)每项分类的热门榜以及app资料。不能搜索。</intro>
+		<url>http://www.apple.com/cn/itunes/charts/</url>
+		<expr>www\.apple\.com\/cn\/itunes\/charts|itunes\.apple\.com\/cn\/.*?appstore</expr>
+		<logo></logo>
+		<encode>UTF-8</encode>
+		<about title="反馈" mail="wistn@qq.com">
+			<item txt="欢迎打赏插件开发者Guang，反馈问题。" />
+			<item />
+			<item txt="点击或扫描二维码对[❤❤广]支付宝打赏" expr="https://qr.alipay.com/aex05979jbnzvi4fs3hx691" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7nyz88j20by0by0sy.jpg" />
+			<item />
+			<item txt="扫描二维码对我的微信打赏" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7oa4khj206b06bt9m.jpg" />
+			<item />
+		</about>
+	</meta>
+	<main dtype="6" btag="资讯">
+		<home>
+			<hots cache="1d" title="免费榜" showImg="2" w="1" h="1" method="get" parse="hots_parse" url="http://www.apple.com/cn/itunes/charts/free-apps/" />
+			<updates cache="1d" title="付费榜" showImg="1" w="1" h="1" method="get" parse="updates_parse" url="http://www.apple.com/cn/itunes/charts/paid-apps/" />
+			<tags title="更多">
+	            <tags cache="1d" method="get" parse="tags_parse" url="https://itunes.apple.com/cn/genre/ios/id36?mt=8"/>
+			</tags>
+		</home>
+<!--
+        <search cache="1d"  method="post"    parse="search_parse" url=""  /> -->
+        <tag cache="1d" method="get" parse="tag_parse" showImg
+		="0"/>
+		<book cache="1d" method="get" parse="book_parse"  dtype="2" btype="6" expr="\/app\/"/>
+		<section>		
+			<section cache="1d"  method="get"  parse="section_parse1" expr="#1$" dtype="2"/>
+			<section cache="1d"  method="get"  parse="section_parse2" expr="#2$" dtype="2"/>
+			<section cache="1d"  method="get"  parse="section_parse3" expr="#3$" dtype="2"/>
+			<section cache="1d"  method="@null"  parse="section_parse4" expr="(?!#\d)\S\S$" run="web"/>
+		</section>		
+    </main>
+    <script>
+	    <require>
+			<item url="http://sited.noear.org/addin/js/cheerio.js" lib="cheerio" />
+		</require>
+		<code>
+        <![CDATA[
+function urlb(url){
+	if(url.indexOf('?')>0){
+		return url+"&_sd=appstore";
+	}else{
+		return url+"?_sd=appstore";
+	}
+}
+
+function urla(u) {
+	var memo="苹果播客内地/苹果播客合集/苹果app商店插件expr兼容原因，前2者要先安装插件才能收藏打开/网址填写/扫码进入book，后者要先安装插件才能收藏打开，先安装插件但网址填写/扫码只能进入插件首页可能因为自动加上&ign-mpt=uo=4";
+	var host = "http://www.apple.com";
+	if (u.indexOf("http") < 0) {
+		if (u.substr(0, 1) != '/')
+			u = host + '/' + u;
+		else
+			u = host + u;
+	}
+	return encodeURI(u);
+}
+
+function hots_parse(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+	$('.apps li').each(function () {
+		var slf = $(this);
+		var bm = {};
+		bm.name = slf.find('img').attr('alt');
+		bm.url = urlb(slf.find('img').parent().attr('href'));
+		bm.logo = urla(slf.find('img').attr('src'));
+		list.push(bm);
+	});
+	return JSON.stringify(list);
+}
+
+function updates_parse(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+	$('.apps li').each(function () {
+		var slf = $(this);
+		var bm = {};
+		bm.name = slf.find('img').attr('alt');
+		bm.url = urlb(slf.find('img').parent().attr('href'));
+		bm.logo = urla(slf.find('img').attr('src'));
+		bm.newSection = '';
+		bm.updateTime = '分类:' + slf.children('h4').text();
+		list.push(bm);
+	});
+	return JSON.stringify(list);
+}
+/*
+function search_parse(url, html) {
+var $ = cheerio.load(html);
+var list = [];
+
+var item = $(this);
+var bm = {};
+bm.name = 'name';
+bm.url = '';
+bm.logo = '';
+bm.author = 'author';
+bm.newSection = 'newSection';
+bm.updateTime = 'updateTime';
+bm.status = 'status';
+bm.btag = "资讯";
+list.push(bm);
+
+return JSON.stringify(list);
+}*/
+
+function tags_parse(url, html) {
+	var list = [];
+	var $ = cheerio.load(html);
+
+	$('.grid3-column>ul>li>a').each(function () {
+		var item = $(this);
+		var bm = {};
+		bm.title = item.text();
+		bm.url = item.attr('href');
+		list.push(bm);
+	});
+	return JSON.stringify(list);
+}
+function tag_parse(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+	$('.grid3-column a').each(function () {
+		var item = $(this);
+		var bm = {};
+		bm.name = item.text();
+		bm.url = urlb(item.attr('href'));
+		bm.logo = '';
+		bm.author = '';
+		bm.newSection = '';
+		bm.updateTime = '';
+		bm.status = '';
+		list.push(bm);
+	});
+	return JSON.stringify(list);
+}
+
+function book_parse(url, html) {
+	var $ = cheerio.load(html);
+	var data = {};
+
+	data.name = $('#left-stack img').attr('alt').replace(/(.+?)[-—。].*/i, '$1');
+	data.author = $('[itemprop="author"]').text();
+	data.logo = $('#left-stack img').attr('src-swap');
+	data.intro = $('.price').text()+'，版本：'+$('[itemprop="softwareVersion"]').text();
+	data.updateTime = "";
+	data.isSectionsAsc = 1;
+	data.sections = [];
+
+	var sm = {
+		name : '截图',
+		url : url + '#1'
+	};
+	data.sections.push(sm);
+	sm = {
+		name : '详情',
+		url : url + '#2'
+	};
+	data.sections.push(sm);
+	sm = {
+		name : '评价及内购',
+		url : url + '#3'
+	};
+	data.sections.push(sm);
+	sm = {
+		name : '打开下载页面',
+		url : url
+	};
+	data.sections.push(sm);
+	return JSON.stringify(data);
+}
+function section_parse1(url, html) {
+	var list = [];
+	var $ = cheerio.load(html);
+	$('.screenshots .content').eq(0).find('img').each(function () {
+
+		list.push({
+			d : $(this).attr('src'),
+			t : 9
+		});
+	});
+	return JSON.stringify(list);
+}
+function section_parse2(url, html) {
+	var list = [];
+	var $ = cheerio.load(html);
+	list.push({
+		d : '下载页面' + url.replace(/#\d$/, ''),
+		t : 1
+	});
+	$('.product-review').each(function () {
+		list.push({
+			d : $(this).children('h4').text().trim(),
+			t : 1,
+			b : 1
+		});
+
+		list.push({
+			d : $(this).children('p').text().trim(),
+			t : 1
+		});
+
+	});
+
+	if ($('.fat-binary-blurb').length)
+		list.push({
+			d : $('.fat-binary-blurb').text().trim(),
+			t : 1
+		});
+	if ($('.works-on-apple-watch').length)
+		list.push({
+			d : $('.works-on-apple-watch').text().trim(),
+			t : 1
+		});
+
+	$('.release-date').parent().children().each(function () {
+		list.push({
+			d : $(this).text().trim(),
+			t : 1
+		});
+	});
+	list.push({
+		d : $('.app-rating').text().trim(),
+		t : 1
+	});
+	list.push({
+		d : $('.app-requirements').parent().text().trim(),
+		t : 1
+	});
+
+	return JSON.stringify(list);
+}
+function section_parse3(url, html) {
+	var list = [];
+	var $ = cheerio.load(html);
+
+	if ($('.customer-ratings>div').length == 4) {
+		list.push({
+			d : $('.customer-ratings h4').text().trim(),
+			t : 1,
+			b : 1
+		});
+		list.push({
+			d : $('.customer-ratings>div').eq(0).text() + $('.customer-ratings>div').eq(1).attr('aria-label'),
+			t : 1
+		});
+		list.push({
+			d : $('.customer-ratings>div').eq(2).text() + $('.customer-ratings>div').eq(3).attr('aria-label'),
+			t : 1
+		});
+	} else if ($('.customer-ratings>div').length == 2) {
+		list.push({
+			d : $('.customer-ratings h4').text().trim(),
+			t : 1,
+			b : 1
+		});
+		list.push({
+			d : $('.customer-ratings>div').eq(0).text() + $('.customer-ratings>div').eq(1).attr('aria-label'),
+			t : 1
+		});
+	}
+
+	if ($('.customer-reviews').length) {
+		list.push({
+			d : $('.customer-reviews h4').text().trim(),
+			t : 1,
+			b : 1
+		});
+		$('.customer-reviews .customer-review').each(function () {
+			var item = $(this);
+			list.push({
+				d : item.find('.customerReviewTitle').text() + '。' + item.find('.rating').attr('aria-label') + '。' + item.children('.user-info').text().replace(/\s/g, ''),
+				t : 1
+			});
+			list.push({
+				d : '具体评价：' + item.children('.content').text().trim(),
+				t : 1
+			});
+		});
+	}
+
+	if ($('.in-app-purchases').length) {
+		list.push({
+			d : $('.in-app-purchases h4').text().trim(),
+			t : 1,
+			b : 1
+		});
+		$('.in-app-purchases li').each(function () {
+			list.push({
+				d : $(this).text().trim(),
+				t : 1
+			});
+		});
+	}
+
+	return JSON.stringify(list);
+}
+function section_parse4(url) {
+	return url;
+}
+
+]]>
+		</code>
+    </script>
+</sited>

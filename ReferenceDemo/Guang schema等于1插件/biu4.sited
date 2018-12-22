@@ -1,0 +1,155 @@
+<!--?xml version="1.0" encoding="UTF-8" ?-->
+<sited  ver="4" debug="1"  engine="27" schema="1">
+	<meta>
+	<ua></ua>
+	<guid></guid>
+	<title>biu电台</title>
+	<author>Guang</author>
+	<contact>未想好我空着</contact>
+	<intro>[FM](v4有修复)分享高清ACG音乐。刷新首页可换歌，搜索结果是歌曲而非专辑。</intro>
+	<url>http://biu.moe/#Index/home</url>
+	<expr>biu\.moe</expr>
+	<logo>http://image.coolapk.com/apk_logo/2016/0514/12202_1463229069_6095.png</logo>
+	<encode>UTF-8</encode>
+	<reward title="反馈" mail="wistn@qq.com">
+		<item txt="欢迎打赏插件开发者Guang，反馈问题。" />
+		<item />
+		<item txt="点击或扫描二维码对[❤❤广]支付宝打赏" expr="https://qr.alipay.com/aex05979jbnzvi4fs3hx691" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7nyz88j20by0by0sy.jpg" />
+		<item />
+		<item txt="扫描二维码对我的微信打赏" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7oa4khj206b06bt9m.jpg" />
+		<item />
+		<item url="点击本行可联系QQ" expr="http://wpa.qq.com/msgrd?v=3&amp;uin=476375486&amp;site=qq&amp;menu=yes" />
+		<item />
+	</reward>
+	</meta>
+	<main dtype="7" btag="FM">
+		<home>
+			<hots cache="3m" title="随机" method="get" showImg="1" w="1" h="1" parse="hots_parse" url="https://biu.moe/Index/home" />
+			<updates cache="1d" title="更新" method="get" showImg="0" parse="updates_parse" url="https://biu.moe/Index/home" />
+			<tags title="分类">
+				<item title="动画" url="https://biu.moe/index.php?m=&amp;c=Index&amp;a=type&amp;t=1&amp;p=@page" />
+				<item title="Galgame" url="https://biu.moe/index.php?m=&amp;c=Index&amp;a=type&amp;t=2&amp;p=@page" />
+				<item title="偶像" url="https://biu.moe/index.php?m=&amp;c=Index&amp;a=type&amp;t=3&amp;p=@page" />
+				<item title="东方Project" url="https://biu.moe/index.php?m=&amp;c=Index&amp;a=type&amp;t=4&amp;p=@page" />
+				<item title="VOCALOID" url="https://biu.moe/index.php?m=&amp;c=Index&amp;a=type&amp;t=5&amp;p=@page" />
+				<item title="同人" url="https://biu.moe/index.php?m=&amp;c=Index&amp;a=type&amp;t=6&amp;p=@page" />
+				<item title="纯音乐" url="https://biu.moe/index.php?m=&amp;c=Index&amp;a=type&amp;t=7&amp;p=@page" />
+				<item title="未分类" url="https://biu.moe/index.php?m=&amp;c=Index&amp;a=type&amp;t=0&amp;p=@page" /></tags>
+		</home>
+		<search cache="1d" method="get" parse="search_parse" url="https://biu.moe/Song/search?data=@key" />
+		<tag cache="1d" method="get" parse="tags_parse" expr="a=type" showImg="0" />
+		<book cache="1d" method="get" buildUrl="book_buildUrl"  parseUrl="book_parseUrl" parse="book_parse" expr="s\d+" dtype="7" style="12" header="cookie;referer;Accept=application/json;X-Requested-With=XMLHttpRequest" /></main>
+	<script>
+		<require>
+			<item url="http://sited.noear.org/addin/js/cheerio.js" lib="cheerio" /></require>
+		<code>
+			<![CDATA[
+function urla(u) {
+	var host = "https://biu.moe";
+	if (u.indexOf("https") < 0) {
+		if (u.substr(0, 1) != '/')
+			u = host + '/' + u;
+		else
+			u = host + u;
+	}
+	return encodeURI(u);
+}
+
+
+function hots_parse(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+	$('.index2 .am-u-sm-12').eq(0).find('li').slice(0, 4).each(function () {
+		var item = $(this);
+		var bm = {};
+		bm.name = item.find('.song-info h3').text().trim();
+		bm.url = urla(item.children('a').attr('href'));
+		bm.logo = urla(item.find('img').attr('src'));
+		list.push(bm);
+	});
+	return JSON.stringify(list);
+}
+
+function updates_parse(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+	$('.am-u-sm-4').eq(0).find('li').each(function () {
+		var item = $(this);
+		var bm = {};
+		bm.name = item.find('.sh4').text().trim();
+		bm.url = urla(item.children('a').eq(0).attr('href'));
+		bm.logo = '';
+		bm.newSection = '';
+		if (item.find('.sh5').text().trim().length > 0)
+			bm.updateTime = '歌手：' + item.find('.sh5').text().trim();
+		list.push(bm);
+	});
+	return JSON.stringify(list);
+}
+
+function tags_parse(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+	$('.am-table tbody tr').each(function () {
+		var item = $(this);
+		var bm = {};
+		item.children('td').eq(0).find('span').remove();
+		bm.name = item.children('td').eq(0).children('a').text().trim();
+		bm.url = urla(item.children('td').eq(0).children('a').attr('href'));
+		bm.author = item.children('td').eq(1).children('a').text().trim() + '，所属专辑：' + item.children('td').eq(2).children('a').text().trim();
+		bm.newSection = '';
+		bm.updateTime = '';
+		bm.status = '';
+		list.push(bm);
+	});
+	return JSON.stringify(list);
+}
+
+function search_parse(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+	$('.am-table tbody tr').slice(0, 15).each(function () {
+		var item = $(this);
+		var bm = {};
+		item.children('td').eq(0).find('span').remove();
+		bm.name = item.children('td').eq(0).children('a').text().trim();
+		bm.url = urla(item.children('td').eq(0).children('a').attr('href'));
+		bm.logo = 'https://biu-moe-static.smartgslb.com/Public/img/biu.png';
+		bm.author = item.children('td').eq(1).children('a').text().trim() + '，所属专辑：' + item.children('td').eq(2).children('a').text().trim();
+		bm.newSection = '';
+		bm.updateTime = '';
+		bm.status = '';
+		bm.btag = "歌曲";
+		list.push(bm);
+	});
+	return JSON.stringify(list);
+}
+
+function book_buildUrl(url) {
+	var id = url.match(/https.+?(\d+)/)[1];
+	return 'https://biu.moe/Song/playID/sid/' + id + '/datacenter/0';
+}
+
+function book_parseUrl(url, html) {
+	var id = url.match(/sid\/(\d+)\//)[1];
+	var t = JSON.parse(html);
+	return 'https://biu.moe/Song/getCover/sid/' + id + t.url.match(/:(\/\/.+)$/i)[1];
+}
+
+function book_parse(url, html) {
+	var song = 'https:' + url.match(/\/\/.+?(\/\/.+)$/)[1];
+	var t = JSON.parse(html);
+	var pic = t.url;
+	return JSON.stringify([{
+				url : song,
+				logo : 'https://biu-moe-static.smartgslb.com' + pic,
+				type : ".mp3",
+				mime : "audio/x-mpeg"
+			}
+		]);
+}
+
+]]>
+		</code>
+    </script>
+</sited>

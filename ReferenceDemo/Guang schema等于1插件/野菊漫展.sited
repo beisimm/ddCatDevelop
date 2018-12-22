@@ -1,0 +1,243 @@
+<!--?xml version="1.0" encoding="UTF-8" ?-->
+<sited ver="2" debug="1" engine="30" schema="1">
+    <meta>
+		<ua>Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1</ua>
+		<guid></guid>
+		<title>野菊漫展</title>
+		<author>Guang</author>
+		<contact>未想好我空着</contact>
+		<intro>[资讯]提供最新最全漫展资讯，在线购票等服务，查漫展、购预售票，用野菊！</intro>
+		<url>http://www.wadmz.com/</url>
+		<expr>\.wadmz\.com</expr>
+		<logo>http://is2.mzstatic.com/image/thumb/Purple30/v4/05/40/ea/0540ea7c-47e1-f96d-5d69-f374e0cea676/source/175x175bb.jpg</logo>
+		<encode>UTF-8</encode>
+		<about title="反馈" mail="wistn@qq.com">
+			<item txt="欢迎打赏插件开发者Guang，反馈问题。" />
+			<item />
+			<item txt="点击或扫描二维码对[❤❤广]支付宝打赏" expr="https://qr.alipay.com/aex05979jbnzvi4fs3hx691" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7nyz88j20by0by0sy.jpg" />
+			<item />
+			<item txt="扫描二维码对我的微信打赏" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7oa4khj206b06bt9m.jpg" />
+			<item />
+			<item url="点击本行可联系QQ" expr="http://wpa.qq.com/msgrd?v=3&amp;uin=476375486&amp;site=qq&amp;menu=yes" />
+			<item />
+		</about>
+	</meta>
+	<main dtype="6" btag="资讯">
+		<home>
+			<updates cache="1d" title="推荐" showImg="1" w="4" h="5" method="get" parse="updates_parse" url="http://www.wadmz.com/" />
+			<tags title="地区">
+	            <tags cache="1d" method="get" parse="tags_parse" url="http://www.wadmz.com/dmzinfo/guang-dong/"/>
+			</tags>
+		</home>
+        <search cache="1d"  method="get"    parse="search_parse" url="http://www.wadmz.com/?s=@key"  /> 
+        <tag cache="1d" showImg="1" w="4" h="5" method="get" parse="tag_parse" />
+		<book cache="1d" method="get" parse="book_parse"  dtype="2" btype="6"/>
+		<section>		
+			<section cache="1d"  method="@null"  parse="section_parse12" expr="#1$|#2$" run="web"/>
+			<section cache="1d"  method="get"  parse="section_parse3" expr="#3$" dtype="2"/>
+			<section cache="1d"  method="get"  parse="section_parse4" expr="\/dmznotice\/" dtype="2"/>
+		</section>		
+    </main>
+    <script>
+	    <require>
+			<item url="http://sited.noear.org/addin/js/cheerio.js" lib="cheerio" />
+		</require>
+		<code>
+        <![CDATA[
+function urla(u) {
+	var host = "http://www.wadmz.com";
+	if (u.indexOf("http") < 0) {
+		if (u.substr(0, 1) != '/')
+			u = host + '/' + u;
+		else
+			u = host + u;
+	}
+	return encodeURI(u);
+}
+
+function updates_parse(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+
+	$('.in_dmz_info_art').each(function () {
+		var slf = $(this);
+		var bm = {};
+		bm.name = slf.find('.in_dmz_info_art_title').text();
+		bm.url = slf.find('img').parent().attr('href');
+		bm.logo = slf.find('img').attr('src');
+		bm.newSection = '';
+		bm.updateTime = slf.find('.in_dmz_info_art_title').next().text()+slf.find('.in_dmz_info_art_title').next().next().text();
+		list.push(bm);
+	});
+	return JSON.stringify(list);
+}
+
+function tags_parse(url, html) {
+	var list = [];
+	var $ = cheerio.load(html);
+
+	$('#filter_trade a').slice(1).each(function () {
+		var item = $(this);
+		var bm = {};
+		bm.title = item.text();
+		bm.url = item.attr('href') + 'page/@page/';
+		list.push(bm);
+	});
+	return JSON.stringify(list);
+}
+function tag_parse(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+
+	$('.dmzinfo_post_article').each(function () {
+		var slf = $(this);
+		var bm = {};
+		bm.name = slf.find('.dmzinfo_post_article_right_title').parent().attr('title');
+		bm.url = slf.find('img').parent().attr('href');
+		bm.logo = slf.find('img').attr('src');
+		bm.author = '';
+		bm.newSection = '';
+		bm.updateTime = slf.find('.dmzinfo_post_article_right_time').text().trim();
+		bm.status = '';
+		list.push(bm);
+	});
+	return JSON.stringify(list);
+}
+
+function search_parse(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+	$('.shequ_fantu').each(function () {
+		var item = $(this);
+		if (item.find('h3 a').attr('href').match(/\/dmzinfo\//i)) {
+
+			var bm = {};
+			bm.name = item.find('h3 a').text();
+			bm.url = item.find('h3 a').attr('href');
+			bm.logo = item.find('.shequ_fantu_right_img img').eq(0).attr('src');
+			bm.author = '';
+			bm.newSection = '';
+			bm.updateTime = '';
+			bm.status = '';
+			bm.btag = "资讯";
+			list.push(bm);
+		}
+	});
+	return JSON.stringify(list);
+}
+
+function book_parse(url, html) {
+	var $ = cheerio.load(html);
+	var data = {};
+
+	data.name = $('title').text().replace(' | 野菊漫展', '');
+	data.author = '';
+	data.logo = $('.dmzinfo_ny_head_img img').attr('src');
+	data.intro = '￥' + $('#in_notice_right_four_dd').text().trim() + '。' + $('#in_notice_right_two_dd').text() + '。' + $('#in_notice_right_three_dd').text().trim();
+	data.updateTime = "";
+	data.isSectionsAsc = 1;
+	data.sections = [];
+
+	var sm;
+	if ($('.dmzinfo_ny_head_info_right_top>a').eq(-1).attr('href').match(/http/i)) {
+		sm = {
+			name : '查看地图',
+			url : $('.dmzinfo_ny_head_info_right_top>a').eq(-1).attr('href') + '#1'
+		};
+		data.sections.push(sm);
+	}
+
+	if ($('.dmzinfo_ny_head_info_right a').eq(-1).attr('href').match(/http/i)) {
+		sm = {
+			name : '在线购票',
+			url : $('.dmzinfo_ny_head_info_right a').eq(-1).attr('href') + '#2'
+		};
+		data.sections.push(sm);
+	}
+
+	if ($('#the_content_box').length > 0 && $('#the_content_box').text().trim().length > 0) {
+		sm = {
+			name : '漫展详细介绍',
+			url : url + '#3'
+		};
+		data.sections.push(sm);
+	}
+
+	if ($('#info_dmz_notice_body>article').length > 0) {
+		$('#info_dmz_notice_body>article').each(function () {
+			var slf = $(this);
+			sm = {
+				name : '[公告]' + slf.find('a').eq(-1).text(),
+				url : slf.find('a').eq(-1).attr('href')
+			};
+			data.sections.push(sm);
+		});
+	}
+
+	return JSON.stringify(data);
+}
+
+function section_parse12(url) {
+	return url;
+}
+function section_parse3(url, html) {
+	html = html.replace(/<br.*?>/gi, '$$').replace(/<span>/gi, '$$').replace(/<\/span>/gi, '$$');
+	var list = [];
+	var $ = cheerio.load(html);
+	$('#the_content_box').children('p').each(function () {
+		var item = $(this);
+
+		item.text().split('$').forEach(function (txt) {
+			var t1 = txt.trim();
+			if (t1.length > 0) {
+				list.push({
+					d : t1,
+					t : 1
+				});
+			}
+		});
+
+		if (item.find('img').length > 0) {
+			item.find('img').parent('a').each(function () {
+				list.push({
+					d : $(this).attr('href'),
+					t : 9
+				});
+			});
+		}
+	});
+	return JSON.stringify(list);
+}
+function section_parse4(url, html) {
+	var list = [];
+	var $ = cheerio.load(html);
+
+	list.push({
+		d : $('.ny_article_header .meta span').eq(0).text().trim() + '。' + $('.ny_article_header .meta span').eq(1).text().trim(),
+		t : 1
+	});
+	$('#article-content_img').children('p').each(function () {
+		var item = $(this);
+
+		if (item.text().trim().length > 0) {
+			list.push({
+				d : item.text().trim(),
+				t : 1
+			});
+		}
+
+		if (item.find('img').length > 0) {
+			item.find('img').parent('a').each(function () {
+				list.push({
+					d : $(this).attr('href'),
+					t : 9
+				});
+			});
+		}
+	});
+	return JSON.stringify(list);
+}
+]]>
+		</code>
+    </script>
+</sited>

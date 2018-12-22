@@ -1,0 +1,268 @@
+<!--?xml version="1.0" encoding="UTF-8" ?-->
+<sited  ver="9" debug="1"  engine="30" schema="1">
+	<meta>
+		<ua>iPhone</ua>
+		<guid></guid>
+		<title>荔枝FM</title>
+		<author>Guang</author>
+		<contact>未想好我空着</contact>
+		<intro>[FM]献给Moo。至于荔枝FM网络电台是什么，就不介绍了。</intro>
+		<url>http://m.lizhi.fm/</url>
+		<expr>m\.lizhi\.fm|appweb\.lizhi\.fm</expr>
+		<logo>http://image.coolapk.com/apk_logo/2016/0606/12202_1465211996_6029.png</logo>
+		<encode>UTF-8</encode>
+		<about title="反馈" mail="wistn@qq.com">
+			<item txt="欢迎打赏插件开发者Guang，反馈问题。" />
+			<item />
+			<item txt="点击或扫描二维码对[❤❤广]支付宝打赏" expr="https://qr.alipay.com/aex05979jbnzvi4fs3hx691" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7nyz88j20by0by0sy.jpg" />
+			<item />
+			<item txt="扫描二维码对我的微信打赏" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7oa4khj206b06bt9m.jpg" />
+			<item />
+		</about>
+	</meta>
+	<main dtype="3" btag="电台">
+		<home>
+			<hots cache="1d" title="榜单" method="get" parse="hots_parse" url="http://m.lizhi.fm/" showImg="1" w="1" h="1"/>
+			<updates cache="10m" showImg="1" w="1" h="1" title="直播" method="get" buildUrl="updates_buildUrl" parse="updates_parse" url="https://appweb.lizhi.fm/live/list"/>
+			<tags title="分类">
+				<tags cache="10m" method="get"  parse="tags_parse" url="http://m.lizhi.fm/labels"/>
+			</tags>
+		</home>
+		<search cache="1d" method="get" parse="search_parse" url="http://m.lizhi.fm/search_radio/@key/1"  />
+		<tag>
+			<tag cache="1d" method="get" parse="tag_parse" expr="label"/>
+		</tag>
+		<book>
+			<book cache="1d" method="get" parseUrl="book_parseUrl" parse="book_parse1" dtype="3"  expr="fm\/\d+\/" header="cookie;referer"/>
+			<book cache="0" method="get" parse="book_parse2" dtype="7" style="12" expr="liveId="/>
+		</book>
+		<section cache="1d" method="get" parse="section_parse" style="12" header="cookie;referer"/>
+	</main>
+	<script>
+		<require>
+			<item url="http://sited.noear.org/addin/js/cheerio.js" lib="cheerio" /></require>
+		<code>
+			<![CDATA[
+function urla(u) {
+	var host = "http://m.lizhi.fm";
+	if (u.indexOf("http") < 0) {
+		if (u.substr(0, 1) != '/') u = host + '/' + u;
+		else u = host + u;
+	}var memo="专辑/节目标题有emoji 如FM1440782 1073480 ，苹果正常安卓多多猫不支持导致吃掉后面2个字符，所以插件补2个空格；目录排序难搞如http://m.lizhi.fm/636721/p2#pg日期先后乱来";
+	return encodeURI(u);
+}
+
+function hots_parse(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+
+	$('.list').eq(0).children('a').slice(0, 10).each(function() {
+		var item = $(this);
+		var bm = {};
+		bm.name = item.find('img').attr('alt')+'  ';
+		bm.url = urla(item.attr('href'));
+		bm.logo = item.find('img').attr('data-echo');
+		list.push(bm);
+	});
+	$('.list').eq(1).children('a').slice(0, 10).each(function() {
+		var item = $(this);
+		var bm = {};
+		bm.name = item.find('img').attr('alt')+'  ';
+		bm.url = urla(item.attr('href'));
+		bm.logo = item.find('img').attr('data-echo');
+		bm.newSection = '';
+		bm.updateTime = '';
+		list.push(bm);
+	});
+	$('.list').eq(2).children('a').slice(0, 10).each(function() {
+		var item = $(this);
+		var bm = {};
+		bm.name = item.find('img').attr('alt')+'  ';
+		bm.url = urla(item.attr('href'));
+		bm.logo = item.find('img').attr('data-echo');
+		bm.newSection = '';
+		bm.updateTime = '';
+		list.push(bm);
+	});	
+	$('.list').eq(0).children('a').slice(10).each(function() {
+		var item = $(this);
+		var bm = {};
+		bm.name = item.find('img').attr('alt')+'  ';
+		bm.url = urla(item.attr('href'));
+		bm.logo = item.find('img').attr('data-echo-unload');
+		list.push(bm);
+	});
+	$('.list').eq(1).children('a').slice(10).each(function() {
+		var item = $(this);
+		var bm = {};
+		bm.name = item.find('img').attr('alt')+'  ';
+		bm.url = urla(item.attr('href'));
+		bm.logo = item.find('img').attr('data-echo-unload');
+		list.push(bm);
+	});
+	$('.list').eq(2).children('a').slice(10).each(function() {
+		var item = $(this);
+		var bm = {};
+		bm.name = item.find('img').attr('alt')+'  ';
+		bm.url = urla(item.attr('href'));
+		bm.logo = item.find('img').attr('data-echo-unload');
+		list.push(bm);
+	});	
+	return JSON.stringify(list);
+}
+
+function updates_buildUrl(url){
+	return 'https://appweb.lizhi.fm/smallApp/getLiveList';
+}
+
+function updates_parse(url, html) {
+	var jData = JSON.parse(html);
+    var list = [];
+	
+    for (var i in jData.ret.dataList) {
+        var item = jData.ret.dataList[i];
+        if (item.liveStatus==1) {
+            var bm = {};
+            bm.name = item.liveName;
+            bm.url = 'https://appweb.lizhi.fm/live/share?liveId=' + item.liveId;
+            bm.logo = item.radioConver;			
+            bm.newSection = '';
+            bm.updateTime =  '直播者：'+item.userName;
+            list.push(bm);
+        }
+    }
+
+	return JSON.stringify(list);
+}	
+function tags_parse(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+	$('.list').eq(0).remove();
+	$('.list').each(function () {
+		var ugroup = $(this).children('.list-title').text().trim();
+		var bm = null;
+		$(this).find('li').each(function () {
+			var item = $(this);
+			if (bm) {
+				bm = {};
+			} else {
+				bm = {
+					group : ugroup
+				};
+			}
+			bm.title = item.children('p').text();
+			bm.url = urla(item.children('a').attr('href')) + "@page";
+			list.push(bm);
+		});
+	});
+	return JSON.stringify(list);
+}
+function tag_parse(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+
+	$('.list a').each(function() {
+		var item = $(this);
+		var bm = {};
+		bm.name = item.find('img').attr('alt')+'  ';
+		bm.url = urla(item.attr('href'));
+		bm.logo = item.find('img').attr('data-echo');
+
+		bm.author = item.find('.list-item-desc').text().trim();
+		bm.newSection = '';
+		bm.updateTime = '';
+		bm.status = '';
+		list.push(bm);
+	});
+	return JSON.stringify(list);
+}
+
+function search_parse(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+
+	$('.list a').each(function() {
+		var item = $(this);
+		var bm = {};
+		bm.name = item.find('img').attr('alt')+'  ';
+		bm.url = urla(item.attr('href'));
+		bm.logo = item.find('img').attr('data-echo');
+
+		bm.author = item.find('.list-item-desc').text().trim();
+		bm.newSection = '';
+		bm.updateTime = '';
+		bm.status = '';
+        bm.btag = "专辑";
+		list.push(bm);
+	});
+	return JSON.stringify(list);
+}
+
+function book_parseUrl(url, html) {
+	var $ = cheerio.load(html);
+	var urls = url;
+	if (html.match(/pagenum.+?(\d+)页/i)) {
+		var num = html.match(/pagenum.+?(\d+)页/i)[1];
+		for (var i = 2; i <= Number(num); i++) {
+			urls += (';' + url + 'p' + i);
+		}
+	}
+	return urls;
+}
+function book_parse1(url, html) {
+	var $ = cheerio.load(html);
+	var data = {};
+	if (!url.match(/p\d+$/i)) {
+		data.name = $('.article-title').text().trim()+'  ';
+		data.author = $('.article-radiobar-main').text();
+		data.logo = $('.radio-img img').eq(0).attr('src');
+		data.intro = $('.article-post').text().trim();
+		data.updateTime = "";
+	}
+	data.isSectionsAsc = 0;
+	data.sections = [];
+
+	$('.audio-list .list-item').each(function() {
+		var url0 = $(this).children('a.list-item-main').attr('href');
+		var bm = {
+			name: $(this).find('.list-item-title div').text()+'  ',url: urla(url0)	
+		};
+		if (url0 && url0.search(/\/\d+/) >= 0) {
+			data.sections.push(bm);		
+		}
+	});
+
+	return JSON.stringify(data);
+}
+
+function section_parse(url, html) {
+	var $ = cheerio.load(html);
+	var url0 = html.match(/highFile\s*=\s*"\s*(http.+?cdn5.+?\.mp3)/)[1];
+	var img = $('#player img').attr('data-echo');
+
+		return JSON.stringify([{
+			url: url0,
+			logo: img,
+			type: ".mp3",
+			mime: "audio/x-mpeg"
+		}]);
+
+}
+
+
+function book_parse2(url, html) {
+	var $ = cheerio.load(html);
+	var url0 = html.match(/liveUrl\s*=\s*"(http.+?)"/)[1];
+	var img = html.match(/userPortrait\s*=\s*"(http.+?)"/)[1];
+
+		return JSON.stringify([{
+			url: url0,
+			logo: img,
+			type: ".mp4",
+			mime: "video/mp4"
+		}]);
+}
+]]>
+		</code>
+    </script>
+</sited>

@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<site ver="2" debug="1" engine="24" private="1" sds="http://sited.noear.org/api.3/">
+    <ua>Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2226.0 Safari/537.36</ua>
+    <title>Hentai学院</title>
+    <guid>c1b105d889d44897889827b08f3049b5</guid>
+    <intro>[综合]一些好看的漫画和视频...</intro>
+    <author>Mrchen</author>
+    <url>http://hentaischool.com</url>
+    <expr>hentaischool\.com|\.ohentai\.com</expr>
+    <logo></logo>
+    <encode>UTF-8</encode>
+	<main dtype="1">
+		<home>
+			<hots  cache="1d"  title="热门" method="get"  parse="hots_parse" url="http://hentaischool.com"/>
+			<tags  title="内容">
+				<item title="本子" url="http://hentaischool.com/doujinshi/page/@page/?book" />
+				<item title="视频" url="http://hentaischool.com/video/page/@page/?video" />
+			</tags>
+		</home>
+		<search cache="1d" method="get"  parse="search_parse" url="http://hentaischool.com/page/@page/?s=@key" />
+		<tag>
+			<tag  cache="1d"   method="get"  parse="tags_parse_4" expr="\?book"/>
+			<tag  cache="1d"   method="get"  parse="tags_parse_7" expr="\?video"/>
+		</tag>
+		<book>
+			<book  dtype="4" cache="1d"  method="get"  parseUrl="book_parseUrl_4" parse="book_parse_4" expr="\/doujinshi\/" />
+			<book  dtype="7" cache="1d"  method="get"  parse="book_parse_7" expr="\/video\/" /> 
+		</book>
+    </main>
+    <jscript>
+		<require>
+			<item url="http://sited.noear.org/addin/js/cheerio.js" lib="cheerio" />
+		</require>
+		<code>
+        <![CDATA[
+		
+function htmlEsc(obj) {
+	var arrEntities = {
+		'lt': '<',
+		'gt': '>',
+		'nbsp': ' ',
+		'amp': '&',
+		'quot': '"'
+	};
+	for(var i in obj){
+		var str = obj[i];
+		if(typeof(str) == 'object')
+			str = htmlEsc(str);
+		if(typeof(str) != 'string')
+			continue;
+		obj[i] = str.replace(/<[^<>]+?>/g, '').replace(/&(lt|gt|nbsp|amp|quot);/ig, function(all, t) {
+		return arrEntities[t];
+		}).trim();
+	}
+	return obj;
+}
+
+function urla(u){
+	var host = "http://d-b.ohentai.com";
+	if (u.indexOf("http")<0) {
+		if (u.substr(0, 1) != '/')
+			u = host + '/' + u;
+		else
+			u = host + u;
+	}
+	return encodeURI(u);
+}
+
+function hots_parse(url,html) {
+	var $ = cheerio.load(html);
+	var list = [];
+
+	$(".main-media").each(function(){
+		var img = $(this).find('img').eq(0);
+		var a = $(this).find('.content-title');
+		
+        var tmpUrl = a.attr('href');
+		
+		if (tmpUrl.indexOf('/doujinshi/') != -1 || 
+			tmpUrl.indexOf('/video/') != -1){
+
+			var bm = {};
+			bm.name = a.text();
+			bm.url  = tmpUrl;
+			bm.logo = img.attr('src');
+			
+			list.push(bm);
+			
+		}
+		
+	});
+	
+	return JSON.stringify(htmlEsc(list));
+}
+
+function search_parse(url,html) {
+	var $ = cheerio.load(html);
+	var list = [];
+
+	$(".section1").each(function(){
+	
+		if (url.indexOf('/doujinshi/') != -1 || 
+			url.indexOf('/video/') != -1){
+			
+			var img = $(this).find('img');
+        
+			var bm = {};
+			bm.name = img.attr('alt');
+			bm.url  = img.parent().attr("href");
+			bm.logo = img.attr('src');
+		
+       
+			list.push(bm);
+		
+		}
+        
+	});
+	
+	return JSON.stringify(htmlEsc(list));
+}
+
+function tags_parse_4(url,html){
+	var $ = cheerio.load(html);
+	var list = [];
+
+	$(".main-media").each(function(){
+		var img = $(this).find('img').eq(0);
+		var a = $(this).find('.content-title');
+		
+		var bm = {};
+		bm.name = a.text();
+		
+		bm.url  = a.attr('href');
+
+		bm.logo = img.attr('src');
+		bm.newSection = "";
+		bm.updateTime = "";
+		bm.status="";
+		
+		list.push(bm);
+	});
+	
+	return JSON.stringify(htmlEsc(list));
+}
+
+function tags_parse_7(url,html) {
+	var $ = cheerio.load(html);
+	var list = [];
+
+	$(".main-media").each(function(){
+		var img = $(this).find('img').eq(0);
+		var a = $(this).find('.content-title');
+		
+		var bm = {};
+		bm.name = a.text();
+		
+		bm.url  = a.attr('href');
+		
+		bm.logo = img.attr('src');
+		bm.newSection = "";
+		bm.updateTime = "";
+		bm.status="";
+		
+		list.push(bm);
+	});
+	
+	return JSON.stringify(htmlEsc(list));
+}
+
+function book_parseUrl_4(url,html){
+	var $ = cheerio.load(html);
+	
+	var Urls = "";
+	
+	if (url.indexOf("/doujinshi/") != -1)
+	{
+		Urls = "CALL::" + $(".om-frame").attr('src');
+	}
+	else
+	{
+		Urls = url;
+		
+		var pageCount = $('option').length;
+		for (var i = 2; i<=pageCount; i++)
+		{
+			var tpUrl = url + i;
+			Urls += ";" + tpUrl;
+		}
+	}
+	
+	return Urls;
+	
+}
+
+function book_parse_4(url,html){
+	var $ = cheerio.load(html);
+	
+	var data = {};
+	data.sections = [];
+	
+	var imgSrc = urla($('#res').attr('src'));
+
+	data.sections.push({url:imgSrc});
+
+	return JSON.stringify(data);
+
+}
+
+function book_parse_7(url,html){
+	var $ = cheerio.load(html);
+	var vedioPath = $("source[type='video/mp4']").attr('src');
+	return vedioPath;
+}
+
+	]]>
+		</code>
+    </jscript>
+</site>

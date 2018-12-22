@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sited ver="10" debug="1" engine="27" schema="1">
+	<meta>
+	<ua></ua>
+	<title>57漫画手机版</title>
+	<intro>57漫画手机版是一个看漫画的SiteD插件</intro>
+	<author>鹿财</author>
+	<url>http://m.57mh.com</url>
+	<expr>\.57mh\.com</expr>
+	<encode>utf-8</encode>
+	<var>5</var>
+	</meta>
+	<main dtype="1" durl="http://m.57mh.com">
+		<home>
+			<hots cache="1d" title="今日推荐" method="get" parse="hots_parse" url="http://m.57mh.com" />
+			<tags title="标签">
+				<item title="最近更新" url="http://m.57mh.com/latest" />
+				<item title="日行榜" url="http://m.57mh.com/rank" />
+			</tags>
+		</home>
+		<tag cache="1d" method="get" parse="tag_parse" />
+		<book cache="1d" method="get" parse="book_parse" />
+		<section cache="1" method="get" parseUrl='section_parseUrl' parse="section_parse" header="cookie;referer" />
+	</main>
+	<script>
+		<require>
+			<item url = "http://sited.noear.org/addin/js/cheerio.js"
+		lib = "cheerio" />
+		</require> 
+		<code>
+			<![CDATA[
+				var host = 'http://m.57mh.com';
+				function urla(u) {
+					if (u.indexOf("http") < 0) {
+						if (u.substr(0, 1) != '/')
+							u = host + '/' + u;
+						else
+							u = host + u;
+					}
+					return encodeURI(u);
+				}
+
+				function hots_parse(url, html) {
+					var $ = cheerio.load(html);
+					var list = [];
+					var books = $('#data_list li');
+
+
+					books.each(function() {
+						var book = $(this);
+						var name = book.find('h3').text();
+						var url = book.children('a').attr('href');
+						var logo = book.find('img').attr('src');
+
+						list.push({
+							name: name,
+							url: host + url,
+							logo: logo
+						});
+					});
+					return JSON.stringify(list);
+
+				}
+
+				
+
+				function book_parse(url, html) {
+					var $ = cheerio.load(html);
+					var data = {};
+					
+					data.name = '';
+					data.author = '';
+					data.logo = '';
+					data.intro = $('#bookIntro p').text();
+					data.updateTime = '';
+					data.isSectionsAsc = 0;
+					data.sections = [];
+					data.author = '';
+					$('#chapterList a').each(function(){
+						var al = $(this);
+						
+						if(al.attr('href')){
+							var sm = {url:urla(al.attr('href')), name:al.text().trim()};
+							data.sections.splice(0, 0 , sm);
+						};
+						
+					});
+					
+					return JSON.stringify(data);
+				}
+				
+				function section_parseUrl(url, html){
+					var $ = cheerio.load(html);
+					var urls = [];
+					var max = Number($('.manga-page>b').text().slice(1))
+					
+					for(var i = 1; i < max + 1 ;i++){
+						newUrl = url +'?p='+ i ;
+						urls.push(newUrl);
+					};
+					return urls;
+				}
+				
+				function section_parse(url,html) {
+					var $ = cheerio.load(html);
+					var list = [];
+					var imgUrl = $('#manga').attr('src');
+					list.push(imgUrl)
+					return JSON.stringify(list);
+
+				}
+				
+				
+			]]>
+		</code>
+	</script>
+</sited>

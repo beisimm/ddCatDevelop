@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sited ver="1" debug="1" engine="27" schema="1" sds="http://sited.noear.org/api.3/">
+    <meta>
+    <title>九九漫画</title>
+    <intro>九九漫画 热门漫画免费在线观看，最新漫画</intro>
+    <author>wjm2038</author>
+    <url>http://ssoonn.com</url>
+    <expr>ssoonn\.com</expr>
+	<guid>7aab3c62bb814e349060e678fe68418d</guid>
+	<logo>http://ssoonn.com/css/image/logo.png</logo>
+	<encode>utf-8</encode>
+    </meta>
+	<main dtype="1">
+        <reward title="打赏">
+            <item txt="插件开发者@wjm2038的账号" />
+            <item />
+            <item title="支付宝[*刚]" url="wjm2038@163.com" />
+            <item txt="感谢您使用此插件." />
+            <item />
+            <item txt="感谢你对此插件开发者的支持"/>
+        </reward>
+		<home>
+            <hots cache="1d" title="最新" method="get"  parse="ht_parse" url="http://ssoonn.com/top/a-1.htm" />
+			<tags  title="分类">
+				<item group="分类" title="萌系" url="http://ssoonn.com/lists/1/@page/" />
+				<item title="搞笑" url="http://ssoonn.com/lists/2/@page/" />
+				<item title="格斗" url="http://ssoonn.com/lists/3/@page/" />
+				<item title="科幻" url="http://ssoonn.com/lists/4/@page/" />
+				<item title="剧情" url="http://ssoonn.com/lists/5/@page/" />
+				<item title="侦探" url="http://ssoonn.com/lists/6/@page/" />
+				<item title="竞技" url="http://ssoonn.com/lists/7/@page/" />
+				<item title="魔法" url="http://ssoonn.com/lists/8/@page/" />
+				<item title="神鬼" url="http://ssoonn.com/lists/9/@page/" />
+				<item title="校园" url="http://ssoonn.com/lists/10/@page/" />
+				<item title="惊栗" url="http://ssoonn.com/lists/11/@page/" />
+				<item title="厨艺" url="http://ssoonn.com/lists/12/@page/" />
+				<item title="伪娘" url="http://ssoonn.com/lists/13/@page/" />
+				<item title="卖肉" url="http://ssoonn.com/lists/14/@page/" />
+				<item title="冒险" url="http://ssoonn.com/lists/15/@page/" />
+				<item title="国漫" url="http://ssoonn.com/lists/19/@page/" />
+				<item title="港漫" url="http://ssoonn.com/lists/20/@page/" />
+				<item title="耽美" url="http://ssoonn.com/lists/21/@page/" />
+				<item title="经典" url="http://ssoonn.com/lists/22/@page/" />
+				<item title="欧美" url="http://ssoonn.com/lists/23/@page/" />
+				<item title="日文" url="http://ssoonn.com/lists/24/@page/" />
+				<item title="亲情" url="http://ssoonn.com/lists/25/@page/" />
+			    <item group="标签" title="连载中" url="http://ssoonn.com/lianwan/1/@page/" />
+				<item title="已完结" url="http://ssoonn.com/lianwan/2/@page/" />
+			    <item group="读者群" title="少年最爱" url="http://ssoonn.com/duzhequn/1/@page/" />
+				<item title="少女漫画" url="http://ssoonn.com/duzhequn/2/@page/" />
+				<item title="青年漫画" url="http://ssoonn.com/duzhequn/3/@page/" />
+			</tags>
+		</home>
+        <search  cache="1d" method="get" parse="bk_parse" url="http://ssoonn.com/comicsearch/s.aspx?s=@key" />
+		<tag     cache="0"  method="get" parse="bk_parse" />
+        <book    cache="0"  method="get" parse="book_parse" expr="\/comic\/"/>
+        <section    cache="0"  method="get" parse="section_parse" expr=""/>
+    </main>
+    <script>
+        <require>
+            <item url="http://sited.noear.org/addin/js/cheerio.js" lib="cheerio" />
+        </require>
+		<code>
+        <![CDATA[
+
+function getDomain(s)
+{
+    var sDS = "http://165.94201314.net/dm01/|http://165.94201314.net/dm02/|http://165.94201314.net/dm03/|http://165.94201314.net/dm04/|http://165.94201314.net/dm05/|http://165.94201314.net/dm06/|http://165.94201314.net/dm07/|http://165.94201314.net/dm08/|http://165.94201314.net/dm09/|http://165.94201314.net/dm10/|http://165.94201314.net/dm11/|http://165.94201314.net/dm12/|http://165.94201314.net/dm13/|http://165.94201314.net/dm14/|http://165.94201314.net/dm15/|http://165.94201314.net/dm16/";
+    arrDS = sDS.split('|');
+    var u = "";
+    for(i=0;i<arrDS.length;i++)
+    {
+        if(s == (i+1))
+        {
+            u = arrDS[i];
+            break;
+        }
+    }
+    return u;
+}
+
+function unsuan(s)
+{
+    var x = s.substring(s.length-1);
+    var xi="abcdefghijklmnopqrstuvwxyz".indexOf(x)+1;
+    var sk = s.substring(s.length-xi-12,s.length-xi-1);
+    s=s.substring(0,s.length-xi-12);
+	var k=sk.substring(0,sk.length-1);
+	var f=sk.substring(sk.length-1);
+	for(i=0;i<k.length;i++) {
+	    eval("s=s.replace(/"+ k.substring(i,i+1) +"/g,'"+ i +"')");
+	}
+    var ss = s.split(f);
+	s="";
+	for(i=0;i<ss.length;i++) {
+	    s+=String.fromCharCode(ss[i]);
+    }
+    return s;
+}
+
+
+function urla(url){
+    if(url.indexOf("http")>=0)
+        return url;
+    else
+        return "http://ssoonn.com" + url;
+}
+
+
+function ht_parse(url,html) {
+    var $ = cheerio.load(html);
+    var list = [];
+    
+    $(".pic img").each(function() {
+        var img  = $(this);
+        
+        var bm = {};
+        bm.name  = img.attr('alt');
+        bm.url   = urla(img.parent().attr('href'));
+        bm.logo  = img.attr('src');
+
+        list.push(bm);
+    });
+    return JSON.stringify(list);
+}
+
+function bk_parse(url,html) {
+    var $ = cheerio.load(html);
+    var list = [];
+    
+    $(".se-list").find("img").each(function() {
+        var img  = $(this);
+        
+        var bm = {};
+        bm.name  = img.parent().find('h3').text();
+        bm.url   = urla(img.parent().attr('href'));
+        bm.logo  = img.attr('src');
+
+        list.push(bm);
+    });
+    return JSON.stringify(list);
+}
+
+
+function book_parse(url, html) {
+    var $ = cheerio.load(html);
+
+    var data = {};
+    data.name = $('.con > h3').text();
+    data.author = html.match(/作者：(.+?)<\/p>/)[1];
+    data.logo = $('.pic > img').attr('src');
+    data.updateTime = html.match(/更新日期：(.+?)<\/p>/)[1];
+    data.intro = $('.ilist > p').text();
+    data.isSectionsAsc=0;
+    data.sections = [];
+    $("a.list_href").each(function() {
+        var item = $(this);
+        var bm = {name:item.text(),url:urla(item.attr('href'))};
+        data.sections.push(bm);
+    });
+    return JSON.stringify(data);
+}
+
+function section_parse(url,html) {
+
+
+
+    var list = [];
+
+    var sFiles = html.match(/sFiles\s*=\s*\"([^\"]*)\"/)[1];
+    var sDomain = html.match(/sPath\s*=\s*\"([^\"]*)\"/)[1];
+    sFiles=unsuan(sFiles);
+    var arrFiles = sFiles.split("|");
+    sDomain = getDomain(sDomain);
+    for(i=0;i<arrFiles.length;i++)
+    {
+        list.push(sDomain+arrFiles[i]);
+     }
+
+      return JSON.stringify(list);
+}
+
+
+    ]]>
+		</code>
+    </script>
+</sited>

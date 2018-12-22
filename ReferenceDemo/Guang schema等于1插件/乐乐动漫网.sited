@@ -1,0 +1,287 @@
+<!--?xml version="1.0" encoding="UTF-8" ?-->
+<sited  ver="7" debug="1"  engine="30" schema="1" >
+    <meta>
+    <ua></ua>
+	<guid></guid>
+    <title>乐乐动漫网</title>
+    <author>Guang</author>
+    <contact>未想好我空着</contact>
+    <intro>[动画](v6/7更新域名)有些不能播放的，请点S按钮播放网页版。(原58动漫网)聚合提供动画片、动漫在线观看。经典动画片大全、热门好看的动漫。</intro>
+    <url>http://m.lldm.com</url>
+    <expr>\.lldm\.la|\.lldm\.com</expr>
+    <logo>http://m.lldm.la/style1/images/mlogo.png</logo>
+    <encode>GB18030</encode>
+	<about title="反馈" mail="wistn@qq.com">
+		<item url="我邮箱是wistn@qq.com" />
+		<item />
+		<item url="欢迎打赏插件开发者Guang，反馈问题。"/>			
+		<item txt="点击或扫描二维码对[❤❤广]支付宝打赏"  expr="https://qr.alipay.com/aex05979jbnzvi4fs3hx691" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7nyz88j20by0by0sy.jpg"/>
+		<item />
+		<item txt="扫描二维码对我的微信打赏" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7oa4khj206b06bt9m.jpg"/>
+		<item />
+	</about>
+	</meta>
+	<main dtype="3"  btag="动画" durl="http://www.lldm.la/list/hot">
+		<home>
+			<hots cache="1d" showImg="1" w="1" h="1.3" title="热门" method="get"  parse="hots_parse" url="http://www.lldm.la/list/hot"  />
+			<updates cache="1d" showImg="1" w="1" h="1.3" title="更新"   method="get" parse="updates_parse" url="http://www.lldm.la/list/" />			
+			<tags title="分类">
+	            <tags cache="1d" method="get"  parse="tags_parse" url="http://www.lldm.la/list/"/>
+			</tags>
+		</home>
+        <search cache="1d"  method="get"  parse="search_parse" url="http://zhannei.baidu.com/api/customsearch/searchwap?q=@key&amp;s=5307051251940486229"  />
+		<tag cache="1d" showImg="1" w="1" h="1.3" method="get" parse="tag_parse" expr="\/list\/"/>
+        <book cache="1d"    method="get" buildUrl="book_buildUrl" parse="book_parse"  expr="\/m\/|\/v\/"  buildWeb="book_buildWeb"/>
+        <section cache="1d"  method="get"  parse="section_parse"  />
+    </main>
+    <script>
+	    <require>
+			<item url="http://sited.noear.org/addin/js/cheerio.js" lib="cheerio" />
+		</require>
+		<code>
+        <![CDATA[
+function urla(u) {
+	var host = "http://m.lldm.la";
+	if (u.indexOf("http") < 0) {
+		if (u.substr(0, 1) != '/')
+			u = host + '/' + u;
+		else
+			u = host + u;
+	}var memo="网站搜索会js插入元素干扰定位所以api搜索";
+	return encodeURI(u);
+}
+
+function hots_parse(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+	$('.l-list>dd>ul>li').each(function () {
+		var item = $(this);
+		var bm = {};
+		bm.name = item.find('a').eq(0).attr('title');
+		bm.url = 'http://m.lldm.la/m/'+item.find('a').eq(0).attr('href').match(/\/\w\/(.+)/i)[1];
+		bm.logo = item.find('img').attr('data-lazy');
+
+		list.push(bm);
+	});
+	return JSON.stringify(list);
+}
+
+function updates_parse(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+	$('.l-list>dd>ul>li').each(function () {
+		var item = $(this);
+		var bm = {};
+		bm.name = item.find('a').eq(0).attr('title');
+		bm.url = 'http://m.lldm.la/m/'+item.find('a').eq(0).attr('href').match(/\/\w\/(.+)/i)[1];
+		bm.logo = item.find('img').attr('data-lazy');
+		bm.newSection = item.find('.set').text();
+		bm.updateTime = '';
+		list.push(bm);
+	});
+	return JSON.stringify(list);
+}
+
+function tags_parse(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+	var bm = null;
+	$('.l-cate dl').eq(2).find('a').each(function () {
+		var item = $(this);
+		if (bm) {
+			bm = {};
+		} else {
+			bm = {
+				group : "剧情"
+			};
+		}
+		bm.title = item.text();
+		bm.url = item.attr('href').replace(/(.+?)\/?$/i, 'http://www.lldm.la$1/@page');
+		list.push(bm);
+	});
+	bm = null;
+	$('.l-cate dl').eq(4).find('a').each(function () {
+		var item = $(this);
+		if (bm) {
+			bm = {};
+		} else {
+			bm = {
+				group : "配音"
+			};
+		}
+		bm.title = item.text();
+		bm.url = item.attr('href').replace(/(.+?)\/?$/i, 'http://www.lldm.la$1/@page');
+		list.push(bm);
+	});
+	bm = null;
+	$('.l-cate dl').eq(6).find('a').each(function () {
+		var item = $(this);
+		if (bm) {
+			bm = {};
+		} else {
+			bm = {
+				group : "状态"
+			};
+		}
+		bm.title = item.text();
+		bm.url = item.attr('href').replace(/(.+?)\/?$/i, 'http://www.lldm.la$1/@page');
+		list.push(bm);
+	});
+	return JSON.stringify(list);
+}
+
+function tag_parse(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+	$('.l-list>dd>ul>li').each(function () {
+		var item = $(this);
+		var bm = {};
+		bm.name = item.find('a').eq(0).attr('title');
+		bm.url = 'http://m.lldm.la/m/'+item.find('a').eq(0).attr('href').match(/\/\w\/(.+)/i)[1];
+		bm.logo = item.find('img').attr('data-lazy');
+		bm.newSection = item.find('.set').text();
+		bm.updateTime = '';
+		bm.author = '';
+		bm.status = '';	
+		list.push(bm);
+	});
+	return JSON.stringify(list);
+}
+
+function search_parse(url, html) {
+	var jData = JSON.parse(html);
+    var list = [];
+	
+    for (var i in jData.results) {
+        var item = jData.results[i];
+        if (item.url) {
+            var bm = {};
+            bm.name = item.name;
+            bm.url =  'http://m.lldm.la/m/'+item.url.match(/lldm.+?\/\w\/(.+)/i)[1];
+			bm.logo = item.image[0];
+			bm.author = '';
+			bm.newSection = '';
+			bm.updateTime = '';
+			bm.status = '';
+			bm.btag = "动画";
+			list.push(bm);
+        }
+    }	
+	
+	return JSON.stringify(list);
+}
+function book_buildWeb(url){
+	return 'http://m.lldm.la/m/'+url.match(/lldm.+?\/\w\/(.+)/i)[1];
+}
+function book_buildUrl(url){
+	return 'http://m.lldm.la/m/'+url.match(/lldm.+?\/\w\/(.+)/i)[1];
+}
+function book_parse(url, html) {
+	var $ = cheerio.load(html);
+	var data = {};
+	data.name = $('h1').text();
+	data.author = $('.detail p').eq(0).text().replace('作者：', '').trim();
+	data.logo = $('.c-info').find('img').attr('src');
+	data.intro = $('.zk-con p').text().replace('剧情简介：', '').trim();
+	data.updateTime = "";
+	data.isSectionsAsc = 0;
+	data.sections = [];
+	$('dl a').each(function () {
+		var url0 = urla($(this).attr('href'));
+		var bm = {
+			name : $(this).text(),
+			url : url0
+		};
+		if (url0.indexOf('/player-') >= 0) {
+			data.sections.push(bm);
+		}
+	});
+	return JSON.stringify(data);
+}
+
+function section_parse(url, html) {
+
+	if (html.match(/playsrc_qiyi/i)) {
+		var player = html.match(/playsrc_qiyi\s*\(\s*'(.+)'.+'.+'.+'.+'/i)[1].trim();
+		var purl = html.match(/playsrc_qiyi\s*\(\s*'.+'.+'(.+)'.+'.+'/i)[1].trim();
+		var tvid = html.match(/playsrc_qiyi\s*\(\s*'.+'.+'.+'.+'(.+)'/i)[1].trim();
+		var curl = 'http://120.76.73.178:999/qy/mqiyi.php?vid=' + purl + '&tvid=' + tvid;
+	} else if (html.match(/play_bili/i)) {
+		var player = html.match(/playsrc_bili\s*\(\s*'(.+)'.+'.+'.+'.+'/i)[1].trim();
+		var purl = html.match(/playsrc_bili\s*\(\s*'.+'.+'(.+)'.+'.+'/i)[1].trim();
+		var tvid = html.match(/playsrc_bili\s*\(\s*'.+'.+'.+'.+'(.+)'/i)[1].trim();
+		var curl = 'http://120.76.73.178:999/ckbili.php?ckid=' + purl + '&page=' + tvid;
+	}else {
+		var player = html.match(/playsrc\s*\(\s*'(.+)'.+'.+'/i)[1].trim();
+		var purl = html.match(/playsrc\s*\(\s*'.+'.+'(.+)'/i)[1].trim();
+
+		switch (player) {
+		case 'youku':
+			var curl = 'http://120.76.73.178:999/t/myouku.php?id=' + purl;
+			break;
+		case 'tudou':
+			var arr = purl.split("&icode=");
+			if (/^\d+$/g.test(arr[0])) {
+				var curl = 'http://vr.tudou.com/v2proxy/v2.m3u8?it=' + arr[0] + '&st=2&pw=';
+			} else {
+				var curl = 'http://player.youku.com/embed/' + purl;
+			}
+			break;
+		case 'qq':
+			var curl = 'http://lldm.carp.mopaasapp.com/qqsj.php?id=' + purl;
+			break;
+		case 'qiyi':
+			var curl = 'http://meta.video.qiyi.com/' + purl + '.m3u8?v=' + (new Date().valueOf() / 1000^1171771717);
+			break;
+		case 'sohu':
+			var curl = 'http://120.76.73.178:999/m-sohu.php?id=' + purl;
+			break;
+		case 'letv':
+			if (/^\d+$/g.test(purl)) {
+				var curl = 'http://minisite.letv.com/tuiguang/index.shtml?vid=' + purl;
+			} else {
+				var curl = 'http://120.76.73.178:999/t/letv.php?vid=' + purl;
+			}
+			break;
+		case 'cntv':
+			var curl = 'http://m.lldm.la/js/cntv.php?id=' + purl;
+			break;
+		case '56':
+			var curl = 'http://www.56.com/iframe/' + purl;
+			break;
+		case 'sina':
+			var curl = 'http://120.76.73.178:999/m/msina.php?url=' + purl;
+			break;
+		case 'wasu':
+			var curl = 'http://www.wasu.cn/Play/iframe/id/' + purl;
+			break;
+		case 'leyun':
+			var curl = 'http://leledongman2.butterfly.mopaasapp.com/ly_m.php?url=' + purl;
+			break;
+		case 'pptv':
+			var curl = 'http://120.76.73.178:999/m/show.php?url=' + purl + '&mod=pptv';
+			break;
+		case 'bilibili':
+			var arr = purl.split(":");
+			var curl = 'http://leledongman2.butterfly.mopaasapp.com/mbilibili.php?aid=' + arr[0] + '&cid=' + arr[1];
+			break;
+		case 'lw':
+			var curl = 'http://120.76.73.178:999/t/letv.php?user=58dm&id=' + purl;
+			break;
+		case 'mp':
+			var curl = 'http://120.76.73.178:999/t/mp.php?url=' + purl;
+			break;
+		}
+	}
+
+	return JSON.stringify([{
+				url: curl,
+				type: ".mp4",
+				mime: "video/mp4"
+			}
+		]);
+}
+    ]]>
+		</code>
+    </script>
+</sited>

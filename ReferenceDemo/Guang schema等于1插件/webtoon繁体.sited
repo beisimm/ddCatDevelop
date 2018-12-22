@@ -1,0 +1,167 @@
+<!--?xml version="1.0" encoding="UTF-8" ?-->
+<sited ver="3" debug="1"  engine="30" schema="1">
+    <meta>
+		<ua></ua>
+		<guid></guid>
+		<title>webtoon繁体</title>
+		<author>Guang</author>
+		<contact>未想好我空着</contact>
+		<intro>[漫画]（v3修复分类）webtoon繁体站点漫画，全球數位漫畫服務平臺，LINE WEBTOON提供每日更新超過200個線上免費漫畫。</intro>
+		<url>http://us.webtoons.com/zh-hant</url>
+		<expr>\/\/us\.(m\.)?webtoons\.com</expr>
+		<logo>http://is3.mzstatic.com/image/thumb/Purple122/v4/b9/62/b3/b962b3c8-3b66-9420-4ecb-79b21ffeb060/source/175x175bb.jpg</logo>
+		<encode>UTF-8</encode>
+		<about title="反馈" mail="wistn@qq.com">
+			<item url="我邮箱是wistn@qq.com" />
+			<item />
+			<item url="欢迎打赏插件开发者Guang，反馈问题。"/>			
+			<item txt="点击或扫描二维码对[❤❤广]支付宝打赏"  expr="https://qr.alipay.com/aex05979jbnzvi4fs3hx691" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7nyz88j20by0by0sy.jpg"/>
+			<item />
+			<item txt="扫描二维码对我的微信打赏" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7oa4khj206b06bt9m.jpg"/>
+			<item />
+		</about>
+	</meta>
+	<main dtype="1" btag="漫画">
+		<home>		
+			<hots cache="1d" showImg="1" w="1" h="1" title="人氣榜" method="get"  parse="hots_parse" url="http://us.m.webtoons.com/zh-hant/top" ua="iPhone"/>		
+			<updates cache="1d" showImg="1" w="1" h="1" title="新作" method="get"  parse="updates_parse" url="http://us.m.webtoons.com/zh-hant/new" ua="iPhone"/>		
+			<tags  title="分類" cache="1d" method="get" parse="tags_parse" url="http://us.m.webtoons.com/zh-hant/genre" ua="iPhone"/>
+		</home>
+        <search  cache="1d" method="get" parse="search_parse" url="http://us.webtoons.com/search?keyword=@key" header="cookie|referer"/>
+        <tag cache="1d" showImg="1" w="1" h="1" method="get" parse="tag_parse"  ua="iPhone" expr="genre\?(\d+)"/>
+        <book cache="1d" method="get" parse="book_parse" ua="iPhone" header="cookie|referer" expr="\/list"/>
+        <section cache="1d" method="get" options="0,0,0,1" parse="section_parse" header="cookie|referer" />
+    </main>
+    <script>
+	    <require>
+			<item url="http://sited.noear.org/addin/js/cheerio.js" lib="cheerio" />
+		</require>
+		<code>
+			<![CDATA[
+function urla(u) {
+	var host = "http://us.m.webtoons.com";
+	if (u.indexOf("http") < 0) {
+		if (u.substr(0, 1) != '/')
+			u = host + '/' + u;
+		else
+			u = host + u;
+	}
+	return encodeURI(u);
+}
+function hots_parse(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+	$('.popular_list li a').each(function () {
+		var item = $(this);
+		var bm = {};
+		bm.name = item.find('.subj').text();
+		bm.url = item.attr('href');
+		bm.logo = item.find('img').attr('src');
+		list.push(bm);
+	});
+	return JSON.stringify(list);
+}
+
+function updates_parse(url, html) {
+	var $ = cheerio.load(html);	
+	var list = [];
+
+	$('.lst_type6 li').each(function () {
+		var item = $(this);		
+		var bm = {};
+		bm.name = item.find('.subj').text();
+		bm.url = item.children('a').attr('href');
+		bm.logo = item.find('div.pic').attr('style').match(/url\((.+)\)/i)[1];
+
+		bm.newSection = '';
+		bm.updateTime = item.find('.genre').text();
+		list.push(bm);
+	});
+	return JSON.stringify(list);
+}
+function tags_parse(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+	var nums = $('#genreList li a').length;
+	for (i = 0; i < nums; i++) {		
+		var item = $(this);
+		var bm = {};
+		bm.title = $('#genreList li a').eq(i).text();
+		bm.url = 'http://us.m.webtoons.com/zh-hant/genre?'+i;
+		list.push(bm);
+	}
+	return JSON.stringify(list);
+}
+
+function tag_parse(url, html) {
+	var $ = cheerio.load(html);	
+	var list = [];
+	var i = Number(url.match(/genre\?(\d+)/)[1]);
+
+	$('.lst_type1').eq(i).children('li').each(function () {
+		var item = $(this);		
+		var bm = {};
+		bm.name = item.find('.subj').text();
+		bm.url = item.children('a').attr('href');
+		bm.logo = item.find('img').attr('src');
+
+		bm.author = '';
+		bm.status = '';
+		bm.newSection = '';
+		bm.updateTime = '';
+		list.push(bm);
+	});
+	return JSON.stringify(list);
+}
+function search_parse(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+
+	$('.card_wrap li').each(function () {
+		var item = $(this);	
+		var bm = {};
+		bm.name = item.find('.subj').text();
+		bm.url = urla(item.children('a').attr('href'));
+		bm.logo = item.find('img').attr('src');
+		bm.author = item.find('.author').text();
+		bm.status = '';
+		bm.newSection = '';
+		bm.updateTime = '';
+		bm.btag = "漫画";
+		list.push(bm);
+	});
+	return JSON.stringify(list);
+}
+function book_parse(url, html) {
+	var $ = cheerio.load(html);
+	var data = {};
+	data.name = $('.detail_info .subj').text();
+	data.author = $('.detail_info .author').text();
+	data.logo = $('.background_pic>img').attr('src');
+	data.intro = $('.detail_info .summary').text(); ;
+	data.updateTime = '';
+	data.isSectionsAsc = 0;
+	data.sections = [];
+	$('#_episodeList>li>a').each(function () {
+		var bm = {
+			name: $(this).find('.sub_title>.ellipsis').text(),
+			url: $(this).attr('href').replace('m.', '')
+		};
+		data.sections.push(bm);
+	});
+	return JSON.stringify(data);
+}
+
+function section_parse(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+	$('#_imageList img').each(function(){
+		list.push($(this).attr('data-url'));
+	});
+	return JSON.stringify(list);
+}	
+	
+    ]]>
+		</code>
+    </script>
+</sited>

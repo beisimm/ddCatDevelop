@@ -1,0 +1,168 @@
+<!--?xml version="1.0" encoding="UTF-8" ?-->
+<sited  ver="3" debug="1"  engine="27" schema="1" >
+    <meta>
+    <ua></ua>
+	<guid></guid>
+    <title>全民TV</title>
+	<author>Guang</author>	
+    <contact>未想好我空着</contact>	
+    <intro>[直播]提供高清、流畅、丰富的游戏直播和赛事直播，娱乐直播、美女直播、户外直播服务，为广大的游戏玩家构建一个尊重观众、尊重主播的全民直播平台。插件无搜索功能。</intro>
+    <url>http://m.quanmin.tv/game/all</url>
+    <expr>\.quanmin\.tv</expr>
+    <logo>http://image.coolapk.com/apk_logo/2016/0401/408649_1459475411_5287.png</logo>
+    <encode>UTF-8</encode>
+    <reward title="反馈" mail="wistn@qq.com">
+    	<item txt="欢迎打赏插件开发者Guang，反馈问题。" />
+    	<item />
+    	<item txt="点击或扫描二维码对[❤❤广]支付宝打赏" expr="https://qr.alipay.com/aex05979jbnzvi4fs3hx691" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7nyz88j20by0by0sy.jpg" />
+    	<item />
+    	<item txt="扫描二维码对我的微信打赏" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7oa4khj206b06bt9m.jpg" />
+    	<item />
+    	<item url="点击本行可联系QQ" expr="http://wpa.qq.com/msgrd?v=3&amp;uin=476375486&amp;site=qq&amp;menu=yes" />
+    	<item />
+    </reward>
+    </meta>
+    <main dtype="3" btag="直播">
+        <home>
+            <updates cache="30m" showImg="2" w="1.78" h="1"  title="游戏直播" method="get" parse="updates_parse" url="http://www.quanmin.tv/json/play/list.json" />
+            <tags title="分类">
+	            <tags cache="1d" method="get" parse="tags_parse" url="http://www.quanmin.tv/json/categories/list.json"/>
+            </tags>
+        </home>
+        <tag cache="0" method="get" parse="tag_parse" />
+		<book>
+        <book cache="1d"  method="get"  buildUrl="section_buildurl"  parse="section_parse"  expr="\/v\/\d+\?section" dtype="7" />
+        <book cache="0"  method="get" buildUrl="section_buildurl" parse="book_parse"  expr="\/v\/\d+(?!.)"  dtype="3"/>
+		</book>
+		<section cache="1d"  method="get"  buildUrl="section_buildurl" parse="section_parse" />
+    </main>
+    <script>
+	    <require>
+			<item url="http://sited.noear.org/addin/js/cheerio.js" lib="cheerio" />
+		</require>
+        <code>
+            <![CDATA[
+function urla(u) {
+	var host = "http://m.quanmin.tv";
+	if (u.indexOf("http") < 0) {
+		if (u.substr(0, 1) != '/')
+			u = host + '/' + u;
+		else
+			u = host + u;
+	}
+	return encodeURI(u);
+}
+
+function updates_parse(url, html) {
+	var json = JSON.parse(html);
+	var list = [];
+
+	for (i = 0; i < json.size && i < 20; i++) {
+		var item = json.data[i];
+
+		var bm = {};
+		bm.name = item.title;
+		bm.url = 'http://m.quanmin.tv/v/' + item.uid+'?section';
+		bm.logo = item.thumb;
+		bm.newSection = '';
+
+		var status = '';
+		if (item.status == '2') {
+			status = '休息中';
+		} else if (item.status == '1') {
+			status = '直播中';
+		}
+		bm.updateTime = item.nick+status;
+		list.push(bm);
+
+	}
+	return JSON.stringify(list);
+}
+
+function tags_parse(url, html) {
+	var json = JSON.parse(html);
+	var list = [];
+
+	for (var i in json) {
+		var item = json[i];
+		if (item.slug) {
+			var bm = {};
+			bm.title = item.name;
+			bm.url = 'http://www.quanmin.tv/json/categories/' + item.slug + '/list.json';
+			list.push(bm);
+		}
+	}
+
+	return JSON.stringify(list);
+}
+
+function tag_parse(url, html) {
+	var json = JSON.parse(html);
+	var list = [];
+
+	for (var i in json.data) {
+		var item = json.data[i];
+		if (item.uid) {
+			var bm = {};
+			bm.name = item.title;
+			bm.url = 'http://m.quanmin.tv/v/' + item.uid ;
+			bm.logo = item.thumb;
+			bm.newSection = '';
+			var status = '';
+			if (item.status == '2') {
+				status = '休息中';
+			} else if (item.status == '1') {
+				status = '直播中';
+			}
+			bm.updateTime = item.nick+status;
+			bm.author = '';
+			bm.status = '';
+
+			list.push(bm);
+		}
+	}
+	return JSON.stringify(list);
+}
+
+function book_parse(url, html) {
+	var json = JSON.parse(html);
+	var data = {};
+
+	data.name = json.title;
+	data.author = json.nick;
+	data.logo = json.thumb;
+	data.intro = json.intro;
+	data.updateTime = "";
+	data.isSectionsAsc = 1;
+	data.sections = [];
+
+	var status = '';
+	if (json.play_status == false) {
+		status = '休息中，不要点';
+	} else if (json.play_status == true) {
+		status = '直播中，可打开';
+	}
+	var bm = {
+		name : status,
+		url : 'http://m.quanmin.tv/v/' + json.uid
+	};
+	data.sections.push(bm);
+
+	return JSON.stringify(data);
+}
+
+function section_buildurl(url) {
+	var id = url.match(/(\d+)/i)[1];
+	return 'http://www.quanmin.tv/json/rooms/' + id + '/info.json';
+}
+
+function section_parse(url, html) {
+	var json = JSON.parse(html);
+	var a = json.live.ws.hls.main_mobile;
+	var i = json.live.ws.hls[a].src;
+	return i;
+}
+]]>
+        </code>
+    </script>
+</sited>

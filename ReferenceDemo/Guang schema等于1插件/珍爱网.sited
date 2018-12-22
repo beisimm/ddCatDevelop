@@ -1,0 +1,159 @@
+<!--?xml version="1.0" encoding="UTF-8" ?-->
+<sited  ver="2" debug="1"  engine="30" schema="1">
+    <meta>
+		<ua></ua>
+		<guid></guid>	
+		<title>珍爱网</title>
+		<author>Guang</author>
+		<contact>未想好我空着</contact>
+		<intro>[资讯](v2增加分类。搜索结果的中文是乱码但可以点进去看，搜索需填完整的该网站ID，有时可搜用户昵称)专为单身男女提供相亲服务，实时发布高质量的相亲信息（进行打招呼等后续操作需要进入原网站）</intro>
+		<url>http://www.zhenai.com/</url>
+		<expr>\.zhenai\.com|\.zastatic\.com</expr>
+		<logo>http://is2.mzstatic.com/image/thumb/Purple71/v4/dd/23/1b/dd231b5d-694e-7c21-cda0-b9158eef8d0e/source/175x175bb.jpg</logo>
+		<encode>UTF-8</encode>
+		<about title="反馈" mail="wistn@qq.com">
+			<item txt="欢迎打赏插件开发者Guang，反馈问题。" />
+			<item />
+			<item txt="点击或扫描二维码对[❤❤广]支付宝打赏" expr="https://qr.alipay.com/aex05979jbnzvi4fs3hx691" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7nyz88j20by0by0sy.jpg" />
+			<item />
+			<item txt="扫描二维码对我的微信打赏" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7oa4khj206b06bt9m.jpg" />
+			<item />
+		</about>
+    </meta>
+    <main dtype="6" btag="资讯">
+        <home>
+            <hots title="首页" method="get" w="4" h="5" showImg="2" parse="hots_parse" url="http://images.zastatic.com/zhenai3/zhenai2015/js/brandIndex/index.js" />
+			<tags  title="更多" >
+				<item title="男性对象" url="http://m.zhenai.com/v2/search/getSearchListContent.do?pageNo=@page&amp;pageSize=15&amp;key=MyMemberId:-1/ageBegin:18/ageEnd:99/h1:-1/h2:211/sex:0/mysex:0/isall:1/leer:1/Education:-1/Marriage:-1/Salary:-1/membertype:1/Photo:1/WorkCity:10100000/Order:hpf/Page:pageNoNow/PageSize:pageSizeNow" />
+				<item title="女性对象" url="http://m.zhenai.com/v2/search/getSearchListContent.do?pageNo=@page&amp;pageSize=15&amp;key=MyMemberId:-1/ageBegin:18/ageEnd:99/h1:-1/h2:211/sex:1/mysex:0/isall:1/leer:1/Education:-1/Marriage:-1/Salary:-1/membertype:1/Photo:1/WorkCity:10100000/Order:hpf/Page:pageNoNow/PageSize:pageSizeNow" />
+			</tags>			
+		</home>
+		<search cache="1d"  method="get" parse="search_parse"  url="http://m.zhenai.com/v2/search/getSearchListContent.do?pageNo=1&amp;pageSize=15&amp;key=MyMemberId:-1/ageBegin:-1/ageEnd:99/h1:-1/h2:211/sex:1/mysex:0/isall:1/leer:1/Salary:-1/membertype:1/Photo:1/WorkCity:10100000/Info:@key/Order:hpf/Page:pageNoNow/PageSize:pageSizeNow" encode="UTF-8"/>
+        <tag cache="60m" w="4" h="5" showImg="1" method="get"  parse="tag_parse" encode="GB18030"/>		
+		<book  cache="1d" method="get"  parse="book_parse" encode="GB18030" dtype="2" btype="6"  expr="\/u\/\d+"/>
+		<section  cache="1d" method="get"  parse="section_parse"  encode="GB18030" dtype="2" />
+    </main>
+	<script>
+	    <require>
+			<item url="http://sited.noear.org/addin/js/cheerio.js" lib="cheerio" />
+		</require>
+		<code>
+        <![CDATA[
+
+function hots_parse(url, html) {
+	var txt = html.match(/var\s*oBrandUser\s*=\s*({[\s\S]+?})\s*;/i)[1];
+	var jData = JSON.parse(txt);
+	var list = [];
+	delete jData.p1;
+	for (var i in jData) {
+		for (var j in jData[i]) {
+			var item = jData[i][j];
+			if (item.link) {
+				var bm = {};
+				bm.name = '';
+				bm.url = item.link.replace(/(.+\/u\/\d+).+$/i,'$1');
+				bm.logo = item.img;
+				list.push(bm);
+			}
+		}
+	}
+	return JSON.stringify(list);
+}
+
+function tag_parse(url, html) {
+	var jData = JSON.parse(html);
+	var list = [];
+	for (var i in jData.searchList) {
+		var item = jData.searchList[i];
+		if (item.memberid) {
+			var bm = {};
+			bm.name = item.nickName;
+			bm.url = 'http://album.zhenai.com/u/' + item.memberid;
+			bm.logo = item.defaultPhoto;
+			bm.author = '';
+			bm.status = '';
+			bm.newSection = '';
+			bm.updateTime = item.introduceContent.replace(/\s/g,'');
+			list.push(bm);
+		}
+	}
+	return JSON.stringify(list);
+}
+	
+function search_parse(url, html) {
+	var memo="手机搜索url参数需要UTF-8所以接受乱码";
+	var jData = JSON.parse(html);
+	var list = [];
+	for (var i in jData.searchList) {
+		var item = jData.searchList[i];
+		if (item.memberid) {
+			var bm = {};
+			bm.name = item.nickName;
+			bm.url = 'http://album.zhenai.com/u/' + item.memberid;
+			bm.logo = item.defaultPhoto;
+			bm.author = '';
+			bm.status = '';
+			bm.newSection = '';
+			bm.updateTime = 'ID:' + item.memberid;
+			bm.btag = "资讯";
+			list.push(bm);
+		}
+	}
+	return JSON.stringify(list);
+}
+
+function book_parse(url, html) {
+	var $ = cheerio.load(html);
+	var data = {};
+	data.name = $('h1').text();
+	data.author = url.match(/u\/(\d+)/)[1];
+	data.logo = $('.u-ablums-thumbs li').eq(0).find('img').eq(0).attr('data-big-img');
+	data.intro = $('.brief-table').text().trim().replace(/[\r|\n]+\s+/g, '，');
+	data.updateTime = "";
+	data.isSectionsAsc = 1;
+	data.sections = [];
+	var sm = {
+		name : '详情',
+		url : url
+	};
+	data.sections.push(sm);
+	return JSON.stringify(data);
+}
+function section_parse(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+	list.push({
+		d : '个人主页' + url,
+		t : 1
+	});
+	if ($('.u-ablums-thumbs li').length > 1) {
+		var num = $('.u-ablums-thumbs li').length;
+		for (i = 1; i <= num - 1; i++) {
+			list.push({
+				d : $('.u-ablums-thumbs li').eq(i).find('img').eq(0).attr('data-big-img'),
+				t : 9
+			});
+		}
+	}
+
+	list.push({
+		d : $('.mod-tab-info li').eq(0).text() + '：' + $('.mod-tab-info p').eq(0).text(),
+		t : 1
+	}, {
+		d : $('.mod-tab-info li').eq(1).text() + '：' + $('.mod-tab-info p').eq(1).text(),
+		t : 1
+	});
+
+	$('.info-floor').each(function () {
+		var item = $(this);
+		list.push({
+			d : item.text().trim().replace(/[\r|\n]+\s+/g, '\r\n'),
+			t : 1
+		});
+	});
+	return JSON.stringify(list);
+}
+    ]]>
+		</code>
+    </script>
+</sited>

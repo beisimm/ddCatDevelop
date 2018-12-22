@@ -1,0 +1,192 @@
+<!--?xml version="1.0" encoding="UTF-8" ?-->
+<sited ver="4" debug="1"  engine="30" schema="1">
+    <meta>
+		<ua></ua>
+		<guid></guid>
+		<title>乐文小说网</title>
+		<author>Guang</author>
+		<contact>未想好我空着</contact>
+		<intro>[小说](v4修复)精彩小说尽在乐文小说。提供玄幻,武侠,网游,都市言情,历史军事小说。只能搜书名的一部分不能搜作者名。</intro>
+		<url>http://www.lwxiaoshuo.com/</url>
+		<expr>lwxiaoshuo\.com</expr>
+		<logo>http://www.lwxiaoshuo.com/themes/lwxs/logo.png</logo>
+		<encode>GB18030</encode>
+		<about title="反馈" mail="wistn@qq.com">
+			<item txt="欢迎打赏插件开发者Guang，反馈问题。" />
+			<item />
+			<item txt="点击或扫描二维码对[❤❤广]支付宝打赏" expr="https://qr.alipay.com/aex05979jbnzvi4fs3hx691" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7nyz88j20by0by0sy.jpg" />
+			<item />
+			<item txt="扫描二维码对我的微信打赏" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7oa4khj206b06bt9m.jpg" />
+			<item />
+		</about>
+	</meta>
+	<main dtype="2" btag="小说">
+		<home>		
+			<hots cache="1d" title="周榜" method="get"  parse="hots_parse" url="http://www.lwxiaoshuo.com/top/weekvisit/1.html" />		
+            <updates cache="1d" showImg="1" title="更新" method="get"  parse="updates_parse" url="http://www.lwxiaoshuo.com/top/lastupdate/1.html" />
+			<tags  title="分类">
+				<item title="魔幻玄幻" url="http://www.lwxiaoshuo.com/lc_1/@page.html" />
+				<item title="仙侠修真" url="http://www.lwxiaoshuo.com/lc_2/@page.html" />
+				<item title="都市青春" url="http://www.lwxiaoshuo.com/lc_3/@page.html" />
+				<item title="穿越架空" url="http://www.lwxiaoshuo.com/lc_4/@page.html" />
+				<item title="网游动漫" url="http://www.lwxiaoshuo.com/lc_5/@page.html" />
+				<item title="科幻小说" url="http://www.lwxiaoshuo.com/lc_6/@page.html" />
+				<item title="恐怖灵异" url="http://www.lwxiaoshuo.com/lc_7/@page.html" />
+				<item title="耽美同人" url="http://www.lwxiaoshuo.com/lc_8/@page.html" />
+				<item title="其他类型" url="http://www.lwxiaoshuo.com/lc_9/@page.html" />
+			</tags>
+		</home>
+        <search cache="1d"  method="post" args="searchkey=@key" parse="search_parse"  url="http://www.lwxiaoshuo.com/modules/article/search.php"  />
+        <tag cache="1d" method="get" parse="tag_parse" />
+		<book cache="1d" method="get" parse="book_parse"  expr="\/lewen\/\d+">
+			<sections cache="1d" method="get" buildUrl="book_s_buildurl" parse="book_s_parse"/>
+		</book>
+        <section cache="1"  method="get"  parse="section_parse" />	
+    </main>
+    <script>
+	    <require>
+			<item url="http://sited.noear.org/addin/js/cheerio.js" lib="cheerio" />
+		</require>
+		<code>
+        <![CDATA[
+function urla(u) {
+	var host = "http://www.lwxiaoshuo.com";
+	if (u.indexOf("http") < 0) {
+		if (u.substr(0, 1) != '/')
+			u = host + '/' + u;
+		else
+			u = host + u;
+	}
+	return encodeURI(u);
+}
+function hots_parse(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+	$('#alistbox').each(function () {
+		var item = $(this);
+		var bm = {};
+		bm.name = item.find('a').eq(0).attr('title');
+		bm.url = urla(item.find('a').eq(0).attr('href'));
+		bm.logo = urla(item.find('img').eq(0).attr('src'));
+		list.push(bm);
+	});
+	return JSON.stringify(list);
+}
+function updates_parse(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+	$('#alistbox').each(function () {
+		var item = $(this);
+		var bm = {};
+		bm.name = item.find('a').eq(0).attr('title');
+		bm.url = urla(item.find('a').eq(0).attr('href'));
+		bm.logo = urla(item.find('img').eq(0).attr('src'));
+		bm.newSection = '';
+		bm.updateTime = item.find('.sys').text().replace('最新更新：','').trim();
+		list.push(bm);
+	});
+	return JSON.stringify(list);
+}
+function tag_parse(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+	$('#alistbox').each(function () {
+		var item = $(this);
+		var bm = {};
+		bm.name = item.find('a').eq(0).attr('title');
+		bm.url = urla(item.find('a').eq(0).attr('href'));
+		bm.logo = urla(item.find('img').eq(0).attr('src'));
+		bm.author = '';
+		bm.status = '';
+		bm.newSection = '';
+		bm.updateTime = item.find('.sys').text().replace('最新更新：','').trim();
+		list.push(bm);
+	});
+	return JSON.stringify(list);
+}
+function search_parse(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+	$('#alistbox').each(function () {
+		var item = $(this);
+		var bm = {};
+		bm.name = item.find('a').eq(0).attr('title');
+		bm.url = urla(item.find('a').eq(0).attr('href'));
+		bm.logo = urla(item.find('img').eq(0).attr('src'));
+		bm.author = item.find('span').eq(0).text().replace('作者：','');
+		bm.status = '';
+		bm.newSection = '';
+		bm.updateTime = '';
+		bm.btag = "小说";
+		list.push(bm);
+	});
+	return JSON.stringify(list);
+}
+function book_parse(url, html) {
+	var $ = cheerio.load(html);
+	var data = {};
+	data.name = $('.bookname').text().replace(/作者.+/,'').trim();
+	data.author = $('.bookname em').text().replace(/作者：/,'');
+	data.logo = urla($('.pic img').attr('src'));
+	data.intro = $('.intro').text().trim();
+	data.updateTime = "";
+	data.isSectionsAsc = 1;
+	data.sections = [];
+	return JSON.stringify(data);
+}
+function book_s_buildurl(url) {
+	var id = url.match(/\d+/)[0];
+	if (id.length > 3) {
+		return 'http://www.lwxiaoshuo.com/' + id.match(/(\d+)\d{3}$/)[1] + '/' + id + '/index.html';
+	} else {
+		return 'http://www.lwxiaoshuo.com/0/' + id + '/index.html';
+	}
+}
+function book_s_parse(url, html) {
+	var $ = cheerio.load(html);
+	var data = {};
+	data.sections = [];
+	$('tbody tbody tbody').eq(0).children('tr').each(function () {
+		var num = $(this).find('a').length;
+		if (!num) {
+			data.sections.push({
+				name : $(this).children('td').text(),
+				url : ''
+			});
+		} else {
+			$(this).find('a').each(function () {
+				var item = $(this);
+				var sm = {
+					name : item.text(),
+					url : urla(item.attr('href'))
+				};
+				data.sections.push(sm);
+			});
+		}
+	});
+	return JSON.stringify(data);
+}
+function section_parse(url, html) {
+	html = html.replace(/<br.+?>/gi, '$$').replace(/<p>/gi, '$$').replace(/<\/p>/gi, '');
+	var $ = cheerio.load(html);
+	$('#content script').each(function () {
+		$(this).remove();
+	});
+	var c = $('#content');
+	var list = [];
+	var tList = c.text().split('$');
+	tList.forEach(function (item) {
+		var t1 = item.trim();
+		if (t1.length > 0) {
+			list.push({
+				d : t1,
+				t : 1
+			});
+		}
+	});
+	return JSON.stringify(list);
+}
+    ]]>
+		</code>
+    </script>
+</sited>

@@ -1,0 +1,302 @@
+<!--?xml version="1.0" encoding="UTF-8" ?-->
+<sited  ver="11" debug="1"  engine="30" schema="1">
+    <meta>
+		<ua></ua>
+		<guid></guid>		
+		<title>M站</title>
+		<author>Guang</author>
+		<contact>未想好我空着</contact>
+		<intro>[FM](v11修复)不腐不开心！M站，中国声优基地，在这里可以看有声漫画、听电台/音乐/翻唱/小说/广播剧，用二次元声音连接三次元。登陆才能听"本音频无法播放"的特殊内容。可以搜索单期音频（而非音单）</intro>
+		<url>http://www.missevan.com/</url>
+		<expr>www\.missevan\.com|m\.missevan\.com</expr>
+		<logo>http://image.coolapk.com/apk_logo/2015/0602/408649_1433207393_0184.png</logo>
+		<encode>UTF-8</encode>
+		<about title="反馈" mail="wistn@qq.com">
+			<item txt="欢迎打赏插件开发者Guang，反馈问题。" />
+			<item />
+			<item txt="点击或扫描二维码对[❤❤广]支付宝打赏" expr="https://qr.alipay.com/aex05979jbnzvi4fs3hx691" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7nyz88j20by0by0sy.jpg" />
+			<item />
+			<item txt="扫描二维码对我的微信打赏" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7oa4khj206b06bt9m.jpg" />
+			<item />
+		</about>
+		<login run="web" url="http://www.missevan.com/member/login?backurl=http%3A%2F%2Fwww.missevan.com%2F" check="login_check" auto="0" />
+    </meta>
+    <main dtype="3" btag="音频，有声漫画">
+        <home>
+            <hots cache="1d" title="有声漫画" method="get" parse="hots_parse" url="http://www.missevan.com/sound/m/46" showImg="1" w="4" h="4" />
+            <updates cache="1d" title="日抓" method="get" parse="updates_parse" url="http://www.missevan.com/sound/m/41" showImg="1" w="4" h="4" />
+            <tags title="更多">
+                <item group="更多有声" title="有声日漫" url="http://www.missevan.com/sound/m?id=33&amp;p=@page" />
+                <item title="有声中漫" url="http://www.missevan.com/sound/m?id=47&amp;p=@page" />
+                <item group="更多日抓" title="耽美日文" url="http://www.missevan.com/sound/m?id=43&amp;p=@page" />
+                <item title="乙女" url="http://www.missevan.com/sound/m?id=44&amp;p=@page" />
+                <item title="一般" url="http://www.missevan.com/sound/m?id=45&amp;p=@page" />
+                <item group="广播剧" title="耽美" url="http://www.missevan.com/sound/m?id=19&amp;p=@page" />
+                <item title="全年龄" url="http://www.missevan.com/sound/m?id=42&amp;p=@page" />
+                <item title="言情" url="http://www.missevan.com/sound/m?id=18&amp;p=@page" />
+                <item group="声优库" title="角色录音" url="http://www.missevan.com/sound/m?id=23&amp;p=@page" />
+                <item title="声优录音" url="http://www.missevan.com/sound/m?id=24&amp;p=@page" />
+                <item title="作品录音" url="http://www.missevan.com/sound/m?id=25&amp;p=@page" />
+                <item group="配音" title="中文" url="http://www.missevan.com/sound/m?id=14&amp;p=@page" />
+                <item title="日文等" url="http://www.missevan.com/sound/m?id=53&amp;p=@page" />
+                <item group="音乐" title="原创音乐" url="http://www.missevan.com/sound/m?id=75&amp;p=@page" />
+                <item title="翻唱" url="http://www.missevan.com/sound/m?id=48&amp;p=@page" />
+                <item title="Vocaloid" url="http://www.missevan.com/sound/m?id=51&amp;p=@page" />
+                <item title="三次元音乐" url="http://www.missevan.com/sound/m?id=21&amp;p=@page" />
+                <item title="演奏创作" url="http://www.missevan.com/sound/m?id=38&amp;p=@page" />
+                <item title="二次元音乐" url="http://www.missevan.com/sound/m?id=20&amp;p=@page" />
+                <item title="剧情歌" url="http://www.missevan.com/sound/m?id=76&amp;p=@page" />				
+                <item title="OP/ED/OST" url="http://www.missevan.com/sound/m?id=50&amp;p=@page" />
+                <item group="娱乐" title="鬼畜" url="http://www.missevan.com/sound/m?id=36&amp;p=@page" />
+                <item title="生活" url="http://www.missevan.com/sound/m?id=37&amp;p=@page" />
+                <item title="cosplay" url="http://www.missevan.com/sound/m?id=34&amp;p=@page" />
+                <item title="相声" url="http://www.missevan.com/sound/m?id=78&amp;p=@page" />
+                <item group="催眠" title="中文" url="http://www.missevan.com/sound/m?id=71&amp;p=@page" />
+                <item title="国外" url="http://www.missevan.com/sound/m?id=72&amp;p=@page" />
+                <item title="无人声" url="http://www.missevan.com/sound/m?id=73&amp;p=@page" />
+                <item title="女性向" url="http://www.missevan.com/sound/m?id=77&amp;p=@page" />
+                <item group="听书" title="轻小说" url="http://www.missevan.com/sound/m?id=16&amp;p=@page" />
+                <item title="网络小说" url="http://www.missevan.com/sound/m?id=17&amp;p=@page" />
+                <item group="电台" title="动漫" url="http://www.missevan.com/sound/m?id=9&amp;p=@page" />
+                <item title="娱乐" url="http://www.missevan.com/sound/m?id=10&amp;p=@page" />
+                <item title="怪谈" url="http://www.missevan.com/sound/m?id=11&amp;p=@page" />
+                <item title="资讯" url="http://www.missevan.com/sound/m?id=12&amp;p=@page" />
+                <item title="情感" url="http://www.missevan.com/sound/m?id=69&amp;p=@page" />
+                <item title="军事" url="http://www.missevan.com/sound/m?id=74&amp;p=@page" />
+                <item title="校园" url="http://www.missevan.com/sound/m?id=79&amp;p=@page" />
+                <item title="游戏" url="http://www.missevan.com/sound/m?id=55&amp;p=@page" />
+                <item group="铃声" title="来电" url="http://www.missevan.com/sound/m?id=66&amp;p=@page" />
+                <item title="短信" url="http://www.missevan.com/sound/m?id=67&amp;p=@page" />
+                <item title="闹铃" url="http://www.missevan.com/sound/m?id=68&amp;p=@page" /></tags>
+        </home>
+        <search cache="1d" method="get" parse="search_parse" url="http://www.missevan.com/sound/getsearch?pagesize=24&amp;kinds=1&amp;s=@key" />
+        <tag cache="1d" method="get" parse="tags_parse1" expr="sound\/m" w="1" h="1" />
+		<book>
+            <book cache="0" method="get" header="cookie;referer" expr="sound\/(player\?id=)?\d+" buildUrl="book_buildUrl1" parseUrl="book_parseUrl1" parse="book_parse1" dtype="4" btype="3"/>//直接音频
+            <book cache="1d" method="get"  expr="album(info)?\/\d+" buildUrl="book_buildUrl2"  parse="book_parse2" dtype="1" btype="3"/>//音单插件里没有，是网站网址转换
+		</book>
+        <section cache="0" method="get" header="cookie;referer" buildUrl="book_buildUrl1" parseUrl="section_parseUrl" parse="section_parse" dtype="1" />
+		</main>
+    <script>
+        <require>
+            <item url="http://sited.noear.org/addin/js/cheerio.js" lib="cheerio" /></require>
+        <code>
+            <![CDATA[
+function login_check(url, cookies) {
+    if (!cookies) {
+        return '0';
+    }
+    if (cookies.indexOf('token=') > 0) {
+        return '1';
+    } else {
+        return '0';
+    }
+}
+
+function urla(u) {
+    var host = "http://www.missevan.com";
+    if (u.indexOf("http") < 0) {
+        if (u.substr(0, 1) != '/') u = host + '/' + u;
+        else u = host + u;
+    }
+    return encodeURI(u);
+}
+
+function hots_parse(url, html) {
+    var $ = cheerio.load(html);
+    var list = [];
+    $('.fc-chooseitem-this_week .vw-right-content-first').each(function() {
+        var item = $(this);
+        var bm = {};
+        bm.name = $(this).find('a').text();
+        bm.url = urla(item.find('a').attr('href'));
+        bm.logo = item.find('img').attr('src');
+        list.push(bm);
+    });
+    $('.fc-chooseitem-this_week .vw-right-content').each(function() {
+        var item = $(this);
+        var bm = {};
+        bm.name = $(this).find('.vw-rank-title').text();
+        bm.url = urla(item.children('a').attr('href'));
+        bm.logo = 'http://image.coolapk.com/apk_logo/2015/0602/408649_1433207393_0184.png';
+        list.push(bm);
+    });
+    return JSON.stringify(list);
+}
+function updates_parse(url, html) {
+    var $ = cheerio.load(html);
+    var list = [];
+    $('.fc-chooseitem-this_week .vw-right-content-first').each(function() {
+        var item = $(this);
+        var bm = {};
+        bm.name = $(this).find('a').text();
+        bm.url = urla(item.find('a').attr('href'));
+        bm.logo = item.find('img').attr('src');
+        bm.newSection = '';
+        bm.updateTime = '';		
+        list.push(bm);
+    });
+    $('.fc-chooseitem-this_week .vw-right-content').each(function() {
+        var item = $(this);
+        var bm = {};
+        bm.name = $(this).find('.vw-rank-title').text();
+        bm.url = urla(item.children('a').attr('href'));
+        bm.logo = 'http://image.coolapk.com/apk_logo/2015/0602/408649_1433207393_0184.png';
+        bm.newSection = '';
+        bm.updateTime = '';		
+        list.push(bm);
+    });
+    return JSON.stringify(list);
+}
+function tags_parse1(url, html) {
+    var $ = cheerio.load(html);
+    var list = [];
+    $('.vw-subcatalog-contant .vw-frontsound-container').each(function() {
+        var item = $(this);
+        var bm = {};
+        bm.name = item.find('.vw-frontsound-title').text();
+        bm.url = urla(item.children('a').attr('href'));
+        bm.logo = item.find('img').attr('data-original');
+        bm.newSection = '';
+        bm.updateTime = '';
+		bm.author = '';
+		bm.status = '';		
+        list.push(bm);
+    });
+    return JSON.stringify(list);
+}
+
+function search_parse(url, html) {
+    var jData = JSON.parse(html);
+    var list = [];
+    for (var i in jData.info.models[0]) {
+        var item = jData.info.models[0][i];
+        if (item.id) {
+            var bm = {};
+            bm.name = item.soundstr;
+            bm.url = 'http://www.missevan.com/sound/' + item.id;
+            bm.logo = item.front_cover;
+
+            bm.btag = "单期节目";
+            list.push(bm);
+        }
+    }
+    return JSON.stringify(list);
+}
+
+function book_buildUrl1(url) {
+return 'http://www.missevan.com/sound/getsound?soundid='+url.match(/\d+/)[0];
+}
+var sga={};
+function book_parseUrl1(url, html) {
+    var id = url.match(/soundid=(\d+)/i)[1];
+    if (html.indexOf('soundurl_128') != -1) {
+        var mp3 = html.match(/soundurl_128\s?"\s?:\s?"\s?(.+?)\s?"/i)[1];
+    } else {
+        if (html.indexOf('soundurl_64') != -1) {
+            var mp3 = html.match(/soundurl_64\s?"\s?:\s?"\s?(.+?)\s?"/i)[1];
+        } else {
+            if (html.indexOf('soundurl_32') != -1) {
+                var mp3 = html.match(/soundurl_32\s?"\s?:\s?"\s?(.+?)\s?"/i)[1];
+            } else {
+                if (html.indexOf('soundurl') != -1) {
+                    var mp3 = html.match(/soundurl\s?"\s?:\s?"\s?(.+?)\s?"/i)[1];
+                }
+            }
+        }
+    }
+	sga.bg=mp3;
+	sga.name= eval("'"+html.match(/soundstr\s?"\s?:\s?"\s?(.+?)\s?"/i)[1]+"'");
+	sga.logo= html.match(/front_cover\s?"\s?:\s?"\s?(.+?)\s?"/i)[1];
+    return 'http://www.missevan.com/sound/getimages?soundid=' + id ;
+}
+function book_parse1(url, html) {
+    var jData = JSON.parse(html);
+    var data = {};
+    data.bg = 'http://static.missevan.com/'+sga.bg;
+    data.name = sga.name;
+    data.logo = sga.logo;
+    data.list = [];
+    for (var i in jData.successVal.images) {
+        var item = jData.successVal.images[i];
+        if (item[0]) {
+            data.list.push({
+				url: 'http://static.missevan.com/mimages/' + item[0],
+                time:item[1]
+            });
+        }
+    }
+	data.list.sort(function(a, b) {
+		return a.time - b.time;
+	});
+    return JSON.stringify(data);
+}
+function book_buildUrl2(url) {
+return 'http://www.missevan.com/albuminfo/'+url.match(/\d+/)[0];
+}
+
+function book_parse2(url, html) {
+    var $ = cheerio.load(html);
+    var data = {};
+    data.name = $('#channel_zone_name').text();
+    data.author = '';
+    data.logo = $('.show_album_cover_image img').attr('src');
+    data.intro = $('.show_album_intro span').eq(-1).text().trim();
+    data.updateTime = '';
+    data.isSectionsAsc = 0;
+    data.sections = [];
+    $('.channel_content .video-title').each(function() {
+        var bm = {
+            name: $(this).text(),
+            url: urla($(this).attr('href'))
+        };
+		data.sections.push(bm);
+    });
+    return JSON.stringify(data);
+}
+function section_parseUrl(url, html) {
+    var id = url.match(/soundid=(\d+)/i)[1];
+    if (html.indexOf('soundurl_128') != -1) {
+        var mp3 = html.match(/soundurl_128\s?"\s?:\s?"\s?(.+?)\s?"/i)[1];
+    } else {
+        if (html.indexOf('soundurl_64') != -1) {
+            var mp3 = html.match(/soundurl_64\s?"\s?:\s?"\s?(.+?)\s?"/i)[1];
+        } else {
+            if (html.indexOf('soundurl_32') != -1) {
+                var mp3 = html.match(/soundurl_32\s?"\s?:\s?"\s?(.+?)\s?"/i)[1];
+            } else {
+                if (html.indexOf('soundurl') != -1) {
+                    var mp3 = html.match(/soundurl\s?"\s?:\s?"\s?(.+?)\s?"/i)[1];
+                }
+            }
+        }
+    }
+	sga.bg=mp3;
+    return 'http://www.missevan.com/sound/getimages?soundid=' + id ;
+}
+
+function section_parse(url, html) {
+    var jData = JSON.parse(html);
+    var data = {};
+
+    data.bg = 'http://static.missevan.com/'+sga.bg;
+    data.list = [];
+
+    for (var i in jData.successVal.images) {
+        var item = jData.successVal.images[i];
+        if (item[0]) {
+            data.list.push({
+				url: 'http://static.missevan.com/mimages/' + item[0],
+                time:item[1]
+            });
+        }
+    }
+	data.list.sort(function(a, b) {
+		return a.time - b.time;
+	});
+    return JSON.stringify(data);
+}
+	]]>
+		</code>
+    </script>
+</sited>

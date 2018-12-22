@@ -1,0 +1,287 @@
+<!--?xml version="1.0" encoding="UTF-8" ?-->
+<sited ver="2" debug="1" engine="29" schema="1">
+	<meta>
+        <ua></ua>
+        <guid></guid>
+        <title>文字游戏</title>
+		<author>Guang</author>
+		<contact>未想好我空着</contact>
+        <intro>[游戏]（献给老狗）2款原创单机迷你文字游戏，会自动保存进度到多多猫本地数据里面但需要多多猫引擎29版本或以上。</intro>
+        <url>http://guang.ka94.com/txtgame/</url>
+        <expr>guang\.ka94\.com\/txtgame\/</expr>
+        <logo></logo>
+        <encode>UTF-8</encode>
+		<reward title="反馈" mail="wistn@qq.com">
+			<item txt="欢迎打赏插件开发者Guang，反馈问题。" />
+			<item />
+			<item txt="点击或扫描二维码对[❤❤广]支付宝打赏" expr="https://qr.alipay.com/aex05979jbnzvi4fs3hx691" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7nyz88j20by0by0sy.jpg" />
+			<item />
+			<item txt="扫描二维码对我的微信打赏" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7oa4khj206b06bt9m.jpg" />
+			<item />
+			<item url="点击本行可联系QQ" expr="http://wpa.qq.com/msggrd?v=3&amp;uin=476375486&amp;site=qq&amp;menu=yes" />
+			<item />
+		</reward>
+	</meta>
+	<main dtype="8" btag="游戏"   showWeb="0">
+		<home>
+			<updates title="原创迷你文字游戏" showImg="0">
+				<item title="生为管理员" url="http://guang.ka94.com/txtgame/guanliyuan" />
+				<item title="佛蚤" url="http://guang.ka94.com/txtgame/fozao" />			
+			</updates>
+		</home>
+		<book>	
+ 		    <book dtype="8" expr="guanliyuan" 
+                  btn="发送"
+                  method="get"  buildUrl="book_buildUrl_sgg" 
+                  parse="book_parse_sgg" update="2"  showWeb="0" buildWeb="book_buildWeb">
+                <item title="开启游戏输入1，后面看情况填1或2，清空游戏进度输入0" />
+                <item />
+                <item  key="n1" />				
+            </book>	
+ 		    <book dtype="8" expr="fozao" 
+                  btn="发送"
+                  method="get"  buildUrl="book_buildUrl_sgf" 
+                  parse="book_parse_sgf" update="2"  showWeb="0" buildWeb="book_buildWeb">
+                <item title="开启游戏输入1，后面看情况填1或2，清空游戏进度输入0" />
+                <item />
+                <item  key="n1" />				
+            </book>				
+       </book>
+	</main>
+	<script>
+		<require>
+			<item url="http://sited.noear.org/addin/js/cheerio.js" lib="cheerio" /></require>
+		<code>
+			<![CDATA[
+function book_buildWeb(url) {
+	return 'http://guang.ka94.com/game/';
+}
+
+
+
+var SiteD = {};			
+function jname() {
+	if (SiteD.usex && SiteD.usex == 1)
+		return '苏妹妹';
+	else
+		return '苏哥哥';
+}
+
+var sgg={};
+var sgf={};
+
+function book_buildUrl_sgg(url, str) {
+
+	var data = JSON.parse(str);
+	sgg.or = data.n1;
+
+	if (SiteD.get) {
+
+		sgg.next_id = SiteD.get("sgg_next_id");
+		sgg.last_t = SiteD.get("sgg_last_t");
+
+	}
+
+	if (sgg.or.match(/\d/) == '0') {
+		sgg.next_id = '-1';
+		sgg.last_t = '-1';
+	} else if (sgg.next_id == '' || sgg.next_id == null) {
+		sgg.i = '1';
+
+		sgg.next_id = sgg.res['1'].s;
+
+		sgg.last_t = sgg.res['1'].t;
+
+	} else {
+		if (sgg.last_t == '1') {
+
+			sgg.i = sgg.next_id;
+		} else if (sgg.last_t == '2') {
+			sgg.i = sgg.res[Number(sgg.res[sgg.next_id].p) + Number(sgg.or.match(/\d/)) - 1].s;
+		}
+		sgg.next_id = sgg.res[sgg.i].s;
+		sgg.last_t = sgg.res[sgg.i].t;
+	}
+
+	return 'http://guang.ka94.com/game/guanliyuan.html';
+}
+
+function book_parse_sgg(url, html) {
+	var list = [];
+
+	var json = JSON.parse(html);
+
+	var d = new Date();
+	var time = d.toString().match(/.+?20\S+\s*(\d+.+)\s*GMT.+/i)[1];
+
+	if (sgg.last_t == "-1") {
+
+		list.push({
+			d : '已清空游戏进度，输入1或2重新开始游戏',
+			t : 1
+		});
+		if (SiteD.get) {
+			SiteD.set("sgg_next_id", "");
+		}
+	} else if (sgg.last_t == '2') {
+
+		list.push({
+
+			d : '[选项]1：' + json[Number(sgg.i) - 1],
+			t : 1,
+			b : 1
+		}, {
+			d : '[选项]2：' + json[Number(sgg.i)],
+			t : 1,
+			b : 1
+
+		});
+		if (SiteD.get) {
+			SiteD.set("sgg_next_id", sgg.next_id);
+			SiteD.set("sgg_last_t", sgg.last_t);
+		}
+	} else {
+		if (sgg.next_id == '0') {
+			list.push({
+				d : jname() + ' ' + time,
+				t : 1,
+				b : 1
+			}, {
+				d : json[Number(sgg.i) - 1] + '[游戏结束，输入1或2重新开始游戏]',
+				t : 1
+			});
+
+			if (SiteD.get) {
+				SiteD.set("sgg_next_id", "");
+			}
+
+		} else {
+			list.push({
+				d : jname() + ' ' + time,
+				t : 1,
+				b : 1
+			}, {
+				d : json[Number(sgg.i) - 1] + '[输入1或2都可进入下一步]',
+				t : 1
+			});
+
+			if (SiteD.get) {
+				SiteD.set("sgg_next_id", sgg.next_id);
+				SiteD.set("sgg_last_t", sgg.last_t);
+			}
+		}
+	}
+	return JSON.stringify(list);
+}
+
+function book_buildUrl_sgf(url, str) {
+
+	var data = JSON.parse(str);
+	sgf.or = data.n1;
+
+	if (SiteD.get) {
+
+		sgf.next_id = SiteD.get("sgf_next_id");
+		sgf.last_t = SiteD.get("sgf_last_t");
+
+	}
+
+	if (sgf.or.match(/\d/) == '0') {
+		sgf.next_id = '-1';
+		sgf.last_t = '-1';
+	} else if (sgf.next_id == '' || sgf.next_id == null) {
+		sgf.i = '1';
+
+		sgf.next_id = sgf.res['1'].s;
+
+		sgf.last_t = sgf.res['1'].t;
+
+	} else {
+		if (sgf.last_t == '1') {
+
+			sgf.i = sgf.next_id;
+		} else if (sgf.last_t == '2') {
+			sgf.i = sgf.res[Number(sgf.res[sgf.next_id].p) + Number(sgf.or.match(/\d/)) - 1].s;
+		}
+		sgf.next_id = sgf.res[sgf.i].s;
+		sgf.last_t = sgf.res[sgf.i].t;
+	}
+
+	return 'http://guang.ka94.com/game/fozao.html';
+}
+
+function book_parse_sgf(url, html) {
+	var list = [];
+
+	var json = JSON.parse(html);
+
+	var d = new Date();
+	var time = d.toString().match(/.+?20\S+\s*(\d+.+)\s*GMT.+/i)[1];
+
+	if (sgf.last_t == "-1") {
+
+		list.push({
+			d : '已清空游戏进度，输入1或2重新开始游戏',
+			t : 1
+		});
+		if (SiteD.get) {
+			SiteD.set("sgf_next_id", "");
+		}
+	} else if (sgf.last_t == '2') {
+
+		list.push({
+
+			d : '[选项]1：' + json[Number(sgf.i) - 1],
+			t : 1,
+			b : 1
+		}, {
+			d : '[选项]2：' + json[Number(sgf.i)],
+			t : 1,
+			b : 1
+
+		});
+		if (SiteD.get) {
+			SiteD.set("sgf_next_id", sgf.next_id);
+			SiteD.set("sgf_last_t", sgf.last_t);
+		}
+	} else {
+		if (sgf.next_id == '0') {
+			list.push({
+				d : jname() + ' ' + time,
+				t : 1,
+				b : 1
+			}, {
+				d : json[Number(sgf.i) - 1] + '[游戏结束，输入1或2重新开始游戏]',
+				t : 1
+			});
+
+			if (SiteD.get) {
+				SiteD.set("sgf_next_id", "");
+			}
+
+		} else {
+			list.push({
+				d : jname() + ' ' + time,
+				t : 1,
+				b : 1
+			}, {
+				d : json[Number(sgf.i) - 1] + '[输入1或2都可进入下一步]',
+				t : 1
+			});
+
+			if (SiteD.get) {
+				SiteD.set("sgf_next_id", sgf.next_id);
+				SiteD.set("sgf_last_t", sgf.last_t);
+			}
+		}
+	}
+	return JSON.stringify(list);
+}
+sgg.res={"1":{"b":"1","p":"0","s":"2","t":"1"},"2":{"b":"2","p":"1","s":"3","t":"1"},"3":{"b":"3","p":"2","s":"4","t":"1"},"4":{"b":"4","p":"3","s":"5","t":"1"},"5":{"b":"5","p":"4","s":"7","t":"2"},"6":{"b":"6","p":"4","s":"8","t":"3"},"7":{"b":"7","p":"5","s":"9","t":"1"},"8":{"b":"8","p":"6","s":"9","t":"1"},"9":{"b":"9","p":"8","s":"10","t":"1"},"10":{"b":"10","p":"9","s":"12","t":"2"},"11":{"b":"11","p":"9","s":"13","t":"3"},"12":{"b":"12","p":"10","s":"0","t":"1"},"13":{"b":"13","p":"11","s":"14","t":"1"},"14":{"b":"14","p":"13","s":"15","t":"1"},"15":{"b":"15","p":"14","s":"16","t":"1"},"16":{"b":"16","p":"15","s":"17","t":"1"},"17":{"b":"17","p":"16","s":"18","t":"1"},"18":{"b":"18","p":"17","s":"20","t":"2"},"19":{"b":"19","p":"17","s":"21","t":"3"},"20":{"b":"20","p":"18","s":"0","t":"1"},"21":{"b":"21","p":"19","s":"22","t":"1"},"22":{"b":"22","p":"21","s":"23","t":"1"},"23":{"b":"23","p":"22","s":"24","t":"1"},"24":{"b":"24","p":"23","s":"25","t":"1"},"25":{"b":"25","p":"24","s":"27","t":"2"},"26":{"b":"26","p":"24","s":"28","t":"3"},"27":{"b":"27","p":"25","s":"0","t":"1"},"28":{"b":"28","p":"26","s":"29","t":"1"},"29":{"b":"29","p":"28","s":"30","t":"1"},"30":{"b":"30","p":"29","s":"31","t":"1"},"31":{"b":"31","p":"30","s":"32","t":"1"},"32":{"b":"32","p":"31","s":"33","t":"1"},"33":{"b":"33","p":"32","s":"34","t":"1"},"34":{"b":"34","p":"33","s":"35","t":"1"},"35":{"b":"35","p":"34","s":"37","t":"2"},"36":{"b":"36","p":"34","s":"38","t":"3"},"37":{"b":"37","p":"35","s":"0","t":"1"},"38":{"b":"38","p":"36","s":"39","t":"1"},"39":{"b":"39","p":"38","s":"40","t":"1"},"40":{"b":"40","p":"39","s":"42","t":"2"},"41":{"b":"41","p":"39","s":"43","t":"3"},"42":{"b":"42","p":"40","s":"0","t":"1"},"43":{"b":"43","p":"41","s":"44","t":"1"},"44":{"b":"44","p":"43","s":"45","t":"1"},"45":{"b":"45","p":"44","s":"46","t":"1"},"46":{"b":"46","p":"45","s":"47","t":"1"},"47":{"b":"47","p":"46","s":"48","t":"1"},"48":{"b":"48","p":"47","s":"50","t":"2"},"49":{"b":"49","p":"47","s":"51","t":"3"},"50":{"b":"50","p":"48","s":"0","t":"1"},"51":{"b":"51","p":"49","s":"52","t":"1"},"52":{"b":"52","p":"51","s":"53","t":"1"},"53":{"b":"53","p":"52","s":"54","t":"1"},"54":{"b":"54","p":"53","s":"56","t":"2"},"55":{"b":"55","p":"53","s":"57","t":"3"},"56":{"b":"56","p":"54","s":"0","t":"1"},"57":{"b":"57","p":"55","s":"58","t":"1"},"58":{"b":"58","p":"57","s":"59","t":"1"},"59":{"b":"59","p":"58","s":"60","t":"1"},"60":{"b":"60","p":"59","s":"61","t":"1"},"61":{"b":"61","p":"60","s":"62","t":"1"},"62":{"b":"62","p":"61","s":"63","t":"1"},"63":{"b":"63","p":"62","s":"64","t":"1"},"64":{"b":"64","p":"63","s":"0","t":"1"}};
+
+sgf.res={"1":{"b":"1","p":"0","s":"2","t":"1"},"2":{"b":"2","p":"1","s":"3","t":"1"},"3":{"b":"3","p":"2","s":"4","t":"1"},"4":{"b":"4","p":"3","s":"6","t":"2"},"5":{"b":"5","p":"3","s":"7","t":"3"},"6":{"b":"6","p":"4","s":"0","t":"1"},"7":{"b":"7","p":"5","s":"8","t":"1"},"8":{"b":"8","p":"7","s":"10","t":"2"},"9":{"b":"9","p":"7","s":"11","t":"3"},"10":{"b":"10","p":"8","s":"0","t":"1"},"11":{"b":"11","p":"9","s":"12","t":"1"},"12":{"b":"12","p":"11","s":"14","t":"2"},"13":{"b":"13","p":"11","s":"15","t":"3"},"14":{"b":"14","p":"12","s":"0","t":"1"},"15":{"b":"15","p":"13","s":"16","t":"1"},"16":{"b":"16","p":"15","s":"18","t":"2"},"17":{"b":"17","p":"15","s":"19","t":"3"},"18":{"b":"18","p":"16","s":"0","t":"1"},"19":{"b":"19","p":"17","s":"20","t":"1"},"20":{"b":"20","p":"19","s":"21","t":"1"},"21":{"b":"21","p":"20","s":"23","t":"2"},"22":{"b":"22","p":"20","s":"24","t":"3"},"23":{"b":"23","p":"21","s":"0","t":"1"},"24":{"b":"24","p":"22","s":"25","t":"1"},"25":{"b":"25","p":"24","s":"0","t":"1"}};
+
+]]>
+		</code>
+    </script>
+</sited>

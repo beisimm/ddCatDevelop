@@ -1,0 +1,140 @@
+<!--?xml version="1.0" encoding="UTF-8" ?-->
+<sited ver="3" debug="1" engine="28" schema="1">
+    <meta>
+		<ua></ua>
+		<guid></guid>
+		<title>然并卵</title>
+		<author>Guang</author>
+		<contact>未想好我空着</contact>
+		<intro>[小工具]用来获取适用于多多猫的头像、计算升级天数</intro>
+		<url>http://guang.ka94.com/ddcattool/</url>
+		<expr>guang\.ka94\.com\/ddcattool</expr>
+		<logo></logo>
+		<encode>UTF-8</encode>
+		<reward title="反馈" mail="wistn@qq.com">
+			<item txt="欢迎打赏插件开发者Guang，反馈问题。" />
+			<item />
+			<item txt="点击或扫描二维码对[❤❤广]支付宝打赏" expr="https://qr.alipay.com/aex05979jbnzvi4fs3hx691" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7nyz88j20by0by0sy.jpg" />
+			<item />
+			<item txt="扫描二维码对我的微信打赏" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7oa4khj206b06bt9m.jpg" />
+			<item />
+			<item url="点击本行可联系QQ" expr="http://wpa.qq.com/msgrd?v=3&amp;uin=476375486&amp;site=qq&amp;menu=yes" />
+			<item />
+		</reward>			
+	</meta>
+    <main dtype="8" btag="小工具" showWeb="0">
+        <home>
+            <updates title="小工具" showImg="0">
+                <item title="获取新浪微博头像" url="http://guang.ka94.com/ddcattool/weibo" />
+                <item title="获取QQ头像" url="http://guang.ka94.com/ddcattool/qq" />	
+				<item title="计算升级天数" url="http://guang.ka94.com/ddcattool/ddcatday" />					
+			</updates>
+		</home>
+        <book>
+            <book dtype="8" expr="\/weibo" btn="获取头像" method="get" buildUrl="book_buildUrl_weibo" parse="book_parse_weibo" update="0" showWeb="0" buildWeb="book_buildWeb" >
+                <item title="长按网址可复制，但要去app设置开启“长按文本复制到剪切板”" />
+                <item />
+                <item  hint="输入微博用户名" key="n1" />
+			</book>
+            <book dtype="8" expr="\/qq" btn="获取头像" method="@null"  parse="book_parse_qq" update="0" showWeb="0" buildWeb="book_buildWeb" >
+                <item title="长按网址可复制，但要去app设置开启“长按文本复制到剪切板”；至于透明头像可进内测群问。" />
+                <item />
+                <item  hint="输入QQ号" key="n1" />
+			</book>
+			<book dtype="8" expr="\/ddcatday" btn="计算升级天数" method="@null"  parse="book_parse_ddcatday" update="2" showWeb="0" buildWeb="book_buildWeb" >
+                <item title="输入多多猫当前活跃天数" />
+                <item   key="n1" />
+				<item />
+                <item title="输入要升到的等级数" />
+                <item  key="n2" />			
+			</book>
+        </book>
+    </main>
+    <script>
+		<require>
+			<item url = "http://sited.noear.org/addin/js/cheerio.js" lib = "cheerio" /></require>
+		<code>
+			<![CDATA[
+function book_buildWeb(url) {
+	return 'http://guang.ka94.com/tool/';
+}
+
+function book_parse_ddcatday(url, str) {
+	var list = [];
+	var data = JSON.parse(str);
+	var ddcatday = data.n1.match(/-?\d+/i)[0];
+	var ulevel = data.n2.match(/\d{1,3}/i)[0];
+	if (ulevel > 120) {
+		return ' [{"d":"输入等级数过大","t":1}]';
+	}
+
+	var uday = ulevel * ulevel + 4 * ulevel;
+	var needday = uday - ddcatday;
+	var vipneedday = Math.ceil((uday - ddcatday) / 2);
+	var svipneedday = Math.ceil((uday - ddcatday) / 3);
+	list.push({
+		d : '当前天数是 ' + ddcatday + ' ，升到第 ' + ulevel + ' 级还需要 ' + needday + ' 天；vip用户还需要 ' + vipneedday + ' 天；svip用户还需要 ' + svipneedday + ' 天。',
+		t : 1
+	});
+	return JSON.stringify(list);
+}
+
+function book_buildUrl_weibo(url, str) {
+	var data = JSON.parse(str);
+	return "http://s.weibo.com/user/" + data.n1;
+}
+
+function book_parse_weibo(url, html) {
+	var list = [];
+	var result = html.match(/pl_personlist.+?pl_personlist.+?(<div.+?list_person.+?)<\/script>/i)[1];
+	var items = result.match(/list_person.+?title.+?src.+?http.+?"/gi);
+
+	items.forEach(function (item) {
+		var title = eval("'" + item.match(/title.+?\\['"](.+?)\\['"]/i)[1].trim() + "'");
+		var jpg = item.match(/src.+?\\['"](.+?)\\['"]/i)[1].trim().replace(/\\/g, '');
+
+		list.push({
+			d: title,
+			t: 1,
+			b: 1,
+			url: jpg
+		}, {
+			d: jpg,
+			t: 1,
+			u: 1,
+			url: jpg
+		}, {
+			d: jpg,
+			t: 10,
+			w: 100,
+			h: 100,
+			url: jpg
+		}, {
+			d: '',
+			t: 1,
+		});
+	});
+	return JSON.stringify(list);
+}
+function book_parse_qq(url, str) {
+	var list = [];
+	var data = JSON.parse(str);
+
+	list.push({
+		d : 'http://q.qlogo.cn/headimg_dl?dst_uin=' + data.n1 + '&spec=100',
+		t : 1,
+		u : 1,
+		url: 'http://q.qlogo.cn/headimg_dl?dst_uin=' + data.n1 + '&spec=100'
+	}, {
+		d : 'http://q.qlogo.cn/headimg_dl?dst_uin=' + data.n1 + '&spec=100',
+		t : 10,
+		w : 100,
+		h : 100,
+		url : 'http://q.qlogo.cn/headimg_dl?dst_uin=' + data.n1 + '&spec=100'
+	});
+	return JSON.stringify(list);
+}
+]]>
+		</code>
+    </script>
+</sited>

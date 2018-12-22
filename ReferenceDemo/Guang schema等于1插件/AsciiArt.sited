@@ -1,0 +1,133 @@
+<!--?xml version="1.0" encoding="UTF-8" ?-->
+<sited ver="1" debug="1"  engine="30" schema="1">
+    <meta>
+		<ua></ua>
+		<guid></guid>
+		<title>AsciiArt</title>
+		<intro>[颜文字]Ascii Art Dictionary(调整字体大小/间距观看，可搜索章节标题单词)2316 Keywords Collections of Ascii Art pictures by various artists,4701348 bytes pure Ascii.</intro>
+		<author>Guang</author>
+		<contact>未想好我空着</contact>
+		<url>http://www.ascii-art.de/</url>
+		<expr>ascii-art\.de</expr>
+		<logo>http://www.ascii-art.de/favicon.ico</logo>
+		<encode>ISO-8859-1</encode>
+		<about title="反馈" mail="wistn@qq.com">
+			<item url="我邮箱wistn@qq.com" />
+			<item />
+			<item txt="欢迎打赏插件开发者Guang，反馈问题。" />	
+			<item txt="点击或扫描二维码对[❤❤广]支付宝打赏" expr="https://qr.alipay.com/aex05979jbnzvi4fs3hx691" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7nyz88j20by0by0sy.jpg" />
+			<item />
+			<item txt="扫描二维码对我的微信打赏" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7oa4khj206b06bt9m.jpg" />
+			<item />
+		</about>
+	</meta>
+	<main dtype="2" btag="颜文字" durl="http://www.ascii-art.de/ascii/index.shtml">
+		<home>		
+            <updates cache="1d" showImg="0" title="全部" method="get"  parse="updates_parse" url="http://www.ascii-art.de/ascii/index.shtml" />
+		</home>
+		<search cache="1d" method="get" parse="search_parse" url="http://www.ascii-art.de/ascii/index1.shtml?@key" />
+		<book>
+			<book cache="1d" method="get" parse="book_parse1" expr="\.shtml" dtype="2"/>
+			<book cache="1d" method="get" parse="book_parse2" expr="\.txt" dtype="6"/>
+		</book>
+        <section cache="1"  method="get"  parse="section_parse" />	
+    </main>
+    <script>
+	    <require>
+			<item url="http://sited.noear.org/addin/js/cheerio.js" lib="cheerio" />
+		</require>
+		<code>
+        <![CDATA[
+function urla(u) {
+	var host = "http://www.ascii-art.de/ascii";
+	if (u.indexOf("http") < 0) {
+		if (u.substr(0, 1) != '/')
+			u = host + '/' + u;
+		else
+			u = host + u;
+	}
+	return encodeURI(u);
+}
+
+function updates_parse(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+	$('pre').eq(-2).children('a').each(function () {
+		var item = $(this);
+		var bm = {};
+		bm.name = item.text()+'开头';
+		bm.url = urla(item.attr('href'));
+		bm.logo = '';
+		bm.newSection = '';
+		bm.updateTime = '';
+		list.push(bm);
+	});
+	return JSON.stringify(list);
+}
+
+function search_parse(url, html) {
+
+	var list = [];
+	var key = url.match(/\?(.+)/)[1];
+	var regex = new RegExp('href=.+?txt.+?>' + key + '.*?<', 'gi');
+	var array = html.match(regex).slice(0,10);
+	var len = array.length;
+	for (i = 0; i < len; i++) {
+		var bm = {};
+		bm.name = array[i].match(/>(.+)</)[1];
+		bm.url = urla(array[i].match(/href=['"](.+?)['"]>/i)[1]);
+		bm.logo = 'http://www.ascii-art.de/favicon.ico';
+		bm.author = '';
+		bm.status = '';
+		bm.newSection = '';
+		bm.updateTime = '';
+		bm.btag = "颜文字";
+		list.push(bm);
+	}
+	return JSON.stringify(list);
+}
+
+function book_parse1(url, html) {
+	var $ = cheerio.load(html);
+	var data = {};
+	data.name = $('.highjust a').eq(0).text()+'开头';
+	data.author ='';
+	data.logo = 'http://www.ascii-art.de/favicon.ico';
+	data.intro ='';
+	data.updateTime = "";
+	data.isSectionsAsc = 1;
+	data.sections = [];
+	$('.highjust a').slice(1,-1).each(function () {
+		var item = $(this);
+		var sm = {
+			name: item.text(),
+			url: urla(item.attr('href'))
+		};
+		data.sections.push(sm);
+	});	
+	return JSON.stringify(data);
+}
+
+function section_parse(url, html) {	
+	list = [];
+	list.push({
+		d: html,
+		t: 1
+	});
+	return JSON.stringify(list);
+}
+function book_parse2(url, html) {
+	var data = {};
+	data.name = url.match(/\/([^\/]+)\.txt/i)[1];
+	data.list = [];
+	data.list.push({
+		d: html,
+		t: 1
+	});
+	return JSON.stringify(data);
+}
+	
+    ]]>
+		</code>
+    </script>
+</sited>

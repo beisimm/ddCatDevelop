@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<!-- saved from url=(0167)http://ddcat.ka94.com/%E6%96%B0%E6%89%8B%E6%8F%92%E4%BB%B6%E8%80%85%E5%BF%85%E7%9C%8B%E5%BC%80%E5%8F%91%E6%96%87%E6%A1%A3%E6%89%80%E6%B2%A1%E8%AF%B4%E7%9A%84%E4%BA%8B/ -->
+<html lang="zh-CN" class="js"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="profile" href="http://gmpg.org/xfn/11">
+		<script>(function(html){html.className = html.className.replace(/\bno-js\b/,'js')})(document.documentElement);</script>
+<title>[新手插件者必看]开发文档所没说的事20170914 – 多多猫第三方帮助中心</title>
+<link rel="dns-prefetch" href="http://s0.wp.com/">
+<link rel="dns-prefetch" href="http://secure.gravatar.com/">
+<link rel="dns-prefetch" href="http://s.w.org/">
+<link rel="alternate" type="application/rss+xml" title="多多猫第三方帮助中心 » Feed" href="http://ddcat.ka94.com/feed/">
+<link rel="alternate" type="application/rss+xml" title="多多猫第三方帮助中心 » 评论Feed" href="http://ddcat.ka94.com/comments/feed/">
+<link rel="alternate" type="application/rss+xml" title="多多猫第三方帮助中心 » [新手插件者必看]开发文档所没说的事20170914评论Feed" href="http://ddcat.ka94.com/%e6%96%b0%e6%89%8b%e6%8f%92%e4%bb%b6%e8%80%85%e5%bf%85%e7%9c%8b%e5%bc%80%e5%8f%91%e6%96%87%e6%a1%a3%e6%89%80%e6%b2%a1%e8%af%b4%e7%9a%84%e4%ba%8b/feed/">
+		<script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/11\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/11\/svg\/","svgExt":".svg","source":{"concatemoji":"http:\/\/ddcat.ka94.com\/wp-includes\/js\/wp-emoji-release.min.js?ver=5.0.2"}};
+			!function(a,b,c){function d(a,b){var c=String.fromCharCode;l.clearRect(0,0,k.width,k.height),l.fillText(c.apply(this,a),0,0);var d=k.toDataURL();l.clearRect(0,0,k.width,k.height),l.fillText(c.apply(this,b),0,0);var e=k.toDataURL();return d===e}function e(a){var b;if(!l||!l.fillText)return!1;switch(l.textBaseline="top",l.font="600 32px Arial",a){case"flag":return!(b=d([55356,56826,55356,56819],[55356,56826,8203,55356,56819]))&&(b=d([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]),!b);case"emoji":return b=d([55358,56760,9792,65039],[55358,56760,8203,9792,65039]),!b}return!1}function f(a){var c=b.createElement("script");c.src=a,c.defer=c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var g,h,i,j,k=b.createElement("canvas"),l=k.getContext&&k.getContext("2d");for(j=Array("flag","emoji"),c.supports={everything:!0,everythingExceptFlag:!0},i=0;i<j.length;i++)c.supports[j[i]]=e(j[i]),c.supports.everything=c.supports.everything&&c.supports[j[i]],"flag"!==j[i]&&(c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&c.supports[j[i]]);c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&!c.supports.flag,c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.everything||(h=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",h,!1),a.addEventListener("load",h,!1)):(a.attachEvent("onload",h),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),g=c.source||{},g.concatemoji?f(g.concatemoji):g.wpemoji&&g.twemoji&&(f(g.twemoji),f(g.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script><script src="./[新手插件者必看]开发文档所没说的事20170914 – 多多猫第三方帮助中心_files/wp-emoji-release.min.js" type="text/javascript" defer=""></script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+<link rel="stylesheet" id="twentysixteen-jetpack-css" href="./[新手插件者必看]开发文档所没说的事20170914 – 多多猫第三方帮助中心_files/twentysixteen.css" type="text/css" media="all">
+<link rel="stylesheet" id="wp-block-library-css" href="./[新手插件者必看]开发文档所没说的事20170914 – 多多猫第三方帮助中心_files/style.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="wp-block-library-theme-css" href="./[新手插件者必看]开发文档所没说的事20170914 – 多多猫第三方帮助中心_files/theme.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="genericons-css" href="./[新手插件者必看]开发文档所没说的事20170914 – 多多猫第三方帮助中心_files/genericons.css" type="text/css" media="all">
+<link rel="stylesheet" id="twentysixteen-style-css" href="./[新手插件者必看]开发文档所没说的事20170914 – 多多猫第三方帮助中心_files/style.css" type="text/css" media="all">
+<style id="twentysixteen-style-inline-css" type="text/css">
+	/* Color Scheme */
+
+	/* Background Color */
+	body {
+		background-color: #262626;
+	}
+
+	/* Page Background Color */
+	.site {
+		background-color: #1a1a1a;
+	}
+
+	mark,
+	ins,
+	button,
+	button[disabled]:hover,
+	button[disabled]:focus,
+	input[type="button"],
+	input[type="button"][disabled]:hover,
+	input[type="button"][disabled]:focus,
+	input[type="reset"],
+	input[type="reset"][disabled]:hover,
+	input[type="reset"][disabled]:focus,
+	input[type="submit"],
+	input[type="submit"][disabled]:hover,
+	input[type="submit"][disabled]:focus,
+	.menu-toggle.toggled-on,
+	.menu-toggle.toggled-on:hover,
+	.menu-toggle.toggled-on:focus,
+	.pagination .prev,
+	.pagination .next,
+	.pagination .prev:hover,
+	.pagination .prev:focus,
+	.pagination .next:hover,
+	.pagination .next:focus,
+	.pagination .nav-links:before,
+	.pagination .nav-links:after,
+	.widget_calendar tbody a,
+	.widget_calendar tbody a:hover,
+	.widget_calendar tbody a:focus,
+	.page-links a,
+	.page-links a:hover,
+	.page-links a:focus {
+		color: #1a1a1a;
+	}
+
+	/* Link Color */
+	.menu-toggle:hover,
+	.menu-toggle:focus,
+	a,
+	.main-navigation a:hover,
+	.main-navigation a:focus,
+	.dropdown-toggle:hover,
+	.dropdown-toggle:focus,
+	.social-navigation a:hover:before,
+	.social-navigation a:focus:before,
+	.post-navigation a:hover .post-title,
+	.post-navigation a:focus .post-title,
+	.tagcloud a:hover,
+	.tagcloud a:focus,
+	.site-branding .site-title a:hover,
+	.site-branding .site-title a:focus,
+	.entry-title a:hover,
+	.entry-title a:focus,
+	.entry-footer a:hover,
+	.entry-footer a:focus,
+	.comment-metadata a:hover,
+	.comment-metadata a:focus,
+	.pingback .comment-edit-link:hover,
+	.pingback .comment-edit-link:focus,
+	.comment-reply-link,
+	.comment-reply-link:hover,
+	.comment-reply-link:focus,
+	.required,
+	.site-info a:hover,
+	.site-info a:focus {
+		color: #9adffd;
+	}
+
+	mark,
+	ins,
+	button:hover,
+	button:focus,
+	input[type="button"]:hover,
+	input[type="button"]:focus,
+	input[type="reset"]:hover,
+	input[type="reset"]:focus,
+	input[type="submit"]:hover,
+	input[type="submit"]:focus,
+	.pagination .prev:hover,
+	.pagination .prev:focus,
+	.pagination .next:hover,
+	.pagination .next:focus,
+	.widget_calendar tbody a,
+	.page-links a:hover,
+	.page-links a:focus {
+		background-color: #9adffd;
+	}
+
+	input[type="date"]:focus,
+	input[type="time"]:focus,
+	input[type="datetime-local"]:focus,
+	input[type="week"]:focus,
+	input[type="month"]:focus,
+	input[type="text"]:focus,
+	input[type="email"]:focus,
+	input[type="url"]:focus,
+	input[type="password"]:focus,
+	input[type="search"]:focus,
+	input[type="tel"]:focus,
+	input[type="number"]:focus,
+	textarea:focus,
+	.tagcloud a:hover,
+	.tagcloud a:focus,
+	.menu-toggle:hover,
+	.menu-toggle:focus {
+		border-color: #9adffd;
+	}
+
+	/* Main Text Color */
+	body,
+	blockquote cite,
+	blockquote small,
+	.main-navigation a,
+	.menu-toggle,
+	.dropdown-toggle,
+	.social-navigation a,
+	.post-navigation a,
+	.pagination a:hover,
+	.pagination a:focus,
+	.widget-title a,
+	.site-branding .site-title a,
+	.entry-title a,
+	.page-links > .page-links-title,
+	.comment-author,
+	.comment-reply-title small a:hover,
+	.comment-reply-title small a:focus {
+		color: #e5e5e5;
+	}
+
+	blockquote,
+	.menu-toggle.toggled-on,
+	.menu-toggle.toggled-on:hover,
+	.menu-toggle.toggled-on:focus,
+	.post-navigation,
+	.post-navigation div + div,
+	.pagination,
+	.widget,
+	.page-header,
+	.page-links a,
+	.comments-title,
+	.comment-reply-title {
+		border-color: #e5e5e5;
+	}
+
+	button,
+	button[disabled]:hover,
+	button[disabled]:focus,
+	input[type="button"],
+	input[type="button"][disabled]:hover,
+	input[type="button"][disabled]:focus,
+	input[type="reset"],
+	input[type="reset"][disabled]:hover,
+	input[type="reset"][disabled]:focus,
+	input[type="submit"],
+	input[type="submit"][disabled]:hover,
+	input[type="submit"][disabled]:focus,
+	.menu-toggle.toggled-on,
+	.menu-toggle.toggled-on:hover,
+	.menu-toggle.toggled-on:focus,
+	.pagination:before,
+	.pagination:after,
+	.pagination .prev,
+	.pagination .next,
+	.page-links a {
+		background-color: #e5e5e5;
+	}
+
+	/* Secondary Text Color */
+
+	/**
+	 * IE8 and earlier will drop any block with CSS3 selectors.
+	 * Do not combine these styles with the next block.
+	 */
+	body:not(.search-results) .entry-summary {
+		color: #c1c1c1;
+	}
+
+	blockquote,
+	.post-password-form label,
+	a:hover,
+	a:focus,
+	a:active,
+	.post-navigation .meta-nav,
+	.image-navigation,
+	.comment-navigation,
+	.widget_recent_entries .post-date,
+	.widget_rss .rss-date,
+	.widget_rss cite,
+	.site-description,
+	.author-bio,
+	.entry-footer,
+	.entry-footer a,
+	.sticky-post,
+	.taxonomy-description,
+	.entry-caption,
+	.comment-metadata,
+	.pingback .edit-link,
+	.comment-metadata a,
+	.pingback .comment-edit-link,
+	.comment-form label,
+	.comment-notes,
+	.comment-awaiting-moderation,
+	.logged-in-as,
+	.form-allowed-tags,
+	.site-info,
+	.site-info a,
+	.wp-caption .wp-caption-text,
+	.gallery-caption,
+	.widecolumn label,
+	.widecolumn .mu_register label {
+		color: #c1c1c1;
+	}
+
+	.widget_calendar tbody a:hover,
+	.widget_calendar tbody a:focus {
+		background-color: #c1c1c1;
+	}
+
+	/* Border Color */
+	fieldset,
+	pre,
+	abbr,
+	acronym,
+	table,
+	th,
+	td,
+	input[type="date"],
+	input[type="time"],
+	input[type="datetime-local"],
+	input[type="week"],
+	input[type="month"],
+	input[type="text"],
+	input[type="email"],
+	input[type="url"],
+	input[type="password"],
+	input[type="search"],
+	input[type="tel"],
+	input[type="number"],
+	textarea,
+	.main-navigation li,
+	.main-navigation .primary-menu,
+	.menu-toggle,
+	.dropdown-toggle:after,
+	.social-navigation a,
+	.image-navigation,
+	.comment-navigation,
+	.tagcloud a,
+	.entry-content,
+	.entry-summary,
+	.page-links a,
+	.page-links > span,
+	.comment-list article,
+	.comment-list .pingback,
+	.comment-list .trackback,
+	.comment-reply-link,
+	.no-comments,
+	.widecolumn .mu_register .mu_alert {
+		border-color: #e5e5e5; /* Fallback for IE7 and IE8 */
+		border-color: rgba( 229, 229, 229, 0.2);
+	}
+
+	hr,
+	code {
+		background-color: #e5e5e5; /* Fallback for IE7 and IE8 */
+		background-color: rgba( 229, 229, 229, 0.2);
+	}
+
+	@media screen and (min-width: 56.875em) {
+		.main-navigation li:hover > a,
+		.main-navigation li.focus > a {
+			color: #9adffd;
+		}
+
+		.main-navigation ul ul,
+		.main-navigation ul ul li {
+			border-color: rgba( 229, 229, 229, 0.2);
+		}
+
+		.main-navigation ul ul:before {
+			border-top-color: rgba( 229, 229, 229, 0.2);
+			border-bottom-color: rgba( 229, 229, 229, 0.2);
+		}
+
+		.main-navigation ul ul li {
+			background-color: #1a1a1a;
+		}
+
+		.main-navigation ul ul:after {
+			border-top-color: #1a1a1a;
+			border-bottom-color: #1a1a1a;
+		}
+	}
+
+</style>
+<link rel="stylesheet" id="twentysixteen-block-style-css" href="./[新手插件者必看]开发文档所没说的事20170914 – 多多猫第三方帮助中心_files/blocks.css" type="text/css" media="all">
+<!--[if lt IE 10]>
+<link rel='stylesheet' id='twentysixteen-ie-css'  href='http://ddcat.ka94.com/wp-content/themes/twentysixteen/css/ie.css?ver=20160816' type='text/css' media='all' />
+<![endif]-->
+<!--[if lt IE 9]>
+<link rel='stylesheet' id='twentysixteen-ie8-css'  href='http://ddcat.ka94.com/wp-content/themes/twentysixteen/css/ie8.css?ver=20160816' type='text/css' media='all' />
+<![endif]-->
+<!--[if lt IE 8]>
+<link rel='stylesheet' id='twentysixteen-ie7-css'  href='http://ddcat.ka94.com/wp-content/themes/twentysixteen/css/ie7.css?ver=20160816' type='text/css' media='all' />
+<![endif]-->
+<link rel="stylesheet" id="jetpack_css-css" href="./[新手插件者必看]开发文档所没说的事20170914 – 多多猫第三方帮助中心_files/jetpack.css" type="text/css" media="all">
+<script type="text/javascript" src="./[新手插件者必看]开发文档所没说的事20170914 – 多多猫第三方帮助中心_files/jquery.js"></script>
+<script type="text/javascript" src="./[新手插件者必看]开发文档所没说的事20170914 – 多多猫第三方帮助中心_files/jquery-migrate.min.js"></script>
+<!--[if lt IE 9]>
+<script type='text/javascript' src='http://ddcat.ka94.com/wp-content/themes/twentysixteen/js/html5.js?ver=3.7.3'></script>
+<![endif]-->
+<link rel="https://api.w.org/" href="http://ddcat.ka94.com/wp-json/">
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://ddcat.ka94.com/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://ddcat.ka94.com/wp-includes/wlwmanifest.xml"> 
+<link rel="prev" title="修改密码" href="http://ddcat.ka94.com/%e4%bf%ae%e6%94%b9%e5%af%86%e7%a0%81/">
+<meta name="generator" content="WordPress 5.0.2">
+<link rel="canonical" href="http://ddcat.ka94.com/%e6%96%b0%e6%89%8b%e6%8f%92%e4%bb%b6%e8%80%85%e5%bf%85%e7%9c%8b%e5%bc%80%e5%8f%91%e6%96%87%e6%a1%a3%e6%89%80%e6%b2%a1%e8%af%b4%e7%9a%84%e4%ba%8b/">
+<link rel="shortlink" href="https://wp.me/pawEif-aG">
+<link rel="alternate" type="application/json+oembed" href="http://ddcat.ka94.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fddcat.ka94.com%2F%25e6%2596%25b0%25e6%2589%258b%25e6%258f%2592%25e4%25bb%25b6%25e8%2580%2585%25e5%25bf%2585%25e7%259c%258b%25e5%25bc%2580%25e5%258f%2591%25e6%2596%2587%25e6%25a1%25a3%25e6%2589%2580%25e6%25b2%25a1%25e8%25af%25b4%25e7%259a%2584%25e4%25ba%258b%2F">
+<link rel="alternate" type="text/xml+oembed" href="http://ddcat.ka94.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fddcat.ka94.com%2F%25e6%2596%25b0%25e6%2589%258b%25e6%258f%2592%25e4%25bb%25b6%25e8%2580%2585%25e5%25bf%2585%25e7%259c%258b%25e5%25bc%2580%25e5%258f%2591%25e6%2596%2587%25e6%25a1%25a3%25e6%2589%2580%25e6%25b2%25a1%25e8%25af%25b4%25e7%259a%2584%25e4%25ba%258b%2F&amp;format=xml">
+
+<link rel="dns-prefetch" href="http://v0.wordpress.com/">
+<link rel="dns-prefetch" href="http://c0.wp.com/">
+<style type="text/css">img#wpstats{display:none}</style>		<style type="text/css">.recentcomments a{display:inline !important;padding:0 !important;margin:0 !important;}</style>
+		
+<!-- Jetpack Open Graph Tags -->
+<meta property="og:type" content="article">
+<meta property="og:title" content="[新手插件者必看]开发文档所没说的事20170914">
+<meta property="og:url" content="http://ddcat.ka94.com/%e6%96%b0%e6%89%8b%e6%8f%92%e4%bb%b6%e8%80%85%e5%bf%85%e7%9c%8b%e5%bc%80%e5%8f%91%e6%96%87%e6%a1%a3%e6%89%80%e6%b2%a1%e8%af%b4%e7%9a%84%e4%ba%8b/">
+<meta property="og:description" content="1[expr].用户在app正式版首页输入一本漫画的网页网址打开，app会检查官方插件中心上面所有插件的met…">
+<meta property="article:published_time" content="2017-08-05T16:25:09+00:00">
+<meta property="article:modified_time" content="2017-08-05T16:25:09+00:00">
+<meta property="og:site_name" content="多多猫第三方帮助中心">
+<meta property="og:image" content="http://ddcat.ka94.com/wp-content/uploads/2017/01/cropped-327611413a867293a2a89c5-2.jpg">
+<meta property="og:image:width" content="512">
+<meta property="og:image:height" content="512">
+<meta property="og:locale" content="zh_CN">
+<meta name="twitter:text:title" content="[新手插件者必看]开发文档所没说的事20170914">
+<meta name="twitter:image" content="http://ddcat.ka94.com/wp-content/uploads/2017/01/cropped-327611413a867293a2a89c5-2-270x270.jpg">
+<meta name="twitter:card" content="summary">
+
+<!-- End Jetpack Open Graph Tags -->
+<link rel="icon" href="http://ddcat.ka94.com/wp-content/uploads/2017/01/cropped-327611413a867293a2a89c5-2-32x32.jpg" sizes="32x32">
+<link rel="icon" href="http://ddcat.ka94.com/wp-content/uploads/2017/01/cropped-327611413a867293a2a89c5-2-192x192.jpg" sizes="192x192">
+<link rel="apple-touch-icon-precomposed" href="http://ddcat.ka94.com/wp-content/uploads/2017/01/cropped-327611413a867293a2a89c5-2-180x180.jpg">
+<meta name="msapplication-TileImage" content="http://ddcat.ka94.com/wp-content/uploads/2017/01/cropped-327611413a867293a2a89c5-2-270x270.jpg">
+</head>
+
+<body class="post-template-default single single-post postid-662 single-format-standard wp-embed-responsive group-blog">
+<div id="page" class="site">
+	<div class="site-inner">
+		<a class="skip-link screen-reader-text" href="http://ddcat.ka94.com/%E6%96%B0%E6%89%8B%E6%8F%92%E4%BB%B6%E8%80%85%E5%BF%85%E7%9C%8B%E5%BC%80%E5%8F%91%E6%96%87%E6%A1%A3%E6%89%80%E6%B2%A1%E8%AF%B4%E7%9A%84%E4%BA%8B/#content">跳至内容</a>
+
+		<header id="masthead" class="site-header" role="banner">
+			<div class="site-header-main">
+				<div class="site-branding">
+					
+											<p class="site-title"><a href="http://ddcat.ka94.com/" rel="home">多多猫第三方帮助中心</a></p>
+											<p class="site-description">已更新新链接</p>
+									</div><!-- .site-branding -->
+
+							</div><!-- .site-header-main -->
+
+					</header><!-- .site-header -->
+
+		<div id="content" class="site-content">
+
+<div id="primary" class="content-area">
+	<main id="main" class="site-main" role="main">
+		
+<article id="post-662" class="post-662 post type-post status-publish format-standard hentry category-develop category-uncategorized tag-sited tag-62">
+	<header class="entry-header">
+		<h1 class="entry-title">[新手插件者必看]开发文档所没说的事20170914</h1>	</header><!-- .entry-header -->
+
+	
+	
+	<div class="entry-content">
+		<p><!--StartFragment --></p>
+<div>
+<p>1[expr].用户在app正式版首页输入一本漫画的网页网址打开，app会检查官方插件中心上面所有插件的meta节点的expr是否和它匹配，然后app进入匹配的插件界面或者原网页界面，前者的话还会瞬间检查这个插件的book节点的expr是否和它匹配，是的话app就直接进入book节点，否则就进入home节点。<br>
+2[find()].容器引用的cheerio库，找子元素只能用children()不能用find()。<br>
+3[GUID].GUID是插件的管理权限，同一个guid 的插件，是替换相同的guid的旧的插件，生成网站有例如http://sited.noear.org/tool/</p>
+<p>4[http请求].（SiteD引擎）每次的一个http请求的过程：<br>
+4.1.确定url (buildUrl)<br>
+4.2.确定参数（buildArgs）等一些信息(buildHeader)<br>
+4.3.http<br>
+4.4.解析（parseUrl? -&gt; parse）</p>
+<p>5[private].private=”1″效果：两条街不可见，收藏别人不可见，不可通过二维码分享出去。<br>
+6[search节点].search节点的url用了@page也只有第一页结果，是app限制，防止多站搜索结果过多。</p>
+<p>7[sections].截止v35引擎，附加节点sections节点需要先进入buildUrl才能进入parseUrl;book存储的数据在sections的buildUrl读取不了，需要在后面的parseUrl或parse环节读取。</p>
+<p>8[ua].在电脑写视频插件解析网站时ua最好用手机（app不支持flash格式），推荐电脑浏览器用Smart Header插件模拟ua。插件每层节点都可以单独设置ua，不写则自动继承父代。</p>
+<p>9[编码].如果原网站编码是GBK，插件&lt;encode&gt;写GB18030，以更好兼容全平台设备。<br>
+10[视频].视频插件的采用解码格式：mp4优于ogg优于webm，(苹果ios不支持webm)</p>
+<p>11[输出内容].updates节点的newSection在多多猫app界面和name可以同时出现共存在同一行。<br>
+tag/search节点的author、newSection 、updateTime在app界面排斥抢占用同一行（只能按优先度updateTime&gt;author&gt;newSection显示其中一项），status 单独占用下一行。<br>
+search节点的status在app界面和[by XX插件]可以同时出现共存在同一行。</p>
+<p>12[调试记录].开启开发者模式：进入安卓多多猫app的设置-高级设置。长按标题的“高级设置”几个字，最底部多出一次性出现的开关。在多多猫目录里/sdcard/Android/data/org.noear.ddcat/files可以找到log运行日志、error日志等。在插件的function里可以写print(“字符串”)、print(函数)，在app相应节点执行时候会显示出字符串或函数值，在刚才多多猫目录里可以找到print过的日志。</p>
+<p>13[域名变化].SiteD引擎开发者说如果插件的域名发生了变化：：<br>
+13.1.千万不要改了插件的site.url；<br>
+13.1.1.在main节点增加 durl 为实际的url<br>
+13.1.2.在site.expr 里同时匹配新旧两个域名的网址<br>
+13.2.改好插件后；在book.buildUrl，对url做一下域名替换。这样做：1.为插件兼容性升级；2.同地兼容用户之前已收藏的漫画！！！</p>
+<p>14[注释].非js区域注释用&lt;!– 头部结束 –&gt; js区域里面不能//注释，可以/* */注释，上架时少保留注释和print()，多平台兼容性不好。<br>
+15[转义].xml、js的特定字符记得转义。</p>
+</div>
+	</div><!-- .entry-content -->
+
+	<footer class="entry-footer">
+		<span class="byline"><span class="author vcard"><img alt="" src="./[新手插件者必看]开发文档所没说的事20170914 – 多多猫第三方帮助中心_files/saved_resource" srcset="http://0.gravatar.com/avatar/?s=98&amp;d=mm&amp;r=g 2x" class="avatar avatar-49 photo avatar-default" height="49" width="49"><span class="screen-reader-text">作者 </span> <a class="url fn n" href="http://ddcat.ka94.com/author/guang/">guang</a></span></span><span class="posted-on"><span class="screen-reader-text">发布于 </span><a href="http://ddcat.ka94.com/%e6%96%b0%e6%89%8b%e6%8f%92%e4%bb%b6%e8%80%85%e5%bf%85%e7%9c%8b%e5%bc%80%e5%8f%91%e6%96%87%e6%a1%a3%e6%89%80%e6%b2%a1%e8%af%b4%e7%9a%84%e4%ba%8b/" rel="bookmark"><time class="entry-date published updated" datetime="2017-08-06T00:25:09+00:00">2017年8月6日</time></a></span><span class="cat-links"><span class="screen-reader-text">分类 </span><a href="http://ddcat.ka94.com/category/develop/" rel="category tag">开发</a>、<a href="http://ddcat.ka94.com/category/uncategorized/" rel="category tag">未分类</a></span><span class="tags-links"><span class="screen-reader-text">标签 </span><a href="http://ddcat.ka94.com/tag/sited/" rel="tag">sited</a>、<a href="http://ddcat.ka94.com/tag/%e6%8f%92%e4%bb%b6/" rel="tag">插件</a></span>			</footer><!-- .entry-footer -->
+</article><!-- #post-## -->
+
+<div id="comments" class="comments-area">
+
+	
+	
+		<div id="respond" class="comment-respond">
+		<h2 id="reply-title" class="comment-reply-title">发表评论 <small><a rel="nofollow" id="cancel-comment-reply-link" href="http://ddcat.ka94.com/%E6%96%B0%E6%89%8B%E6%8F%92%E4%BB%B6%E8%80%85%E5%BF%85%E7%9C%8B%E5%BC%80%E5%8F%91%E6%96%87%E6%A1%A3%E6%89%80%E6%B2%A1%E8%AF%B4%E7%9A%84%E4%BA%8B/#respond" style="display:none;">取消回复</a></small></h2>			<form action="http://ddcat.ka94.com/wp-comments-post.php" method="post" id="commentform" class="comment-form" novalidate="">
+				<p class="comment-notes"><span id="email-notes">电子邮件地址不会被公开。</span> 必填项已用<span class="required">*</span>标注</p><p class="comment-form-comment"><label for="comment">评论</label> <textarea id="comment" name="comment" cols="45" rows="8" maxlength="65525" required="required"></textarea></p><p class="comment-form-author"><label for="author">姓名 <span class="required">*</span></label> <input id="author" name="author" type="text" value="" size="30" maxlength="245" required="required"></p>
+<p class="comment-form-email"><label for="email">电子邮件 <span class="required">*</span></label> <input id="email" name="email" type="email" value="" size="30" maxlength="100" aria-describedby="email-notes" required="required"></p>
+<p class="comment-form-url"><label for="url">站点</label> <input id="url" name="url" type="url" value="" size="30" maxlength="200"></p>
+<p class="comment-subscription-form"><input type="checkbox" name="subscribe_comments" id="subscribe_comments" value="subscribe" style="width: auto; -moz-appearance: checkbox; -webkit-appearance: checkbox;"> <label class="subscribe-label" id="subscribe-label" for="subscribe_comments">通过邮件通知我后续评论</label></p><p class="comment-subscription-form"><input type="checkbox" name="subscribe_blog" id="subscribe_blog" value="subscribe" style="width: auto; -moz-appearance: checkbox; -webkit-appearance: checkbox;"> <label class="subscribe-label" id="subscribe-blog-label" for="subscribe_blog">通过邮件通知我有新文章</label></p><p class="form-submit"><input name="submit" type="submit" id="submit" class="submit" value="发表评论"> <input type="hidden" name="comment_post_ID" value="662" id="comment_post_ID">
+<input type="hidden" name="comment_parent" id="comment_parent" value="0">
+</p>			</form>
+			</div><!-- #respond -->
+	
+</div><!-- .comments-area -->
+
+	<nav class="navigation post-navigation" role="navigation">
+		<h2 class="screen-reader-text">文章导航</h2>
+		<div class="nav-links"><div class="nav-previous"><a href="http://ddcat.ka94.com/%e4%bf%ae%e6%94%b9%e5%af%86%e7%a0%81/" rel="prev"><span class="meta-nav" aria-hidden="true">上一</span> <span class="screen-reader-text">上篇文章：</span> <span class="post-title">修改密码</span></a></div></div>
+	</nav>
+	</main><!-- .site-main -->
+
+	
+</div><!-- .content-area -->
+
+
+	<aside id="secondary" class="sidebar widget-area" role="complementary">
+		<section id="search-2" class="widget widget_search">
+<form role="search" method="get" class="search-form" action="http://ddcat.ka94.com/">
+	<label>
+		<span class="screen-reader-text">搜索：</span>
+		<input type="search" class="search-field" placeholder="搜索…" value="" name="s">
+	</label>
+	<button type="submit" class="search-submit"><span class="screen-reader-text">搜索</span></button>
+</form>
+</section>		<section id="recent-posts-2" class="widget widget_recent_entries">		<h2 class="widget-title">近期文章</h2>		<ul>
+											<li>
+					<a href="http://ddcat.ka94.com/%e6%96%b0%e6%89%8b%e6%8f%92%e4%bb%b6%e8%80%85%e5%bf%85%e7%9c%8b%e5%bc%80%e5%8f%91%e6%96%87%e6%a1%a3%e6%89%80%e6%b2%a1%e8%af%b4%e7%9a%84%e4%ba%8b/">[新手插件者必看]开发文档所没说的事20170914</a>
+									</li>
+											<li>
+					<a href="http://ddcat.ka94.com/%e4%bf%ae%e6%94%b9%e5%af%86%e7%a0%81/">修改密码</a>
+									</li>
+											<li>
+					<a href="http://ddcat.ka94.com/%e5%b8%b8%e8%a7%81%e9%97%ae%e9%a2%98%e7%9a%84%e8%a7%a3%e5%86%b3%e6%96%b9%e6%b3%95/">常见问题的解决方法</a>
+									</li>
+											<li>
+					<a href="http://ddcat.ka94.com/%e5%85%b3%e4%ba%8esited%e5%bc%95%e6%93%8e/">关于SiteD引擎</a>
+									</li>
+											<li>
+					<a href="http://ddcat.ka94.com/%e5%8a%9f%e8%83%bd-%e6%96%b0%e4%b8%96%e7%95%8c/">功能-新世界</a>
+									</li>
+					</ul>
+		</section><section id="recent-comments-2" class="widget widget_recent_comments"><h2 class="widget-title">近期评论</h2><ul id="recentcomments"><li class="recentcomments"><span class="comment-author-link">匿名</span>发表在《<a href="http://ddcat.ka94.com/ios-testflight/#comment-87">多多猫App for IOS预览版申请</a>》</li><li class="recentcomments"><span class="comment-author-link">iMusi</span>发表在《<a href="http://ddcat.ka94.com/ios-testflight/#comment-86">多多猫App for IOS预览版申请</a>》</li><li class="recentcomments"><span class="comment-author-link">匿名</span>发表在《<a href="http://ddcat.ka94.com/%e9%a1%b5%e9%9d%a2%e5%8f%8d%e9%a6%88/#comment-56">Q&amp;A</a>》</li><li class="recentcomments"><span class="comment-author-link">找个笼子暖暖鸟</span>发表在《<a href="http://ddcat.ka94.com/%e5%9f%ba%e6%9c%ac%e6%93%8d%e4%bd%9c/#comment-64">基本操作</a>》</li><li class="recentcomments"><span class="comment-author-link">leo</span>发表在《<a href="http://ddcat.ka94.com/%e9%a1%b5%e9%9d%a2%e5%8f%8d%e9%a6%88/#comment-55">Q&amp;A</a>》</li></ul></section><section id="categories-2" class="widget widget_categories"><h2 class="widget-title">分类目录</h2>		<ul>
+	<li class="cat-item cat-item-2"><a href="http://ddcat.ka94.com/category/start/">入门</a>
+</li>
+	<li class="cat-item cat-item-3"><a href="http://ddcat.ka94.com/category/other/">其他</a>
+</li>
+	<li class="cat-item cat-item-4"><a href="http://ddcat.ka94.com/category/function/">功能</a>
+</li>
+	<li class="cat-item cat-item-5"><a href="http://ddcat.ka94.com/category/definition/">定义</a>
+</li>
+	<li class="cat-item cat-item-6"><a href="http://ddcat.ka94.com/category/develop/">开发</a>
+</li>
+	<li class="cat-item cat-item-1"><a href="http://ddcat.ka94.com/category/uncategorized/">未分类</a>
+</li>
+	<li class="cat-item cat-item-8"><a href="http://ddcat.ka94.com/category/table/">表单</a>
+</li>
+	<li class="cat-item cat-item-9"><a href="http://ddcat.ka94.com/category/%e8%a7%a3%e7%96%91/">解疑</a>
+</li>
+		</ul>
+</section>	</aside><!-- .sidebar .widget-area -->
+
+		</div><!-- .site-content -->
+
+		<footer id="colophon" class="site-footer" role="contentinfo">
+			
+			
+			<div class="site-info">
+								<span class="site-title"><a href="http://ddcat.ka94.com/" rel="home">多多猫第三方帮助中心</a></span>
+								<a href="https://cn.wordpress.org/" class="imprint">
+					自豪地采用WordPress				</a>
+			</div><!-- .site-info -->
+		</footer><!-- .site-footer -->
+	</div><!-- .site-inner -->
+</div><!-- .site -->
+
+	<div style="display:none">
+	</div>
+<link rel="stylesheet" id="cfr-jquery-ui-css" href="./[新手插件者必看]开发文档所没说的事20170914 – 多多猫第三方帮助中心_files/jquery-ui.css" type="text/css" media="all">
+<script type="text/javascript" src="./[新手插件者必看]开发文档所没说的事20170914 – 多多猫第三方帮助中心_files/devicepx-jetpack.js"></script>
+<script type="text/javascript" src="./[新手插件者必看]开发文档所没说的事20170914 – 多多猫第三方帮助中心_files/gprofiles.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var WPGroHo = {"my_hash":""};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./[新手插件者必看]开发文档所没说的事20170914 – 多多猫第三方帮助中心_files/wpgroho.js"></script>
+<script type="text/javascript" src="./[新手插件者必看]开发文档所没说的事20170914 – 多多猫第三方帮助中心_files/skip-link-focus-fix.js"></script>
+<script type="text/javascript" src="./[新手插件者必看]开发文档所没说的事20170914 – 多多猫第三方帮助中心_files/comment-reply.min.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var screenReaderText = {"expand":"\u5c55\u5f00\u5b50\u83dc\u5355","collapse":"\u6298\u53e0\u5b50\u83dc\u5355"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./[新手插件者必看]开发文档所没说的事20170914 – 多多猫第三方帮助中心_files/functions.js"></script>
+<script type="text/javascript" src="./[新手插件者必看]开发文档所没说的事20170914 – 多多猫第三方帮助中心_files/wp-embed.min.js"></script>
+<script type="text/javascript" src="./[新手插件者必看]开发文档所没说的事20170914 – 多多猫第三方帮助中心_files/core.min.js"></script>
+<script type="text/javascript" src="./[新手插件者必看]开发文档所没说的事20170914 – 多多猫第三方帮助中心_files/widget.min.js"></script>
+<script type="text/javascript" src="./[新手插件者必看]开发文档所没说的事20170914 – 多多猫第三方帮助中心_files/position.min.js"></script>
+<script type="text/javascript" src="./[新手插件者必看]开发文档所没说的事20170914 – 多多猫第三方帮助中心_files/tooltip.min.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var wpcf_nd_nonce = "6e366d1f83";
+var wpcf_nd_ajaxurl = "http:\/\/ddcat.ka94.com\/wp-admin\/admin-ajax.php";
+var wpcf_nd_ajax_thank_you = "Thank you for your message. We will respond to you as soon as possible.";
+var wpcf_nd_ajax_sending = "Sending...";
+/* ]]> */
+</script>
+<script type="text/javascript" src="./[新手插件者必看]开发文档所没说的事20170914 – 多多猫第三方帮助中心_files/user.js"></script>
+<script type="text/javascript" src="https://www.google.com/recaptcha/api.js?onload=wpcf_onloadCallback&amp;render=explicit&amp;ver=5.0.2"></script></body></html>

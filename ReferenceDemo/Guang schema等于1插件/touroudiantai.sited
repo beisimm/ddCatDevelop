@@ -1,0 +1,190 @@
+<!--?xml version="1.0" encoding="UTF-8" ?-->
+<sited  ver="2" debug="1"  engine="27" schema="1">
+    <meta>
+    <ua></ua>
+    <guid></guid>
+    <title>偷揉电台</title>
+    <author>Guang</author>
+    <contact>未想好我空着</contact>
+    <intro>[FM]二次元ACG电台。十个专题点击都是随机歌曲，点击S键也会跳到随机歌曲:()</intro>
+    <url>http://fm.itorr.sinaapp.com/</url>
+    <expr>fm\.itorr\.sinaapp\.com</expr>
+    <logo></logo>
+    <encode>UTF-8</encode>
+    <reward title="反馈" mail="wistn@qq.com">
+    	<item txt="欢迎打赏插件开发者Guang，反馈问题。" />
+    	<item />
+    	<item txt="点击或扫描二维码对[❤❤广]支付宝打赏" expr="https://qr.alipay.com/aex05979jbnzvi4fs3hx691" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7nyz88j20by0by0sy.jpg" />
+    	<item />
+    	<item txt="扫描二维码对我的微信打赏" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7oa4khj206b06bt9m.jpg" />
+    	<item />
+    	<item url="点击本行可联系QQ" expr="http://wpa.qq.com/msgrd?v=3&amp;uin=476375486&amp;site=qq&amp;menu=yes" />
+    	<item />
+    </reward>
+    </meta>
+    <main dtype="7" btag="随机歌曲">
+        <home>
+            <hots cache="1d" title="随机" method="get" showImg="2" w="2.34" h="1" parse="hots_parse" url="http://fm.itorr.sinaapp.com/" /></home>
+			<search cache="1d" method="get" parse="search_parse" url="http://fm.itorr.sinaapp.com/x/?a=search&amp;k=@key"  />
+        <book>
+		<book cache="0" method="get" parseUrl="book_parseUrl1" parse="book_parse1" expr="radio" buildWeb="book_buildWeb" dtype="7" style="12" />
+        <book cache="1d" method="get" parseUrl="book_parseUrl2" parse="book_parse2" expr="#!" dtype="7" style="12" /></book>
+		</main>
+    <script>
+        <require>
+            <item url="http://sited.noear.org/addin/js/cheerio.js" lib="cheerio" /></require>
+        <code>
+            <![CDATA[
+function hots_parse(url, html) {
+	var list = [];
+
+	var bm = {};
+	bm.name = '所有歌曲';
+	bm.url = 'http://fm.itorr.sinaapp.com/x/?a=radio&rid=0';
+	bm.logo = 'http://fm.itorr.sinaapp.com/img/r/0.jpg';
+	list.push(bm);
+	var bm = {};
+	bm.name = '久石让专题';
+	bm.url = 'http://fm.itorr.sinaapp.com/x/?a=radio&rid=1';
+	bm.logo = 'http://fm.itorr.sinaapp.com/img/r/1.jpg';
+	list.push(bm);
+	var bm = {};
+	bm.name = '月代 彩专题';
+	bm.url = 'http://fm.itorr.sinaapp.com/x/?a=radio&rid=2';
+	bm.logo = 'http://fm.itorr.sinaapp.com/img/r/2.jpg';
+	list.push(bm);
+	var bm = {};
+	bm.name = 'ろん专题';
+	bm.url = 'http://fm.itorr.sinaapp.com/x/?a=radio&rid=3';
+	bm.logo = 'http://fm.itorr.sinaapp.com/img/r/3.jpg';
+	list.push(bm);
+	var bm = {};
+	bm.name = '新井大樹专题';
+	bm.url = 'http://fm.itorr.sinaapp.com/x/?a=radio&rid=4';
+	bm.logo = 'http://fm.itorr.sinaapp.com/img/r/4.jpg';
+	list.push(bm);
+	var bm = {};
+	bm.name = 'ClariS专题';
+	bm.url = 'http://fm.itorr.sinaapp.com/x/?a=radio&rid=5';
+	bm.logo = 'http://fm.itorr.sinaapp.com/img/r/5.jpg';
+	list.push(bm);
+	var bm = {};
+	bm.name = '虾米动漫风专题';
+	bm.url = 'http://fm.itorr.sinaapp.com/x/?a=radio&rid=6';
+	bm.logo = 'http://fm.itorr.sinaapp.com/img/r/6.jpg';
+	list.push(bm);
+	var bm = {};
+	bm.name = '梶浦由記专题';
+	bm.url = 'http://fm.itorr.sinaapp.com/x/?a=radio&rid=7';
+	bm.logo = 'http://fm.itorr.sinaapp.com/img/r/7.jpg';
+	list.push(bm);
+	var bm = {};
+	bm.name = '茶太专题';
+	bm.url = 'http://fm.itorr.sinaapp.com/x/?a=radio&rid=8';
+	bm.logo = 'http://fm.itorr.sinaapp.com/img/r/8.jpg';
+	list.push(bm);
+	var bm = {};
+	bm.name = '神前晓专题';
+	bm.url = 'http://fm.itorr.sinaapp.com/x/?a=radio&rid=9';
+	bm.logo = 'http://fm.itorr.sinaapp.com/img/r/9.jpg';
+	list.push(bm);
+	var bm = {};
+	bm.name = '偶像大师专题';
+	bm.url = 'http://fm.itorr.sinaapp.com/x/?a=radio&rid=10';
+	bm.logo = 'http://fm.itorr.sinaapp.com/img/r/10.jpg';
+	list.push(bm);
+	return JSON.stringify(list);
+}
+
+
+
+function search_parse(url, html) {
+	var json = JSON.parse(html);
+	var list = [];
+
+	for (var i in json) {
+		var item = json[i];
+
+			var bm = {};
+			bm.name = item.title+'[所属专辑：' + item.album_name+']';
+			bm.url = 'http://fm.itorr.sinaapp.com/#!' + item.xid;
+			bm.logo = 'http://img.xiami.net/images/album/' + item.img;
+			bm.author = item.artist;
+			bm.updateTime = '';
+			bm.btag = "歌曲";
+			list.push(bm);
+
+		if (i == 14) {
+			break;
+		}
+	}
+	return JSON.stringify(list);
+}
+function book_buildWeb(url) {
+	return 'http://fm.itorr.sinaapp.com/';
+}
+
+function book_parseUrl1(url, html) {
+	var jData = JSON.parse(html);
+	var item = jData[0];
+	return "http://fm.itorr.sinaapp.com/x/?a=song&id=" + item.xid;
+}
+function book_parse1(url, html) {
+	var jData = JSON.parse(html);
+	var item = jData[0];
+
+	return JSON.stringify({
+		name: '随机歌曲',
+		logo: 'http://img.xiami.net/images/album/' + item.img,
+		list: [{
+			url :  getmp3(item.mp3),
+			logo : 'http://img.xiami.net/images/album/' + item.img,
+			type : ".mp3",
+			mime : "audio/x-mpeg"
+		}]
+	});
+}
+function book_parseUrl2(url, html) {
+	return "http://fm.itorr.sinaapp.com/x/?a=song&id=" + url.match(/http.+?(\d+)/i)[1];
+}
+
+function book_parse2(url, html) {
+	var jData = JSON.parse(html);
+	var item = jData[0];
+
+	return JSON.stringify({
+		name: item.title,
+		logo: 'http://img.xiami.net/images/album/' + item.img,
+		list: [{
+			url :  getmp3(item.mp3),
+			logo : 'http://img.xiami.net/images/album/' + item.img,
+			type : ".mp3",
+			mime : "audio/x-mpeg"
+		}]
+	});
+}
+
+function getmp3(u) {
+	if (u.match(/^http/))
+		return u;
+	for (var s = parseInt(u), q = u.substr(1), p = Math.floor(q.length / s), o = q.length % s, t = new Array(), r = 0; r < o; r++) {
+		t[r] = q.substr((p + 1) * r, p + 1);
+	}
+	for (r = o; r < s; r++) {
+		t[r] = q.substr(p * (r - o) + (p + 1) * o, p);
+	}
+	for (r = 0, p = q = ""; r < t[0].length; r++) {
+		for (j = 0; j < t.length; j++) {
+			p += t[j].substr(r, 1);
+		}
+	}
+	for (r = 0, p = unescape(p); r < p.length; r++) {
+		p.substr(r, 1) == "^" ? q += "0" : q += p.substr(r, 1);
+	}
+	return q;
+}
+
+		]]>
+		</code>
+    </script>
+</sited>

@@ -1,0 +1,498 @@
+<!--?xml version="1.0" encoding="UTF-8" ?-->
+<sited ver="2" debug="1" engine="27" schema="1">
+	<meta>
+		<ua></ua>
+		<guid></guid>
+		<title>熊猫频道</title>
+		<author>Guang</author>
+		<contact>未想好我空着</contact>	
+		<intro>[直播]多彩世界，魅力中国。以24小时直播大熊猫为基础延展为世界自然遗产和人文景观直播，传播中国声音、介绍中国优秀文化、展示中国新形象的中国频道。（少数不能看是因为景点地方网络故障了，无搜索功能）</intro>
+		<url>http://live.ipanda.com/</url>
+		<expr>live\.ipanda\.com/|livechina\.ipanda\.com|greatwall\.ipanda\.com|www\.ipanda\.com\/live/</expr>
+		<logo>http://image.coolapk.com/apk_logo/2016/0627/408649_1466999798_2231.png</logo>
+		<encode>UTF-8</encode>
+		<reward title="反馈" mail="wistn@qq.com">
+			<item txt="欢迎打赏插件开发者Guang，反馈问题。" />
+			<item />
+			<item txt="点击或扫描二维码对[❤❤广]支付宝打赏" expr="https://qr.alipay.com/aex05979jbnzvi4fs3hx691" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7nyz88j20by0by0sy.jpg" />
+			<item />
+			<item txt="扫描二维码对我的微信打赏" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7oa4khj206b06bt9m.jpg" />
+			<item />
+			<item url="点击本行可联系QQ" expr="http://wpa.qq.com/msgrd?v=3&amp;uin=476375486&amp;site=qq&amp;menu=yes" />
+			<item />
+		</reward>
+	</meta>
+	<main dtype="3" btag="直播">
+		<home>
+            <hots cache="1d" showImg="0"  title="直播" method="get" parse="hots_parse" url="http://live.ipanda.com/" />
+        </home>
+		<tag>
+        <tag cache="1d" method="get" parse="tag_parse2" expr="livechina\.ipanda\.com\/zhibo\/index\.shtml\?tag"/>
+		 <tag cache="1d" method="get" parse="tag_parse3" expr="greatwall\.ipanda\.com\/badaling\/index\.shtml\?tag"/>
+		</tag>
+		<book>
+        <book cache="1d"  method="get" parse="book_parse1"   expr="live\.ipanda\.com" dtype="3"/>
+        <book cache="1d"  method="get" parse="book_parse23" expr="livechina\.ipanda\.com.+?\d+|greatwall\.ipanda\.com.+?shtml$" dtype="3"/>
+        <book cache="1d"  method="get" parse="book_parse4"   expr="www\.ipanda\.com\/live/" dtype="3"/>		
+		</book>
+		<section cache="0"  method="get" parseUrl="section_parseurl" parse="section_parse"  />
+    </main>
+    <script>
+	    <require>
+			<item url="http://sited.noear.org/addin/js/cheerio.js" lib="cheerio" />
+		</require>
+        <code>
+            <![CDATA[
+function hots_parse(url, html) {
+	var list = [];
+
+	var bm = {};
+	bm.name = '看熊猫';
+	bm.url = 'http://live.ipanda.com/xmcd/';
+	bm.logo = 'http://image.coolapk.com/apk_logo/2016/0627/408649_1466999798_2231.png';
+	list.push(bm);
+
+	bm = {};
+	bm.name = '实景中国';
+	bm.url = 'http://livechina.ipanda.com/zhibo/index.shtml?tag';
+	bm.logo = 'http://image.coolapk.com/apk_logo/2016/0627/408649_1466999798_2231.png';
+	list.push(bm);
+
+	bm = {};
+	bm.name = '长城';
+	bm.url = 'http://greatwall.ipanda.com/badaling/index.shtml?tag';
+	bm.logo = 'http://image.coolapk.com/apk_logo/2016/0627/408649_1466999798_2231.png';
+	list.push(bm);
+
+	bm = {};
+	bm.name = 'CCTV直播';
+	bm.url = 'http://www.ipanda.com/live/cctv4/index.shtml';
+	bm.logo = 'http://image.coolapk.com/apk_logo/2016/0627/408649_1466999798_2231.png';
+	list.push(bm);
+
+	return JSON.stringify(list);
+}
+
+function tag_parse2(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+	$('.ind01_cnt  li').each(function () {
+		var item = $(this);
+
+		var bm = {};
+		bm.name = item.find('span.sp1').text();
+		bm.url = item.children('a').attr('href');
+		bm.logo = item.find('img').attr('src');
+		bm.author = '';
+		bm.status = '';
+		bm.newSection = '';
+		bm.updateTime = '';
+		list.push(bm);
+	});
+
+	return JSON.stringify(list);
+}
+
+function tag_parse3(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+	$('ul').eq(3).find('div').each(function () {
+		var item = $(this);
+
+		var bm = {};
+		bm.name = item.find('p').text();
+		bm.url = item.children('a').attr('href');
+		bm.logo = item.find('img').attr('src');
+		bm.author = '';
+		bm.status = '';
+		bm.newSection = '';
+		bm.updateTime = '';
+		list.push(bm);
+	});
+
+	return JSON.stringify(list);
+}
+
+function book_parse1(url, html) {
+	var $ = cheerio.load(html);
+	var data = {};
+
+	data.name = '看熊猫';
+	data.author = '';
+	data.logo = 'http://image.coolapk.com/apk_logo/2016/0627/408649_1466999798_2231.png';
+	data.intro = '面向全球网民打造极具吸引力的熊猫主题新媒体集群,通过熊猫向世界传播和平、友爱理念,提升国家形象。网站对大熊猫繁育、日常起居、娱乐的情况进行全天候24小时近距离视频直播。';
+	data.updateTime = "";
+	data.isSectionsAsc = 1;
+	data.sections = [];
+
+	$('ul').eq(2).children('li').each(function () {
+		var item = $(this);
+		var sm = {
+			name : item.find('span').text(),
+			url : item.children('a').attr('href')
+		};
+		data.sections.push(sm);
+	});
+	return JSON.stringify(data);
+}
+
+function book_parse23(url, html) {
+	var $ = cheerio.load(html);
+	var data = {};
+
+	data.name = $('.top_title').text();
+	data.author = '';
+	data.logo = '';
+	data.intro = $('.top_cnt').text();
+	data.updateTime = "";
+	data.isSectionsAsc = 1;
+	data.sections = [];
+
+	$('.sjzb_btm a').each(function () {
+		var item = $(this);
+		var sm = {
+			name : item.text(),
+			url : item.attr('href')
+		};
+		data.sections.push(sm);
+	});
+	return JSON.stringify(data);
+}
+
+function book_parse4(url, html) {
+	var $ = cheerio.load(html);
+	var data = {};
+
+	data.name = 'CCTV直播';
+	data.author = '';
+	data.logo = '';
+	data.intro = '';
+	data.updateTime = "";
+	data.isSectionsAsc = 1;
+	data.sections = [];
+
+	$('.duoyu a').each(function () {
+		var item = $(this);
+		var sm = {
+			name : item.text(),
+			url : item.attr('href')
+		};
+		data.sections.push(sm);
+	});
+	return JSON.stringify(data);
+
+}
+function section_parseurl(url, html) {
+	if (url.indexOf("www.ipanda.com/live/") !== -1) {
+		var channel = html.match(/createHdsLivePlayer.+?,.+?,.+?,\s*"\s*(.+?)\s*"/i)[1].replace("pa://cctv_p2p_hd", "");
+		var vdnUrl = "http://vdn.live.cntv.cn/api2/liveHtml5.do?channel=pa://cctv_p2p_hd" + channel + "&client=html5";
+		url = vdnUrl;
+	} else {
+		if (url.indexOf("live.ipanda.com/") !== -1) {
+			var channelid = html.match(/createFlashLivePlayer.+?,.+?,.+?,\s*'\s*(.+?)\s*'/i)[1];
+		} else {
+			var channelid = html.match(/createFlashLivePlayer.+?,.+?,.+?,\s*"\s*(.+?)\s*"/i)[1];
+		}
+
+		var addr = getFlashLiveAddrs(channelid);
+		if (addr.indexOf(".m3u8") !== -1) {
+			url = addr;
+		} else {
+			var vdnUrl = "http://vdn.live.cntv.cn/api2/liveHtml5.do?channel=" + addr + "&client=html5";
+			url = vdnUrl;
+		}
+	}
+	return url;
+
+}
+function section_parse(url, html) {
+	var txt = html.match(/var.+?'\s*({.+?})'\s*;/i)[1];
+	var json = JSON.parse(txt);
+	if (json.hls_url.hls4) {
+		url = json.hls_url.hls4;
+	} else {
+		if (json.hls_url.hls2) {
+			url = json.hls_url.hls2;
+		} else {
+			url = json.hls_url.hls1;
+		}
+	}
+	return url;
+}
+function getFlashLiveAddrs(n) {
+	var player_info_obj = {
+		id : ""
+	};
+	var id = "";
+	switch (n) {
+	case "cctv1":
+	case "cctv1_biaoqing":
+		id = "pa://cctv_p2p_hdcctv1";
+		break;
+	case "cctv2":
+	case "cctv2_biaoqing":
+		id = "pa://cctv_p2p_hdcctv2";
+		break;
+	case "cctv3":
+	case "cctv3_biaoqing":
+		id = "pa://cctv_p2p_hdcctv3";
+		break;
+	case "cctv4":
+	case "cctv4_biaoqing":
+		id = "pa://cctv_p2p_hdcctv4";
+		break;
+	case "cctv4-america_biaoqing":
+	case "cctv4-america":
+	case "cctvamericas":
+	case "cctvamerica":
+		id = "pa://cctv_p2p_hdcctvamerica";
+		break;
+	case "cctv4-euro_biaoqing":
+	case "cctv4-euro":
+	case "cctveuro":
+	case "cctveurope":
+		id = "pa://cctv_p2p_hdcctveurope";
+		break;
+	case "cctv9":
+	case "cctvnews":
+	case "cctvnews_biaoqing":
+	case "cctv-news":
+	case "cctv-news_biaoqing":
+		id = "pa://cctv_p2p_hdcctv9";
+		break;
+	case "cctvxiyu":
+	case "cctv-xiyu":
+	case "cctvxiyu_biaoqing":
+	case "cctv-xiyu_biaoqing":
+	case "cctve":
+	case "xiyu":
+		id = "pa://cctv_p2p_hdcctvxiyu";
+		break;
+	case "cctv5":
+	case "cctv5_biaoqing":
+		id = "pa://cctv_p2p_hdcctv5";
+		break;
+	case "cctv6":
+	case "cctv6_biaoqing":
+		id = "pa://cctv_p2p_hdcctv6";
+		break;
+	case "cctv7":
+	case "cctv7_biaoqing":
+		id = "pa://cctv_p2p_hdcctv7";
+		break;
+	case "cctv8":
+	case "cctv8_biaoqing":
+		id = "pa://cctv_p2p_hdcctv8";
+		break;
+	case "cctv10":
+	case "cctv10_biaoqing":
+		id = "pa://cctv_p2p_hdcctv10";
+		break;
+	case "cctv11":
+	case "cctv11_biaoqing":
+		id = "pa://cctv_p2p_hdcctv11";
+		break;
+	case "cctv12":
+	case "cctv12_biaoqing":
+		id = "pa://cctv_p2p_hdcctv12";
+		break;
+	case "cctv13":
+	case "cctv13_biaoqing":
+		id = "pa://cctv_p2p_hdcctv13";
+		break;
+	case "cctvmusic":
+	case "cctv-music":
+	case "cctvmusic_biaoqing":
+	case "cctv15":
+		id = "pa://cctv_p2p_hdcctv15";
+		break;
+	case "cctv14":
+	case "cctvchildren":
+		id = "pa://cctv_p2p_hdcctvchild";
+		break;
+	case "cctv-gaowang":
+	case "cctv-gaowang_biaoqing":
+	case "cctvgaowang":
+	case "gaoerfuwangqiu":
+	case "cctvgaowang_biaoqing":
+		id = "pa://cctv_p2p_hdcctvgaowang";
+		break;
+	case "cctv9doc":
+	case "CCTV9ducumentary":
+	case "cctv9doc_biaoqing":
+		id = "pa://cctv_p2p_hdcctvdoc";
+		break;
+	case "cctv9jilu":
+	case "cctv9d":
+	case "cctv9jilu_biaoqing":
+		id = "pa://cctv_p2p_hdcctvjilu";
+		break;
+	case "cctv-gaoqing":
+	case "cctv-gaoqing_biaoqing":
+	case "cctvgaoqing":
+	case "cctvgaoqing_biaoqing":
+	case "cctv22":
+		id = "pa://cctv_p2p_hdcctvgaoqing";
+		break;
+	case "cctv-fayu":
+	case "cctv-fayu_biaoqing":
+	case "cctvfayu":
+	case "cctvfayu_biaoqing":
+	case "cctvf":
+	case "cctvfrench":
+		id = "pa://cctv_p2p_hdcctvfrench";
+		break;
+	case "cctv4euro":
+		break;
+	case "cctv4america":
+		break;
+	case "cctvshaoer":
+	case "cctvshaoer_biaoqing":
+		break;
+	case "cctv-ayu":
+	case "cctvayu":
+	case "cctv-ayu_biaoqing":
+	case "cctvayu_biaoqing":
+	case "cctvarabic":
+		id = "pa://cctv_p2p_hdcctvarabic";
+		break;
+	case "cctv-eyu":
+	case "cctv-eyu_biaoqing":
+	case "cctveyu":
+	case "cctveyu_biaoqing":
+	case "russian":
+	case "cctvrussian":
+		id = "pa://cctv_p2p_hdcctvrussian";
+		break;
+	case "test":
+		break;
+	case "guangzhou":
+		break;
+	case "dajuyuan":
+		id = "pa://cctv_p2p_hdncpa";
+		break;
+	case "xiongmao01":
+		id = "pa://cctv_p2p_hdxiongmao01";
+		break;
+	case "yinyue1":
+		id = "pa://cctv_p2p_yinyue1";
+		break;
+	case "flvzhengxie":
+		id = "pa://cctv_p2p_hdstudio2";
+		break;
+	case "fyxtlive1":
+		break;
+	case "cctv-fengyunzuqiu":
+	case "cctv-fengyunzuqiu_biaoqing":
+	case "cctvfengyunzuqiu":
+	case "fengyunzuqiu":
+	case "cctvfengyunzuqiu_biaoqing":
+		id = "pa://cctv_p2p_hdcctvfyzq";
+		break;
+	case "wlchunwan":
+		break;
+	case "gouwu":
+	case "dianshigouwu":
+	case "hdgouwu":
+		break;
+	case "zhongxueshengpindao":
+		break;
+	case "sports_biaoqing":
+	case "sports":
+		break;
+	case "stu1_biaoqing":
+	case "stu1":
+		break;
+	case "stu2_biaoqing":
+	case "stu2":
+		break;
+	case "stu3_biaoqing":
+	case "stu3":
+		break;
+	case "wefa1":
+		break;
+	case "wefa2":
+		break;
+	case "wefa3":
+		break;
+	case "wefa4":
+		break;
+	case "wefa5":
+		break;
+	case "wefa6":
+		break;
+	case "dangyuan":
+	case "dangyuanwang":
+	case "pa://cctv_p2p_dangyuanwang":
+		id = "pa://cctv_p2p_hddangyuanwang";
+		break;
+	case "shijiedili":
+		n = "dili";
+		break;
+	case "hdxjtv2":
+		n = "xjtv2";
+		break;
+	case "hdxjtv3":
+		n = "xjtv3";
+		break;
+	case "hdxjtv5":
+		n = "xjtv5";
+		break;
+	case "hdxjtv8":
+		n = "xjtv8";
+		break;
+	case "hdxjtv9":
+		n = "xjtv9";
+		break;
+	case "hdxizang2tv":
+		n = "xizang2tv";
+		break;
+	case "hdneimenggu2tv":
+		n = "neimenggu2tv";
+		break;
+	case "fyjc":
+		n = "cctvfyjc";
+		break;
+	case "fyyy":
+		n = "cctvfyyy";
+		break;
+	case "hjjc":
+		n = "cctvhjjc";
+		break;
+	case "xms":
+	case "xiamen":
+	case "xiamentv":
+	case "xiamenweishi":
+		n = "xiamen";
+		break;
+	case "xm1":
+		n = "xiamen1";
+		break;
+	case "xm2":
+		n = "xiamen2";
+		break;
+	case "xm3":
+		n = "xiamen3";
+		break;
+	case "hdbtvgongong":
+		n = "btv9";
+		break;
+	default:
+		break;
+	}
+	if (id == "") {
+		if (n.indexOf("pa://") >= 0) {
+			player_info_obj.id = n;
+		} else {
+			player_info_obj.id = "pa://cctv_p2p_hd" + n;
+		}
+	} else {
+		player_info_obj.id = id;
+	}
+	return player_info_obj.id;
+}
+
+			]]>
+		</code>
+    </script>
+</sited>

@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<site ver="18" debug="1" engine="25" schema="1">
+    <meta>
+	    <guid>d7be3bf2eb4942eebdeec02eddc6f616</guid>
+		<ua></ua>
+        <title>看漫画</title>
+        <intro>开发这个插件好幸苦的...</intro>
+        <author>seiya</author>
+        <url>http://www.seemh.com</url>
+        <expr>\.ikanman\.com|\.seemh\.com</expr>
+        <logo>http://m.ikanman.com/favicon.ico</logo>
+        <encode>utf-8</encode>
+        
+        <reward title="反馈" mail="seiya@noear.org">
+			<item txt="如果有问题，请用邮件反馈：" />
+			<item />
+			<item txt="seiya@noear.org"/>
+		</reward>
+    </meta>
+	<main dtype="1" durl="http://www.ikanman.com">
+		<home>
+			<hots cache="1d" title="热门" method="get"  parse="ht_parse" url="http://www.ikanman.com">
+				<updates parse="updates_parse" />
+			</hots>
+			<tags title="分类">
+				<item group="地区" title="日本" url="http://www.ikanman.com/list/japan/index_p@page.html" />
+				<item title="港台" url="http://www.ikanman.com/list/hongkong/index_p@page.html" />
+				<item title="韩国" url="http://www.ikanman.com/list/europe/index_p@page.html" />
+				<item title="内地" url="http://www.ikanman.com/list/china/index_p@page.html" />
+				<item title="港台" url="http://www.ikanman.com/list/hongkong/index_p@page.html" />
+				<item title="欧美" url="http://www.ikanman.com/list/europe/index_p@page.html" />
+				<item title="其它" url="http://www.ikanman.com/list/other/index_p@page.html" />
+				
+				<item group="剧情" title="热血" url="http://www.ikanman.com/list/rexue/index_p@page.html" />
+				<item title="魔幻" url="http://www.ikanman.com/list/mohuan/index_p@page.html" />
+				<item title="神鬼" url="http://www.ikanman.com/list/shengui/index_p@page.html" />
+				<item title="搞笑" url="http://www.ikanman.com/list/gaoxiao/index_p@page.html" />
+				<item title="萌系" url="http://www.ikanman.com/list/mengxi/index_p@page.html" />
+				<item title="爱情" url="http://www.ikanman.com/list/aiqing/index_p@page.html" />
+				<item title="科幻" url="http://www.ikanman.com/list/kehuan/index_p@page.html" />
+				<item title="冒险" url="http://www.ikanman.com/list/maoxian/index_p@page.html" />
+				<item title="恐怖" url="http://www.ikanman.com/list/kongbu/index_p@page.html" />
+				<item title="魔法" url="http://www.ikanman.com/list/mofa/index_p@page.html" />
+				<item title="格斗" url="http://www.ikanman.com/list/gedou/index_p@page.html" />
+				<item title="武侠" url="http://www.ikanman.com/list/wuxia/index_p@page.html" />
+				<item title="机战" url="http://www.ikanman.com/list/jizhan/index_p@page.html" />
+				<item title="战争" url="http://www.ikanman.com/list/zhanzheng/index_p@page.html" />
+				<item title="竞技" url="http://www.ikanman.com/list/jingji/index_p@page.html" />
+				<item title="体育" url="http://www.ikanman.com/list/tiyu/index_p@page.html" />
+				<item title="校园" url="http://www.ikanman.com/list/xiaoyuan/index_p@page.html" />
+				<item title="生活" url="http://www.ikanman.com/list/shenghuo/index_p@page.html" />
+				<item title="励志" url="http://www.ikanman.com/list/lizhi/index_p@page.html" />
+				<item title="历史" url="http://www.ikanman.com/list/lishi/index_p@page.html" />
+				<item title="伪娘" url="http://www.ikanman.com/list/weiniang/index_p@page.html" />
+				<item title="宅男" url="http://www.ikanman.com/list/zhainan/index_p@page.html" />
+				<item title="腐女" url="http://www.ikanman.com/list/funv/index_p@page.html" />
+				<item title="耽美" url="http://www.ikanman.com/list/danmei/index_p@page.html" />
+				<item title="百合" url="http://www.ikanman.com/list/baihe/index_p@page.html" />
+				<item title="后宫" url="http://www.ikanman.com/list/hougong/index_p@page.html" />
+				<item title="治愈" url="http://www.ikanman.com/list/zhiyu/index_p@page.html" />
+				<item title="美食" url="http://www.ikanman.com/list/meishi/index_p@page.html" />
+				<item title="推理" url="http://www.ikanman.com/list/tuili/index_p@page.html" />
+				<item title="悬疑" url="http://www.ikanman.com/list/xuanyi/index_p@page.html" />
+				<item title="恐怖" url="http://www.ikanman.com/list/kongbu/index_p@page.html" />
+				<item title="四格" url="http://www.ikanman.com/list/sige/index_p@page.html" />
+				<item title="职场" url="http://www.ikanman.com/list/zhichang/index_p@page.html" />
+				<item title="侦探" url="http://www.ikanman.com/list/zhentan/index_p@page.html" />
+				<item title="社会" url="http://www.ikanman.com/list/shehui/index_p@page.html" />
+				<item title="音乐" url="http://www.ikanman.com/list/yinyue/index_p@page.html" />
+				<item title="舞蹈" url="http://www.ikanman.com/list/wudao/index_p@page.html" />
+				<item title="杂志" url="http://www.ikanman.com/list/zazhi/index_p@page.html" />
+				<item title="黑道" url="http://www.ikanman.com/list/heidao/index_p@page.html" />
+				
+				<item group="受众" title="少女" url="http://www.ikanman.com/list/shaonv/index_p@page.html" />
+				<item title="少年" url="http://www.ikanman.com/list/shaonian/index_p@page.html" />
+				<item title="青年" url="http://www.ikanman.com/list/qingnian/index_p@page.html" />
+				<item title="儿童" url="http://www.ikanman.com/list/ertong/index_p@page.html" />
+				
+				<item group="年代" title="00年代" url="http://www.ikanman.com/list/200x/index_p@page.html" />
+				<item title="90年代" url="http://www.ikanman.com/list/199x/index_p@page.html" />
+				<item title="80年代" url="http://www.ikanman.com/list/198x/index_p@page.html" />
+				<item title="更早" url="http://www.ikanman.com/list/197x/index_p@page.html" />
+				
+			</tags>
+		</home>
+		<search cache="1d" method="get"  parse="sh_parse" url="http://www.ikanman.com/s/@key_p@page.html" />
+		<tag  cache="0" addPage="1" method="get"  parse="ht_parse" />
+		<book cache="1d"  method="get"  parse="bk_parse"  expr="\/comic\/"  buildUrl="bk_url" >
+			<sections cache="1" method="get" parse="bks_parse" buildUrl="bks_url" />
+		</book>
+		<section cache="1"  method="get" header="cookie;referer"  parse="sn_parse" />
+	</main>
+	<script>
+		<require>
+            <item url="http://sited.noear.org/addin/js/cheerio.js" lib="cheerio" />
+		</require>
+		<code>
+			<![CDATA[
+
+function urla(url) {
+	if(url.indexOf("http") != -1)
+		return url;
+	else
+		return "http://www.ikanman.com" + url;
+}
+
+function ht_parse(url, html) {
+    var $ = cheerio.load(html);
+	var list = [];
+    
+    $('.bcover').children('img').each(function() {
+        var img  = $(this);
+        
+        var bm = {};
+        bm.name  = img.attr('alt');
+        bm.url   = urla(img.parent().attr('href'));
+        bm.logo  = img.attr('src');
+
+        list.push(bm);
+    });
+    return JSON.stringify(list);
+}
+
+
+function sh_parse(url,html) {
+    var $ = cheerio.load(html);
+    var list = [];
+    
+    $('.book-result').find('img').each(function() {
+        var img  = $(this);
+        
+        var bm = {};
+        bm.name  = img.attr('alt');
+        bm.url   = urla(img.parent().attr('href'));
+        bm.logo  = img.attr('src');
+
+        list.push(bm);
+    });
+    return JSON.stringify(list);
+}
+
+
+function bk_parse(url,html) {
+	var data={};
+
+	data.name =  html.match(/<h1>([^<]*)<\/h1>/i)[1].trim();
+	data.logo = html.match(/hcover.><img.src=.([^\"]*)./i)[1];
+    data.author = html.match(/画作者：<\/strong><a[^>]*>([^<]*)/i)[2];
+
+	data.intro  = html.match(/intro-cut.>([^<]*)/i)[1].trim();
+	data.sections=[];
+
+	return JSON.stringify(data);
+}
+
+function bk_url(url) {
+	return url.replace('www.seemh.com','www.ikanman.com');
+}
+
+function bks_parse(url, html) {
+    var $ = cheerio.load(html);
+	var data = {};
+	data.sections = [];
+	
+    var ul = $('.chapter-list.cf.mt10').children('ul');
+    var num = ul.length;
+    for (var i=num-1; i>=0; i--) {
+        ul.eq(i).find('a').each(function() {
+            var a= $(this);
+            data.sections.push({
+                name:a.attr('title'),
+                url:urla(a.attr('href'))
+            });
+        });
+    }
+	return JSON.stringify(data);
+}
+
+
+function bks_url(url){
+	return "http://www.ikanman.com/support/chapters.aspx?id=" + url.match(/comic\/(\d+)/i)[1];
+}
+
+function sn_parse(url, html) {
+    var $ = cheerio.load(html);
+    var list = [];
+	
+    var script = html.match(/(\(function.*?)<\/script>/)[1];
+    eval("eval" + script);
+	
+    var base = "http://cf.hamreus.com:8080" + cInfo.path + "/";
+    cInfo.files.forEach(function(a) {
+        list.push(base + a);
+    });
+    
+	return JSON.stringify(list);
+}
+
+
+var LZString=function(){var k=String.fromCharCode,r={},w={decompressFromBase64:function(k){return null==k?"":""==k?null:w._0(k.length,32,function(l){l=k.charAt(l);if(!r["ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/="]){r["ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/="]={};for(var e=0;65>e;e++)r["ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/="]["ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=".charAt(e)]=e}return r["ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/="][l]})},
+_0:function(r,l,e){var n=[],p=4,t=4,u=3,d,v=[],m,c,f,g,a,h=e(0),b=l,q=1;for(m=0;3>m;m+=1)n[m]=m;c=0;g=Math.pow(2,2);for(a=1;a!=g;)f=h&b,b>>=1,0==b&&(b=l,h=e(q++)),c|=(0<f?1:0)*a,a<<=1;switch(c){case 0:c=0;g=Math.pow(2,8);for(a=1;a!=g;)f=h&b,b>>=1,0==b&&(b=l,h=e(q++)),c|=(0<f?1:0)*a,a<<=1;d=k(c);break;case 1:c=0;g=Math.pow(2,16);for(a=1;a!=g;)f=h&b,b>>=1,0==b&&(b=l,h=e(q++)),c|=(0<f?1:0)*a,a<<=1;d=k(c);break;case 2:return""}m=n[3]=d;for(v.push(d);;){if(q>r)return"";c=0;g=Math.pow(2,u);for(a=1;a!=g;)f=
+h&b,b>>=1,0==b&&(b=l,h=e(q++)),c|=(0<f?1:0)*a,a<<=1;switch(d=c){case 0:c=0;g=Math.pow(2,8);for(a=1;a!=g;)f=h&b,b>>=1,0==b&&(b=l,h=e(q++)),c|=(0<f?1:0)*a,a<<=1;n[t++]=k(c);d=t-1;p--;break;case 1:c=0;g=Math.pow(2,16);for(a=1;a!=g;)f=h&b,b>>=1,0==b&&(b=l,h=e(q++)),c|=(0<f?1:0)*a,a<<=1;n[t++]=k(c);d=t-1;p--;break;case 2:return v.join("")}0==p&&(p=Math.pow(2,u),u++);if(n[d])d=n[d];else if(d===t)d=m+m.charAt(0);else return null;v.push(d);n[t++]=m+d.charAt(0);p--;m=d;0==p&&(p=Math.pow(2,u),u++)}}};return w}();
+String.prototype.splic=function(k){return LZString.decompressFromBase64(this).split(k)};
+    ]]>
+		</code>
+	</script>
+</site>

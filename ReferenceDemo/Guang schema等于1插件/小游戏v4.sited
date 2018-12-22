@@ -1,0 +1,122 @@
+<!--?xml version="1.0" encoding="UTF-8" ?-->
+<sited ver="4" debug="1" engine="28" schema="1">
+	<meta>
+        <ua></ua>
+        <guid></guid>
+        <title>小游戏</title>
+		<author>Guang</author>
+		<contact>未想好我空着</contact>
+        <intro>[游戏]v4有我可能做了假表情、骰子、剪刀石头布</intro>
+        <url>http://guang.ka94.com/game/</url>
+        <expr>guang\.ka94\.com\/game\/</expr>
+        <logo></logo>
+        <encode>UTF-8</encode>
+		<reward title="反馈" mail="wistn@qq.com">
+			<item txt="欢迎打赏插件开发者Guang，反馈问题。" />
+			<item />
+			<item txt="点击或扫描二维码对[❤❤广]支付宝打赏" expr="https://qr.alipay.com/aex05979jbnzvi4fs3hx691" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7nyz88j20by0by0sy.jpg" />
+			<item />
+			<item txt="扫描二维码对我的微信打赏" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7oa4khj206b06bt9m.jpg" />
+			<item />
+			<item url="点击本行可联系QQ" expr="http://wpa.qq.com/msgrd?v=3&amp;uin=476375486&amp;site=qq&amp;menu=yes" />
+			<item />
+		</reward>
+	</meta>
+	<main dtype="8" btag="游戏"   showWeb="0">
+		<home>
+			<updates title="小游戏" showImg="0">
+				<item title="我可能做了假表情" url="http://guang.ka94.com/game/wokeneng/" />		
+				<item title="摇骰子" url="http://guang.ka94.com/game/dice/" />
+				<item title="剪刀石头布" url="http://guang.ka94.com/game/jiandao/" />
+			</updates>
+		</home>
+		<book>
+            <book dtype="8" expr="\/wokeneng\/" btn="生成“我可能a了假b”" method="@null"  parse="book_parse_wokeneng" update="2"  buildWeb="book_buildWeb_wokeneng">
+                <item title="https://h.139.re/data/genfake.php" />
+                <item title="填动词" />
+                <item key="n1" />
+				<item title="填名词。存图要去app设置开启“长按图片保存到相册”" />
+                <item key="n2" /></book>
+		    <book dtype="8" expr="\/dice\/" 
+                  btn="开！！！"
+                  method="@null"
+                  parse="book_parse_dice" update="0"  showWeb="0">
+                <item title="@Guang" />
+            </book>
+		    <book dtype="8" expr="\/jiandao\/" 
+                  btn="开！！！"
+                  method="@null"
+                  parse="book_parse_jiandao" update="0"  showWeb="0"> 
+                <item title="@Guang" />
+            </book>					
+       </book>
+	</main>
+	<script>
+		<require>
+			<item url="http://sited.noear.org/addin/js/cheerio.js" lib="cheerio" /></require>
+		<code>
+			<![CDATA[
+function book_buildWeb_wokeneng(url) {
+	return 'https://h.139.re/data/genfake.php';
+}
+function book_parse_wokeneng(url, str) {
+	var data = JSON.parse(str);
+	var list = [];
+	list.push({
+		d: 'https://h.139.re/data/genfake.php?a=' + data.n1 + '&b=' + data.n2,
+		t: 9,
+		url: 'https://h.139.re/data/genfake.php?a=' + data.n1 + '&b=' + data.n2
+	});
+	return JSON.stringify(list);
+}
+
+function book_parse_dice(url, str) {
+	var data = JSON.parse(str);
+	var list = [];
+	var result = Math.floor(Math.random() * 6 + 1);
+	var d = new Date();
+	var time = d.toString().match(/.+?20\S+\s*(\d+.+)\s*GMT.+/i)[1];
+	
+	list.push({
+		d : time + '骰子点数：' + result,
+		t : 2
+	});	
+	list.push({
+		d : 'http://guang.ka94.com/game/dice' + result + '.jpg',
+		t : 10
+	});	
+
+	return JSON.stringify(list);
+}
+function book_parse_jiandao(url, str) {
+	var data = JSON.parse(str);
+	var list = [];
+	var result = Math.floor(Math.random() * 3 + 1);
+	var r = '';
+	if (result == 1) {
+		r = '剪刀';
+	} else if (result == 2) {
+		r = '石头';
+	} else {
+		r = '布';
+	}
+	var d = new Date();
+	var time = d.toString().match(/.+?20\S+\s*(\d+.+)\s*GMT.+/i)[1];
+	
+	list.push({
+		d : time + '结果：' + r,
+		t : 2
+	});	
+	list.push({
+		d : 'http://guang.ka94.com/game/jiandao' + result + '.jpg',
+		t : 10
+	});	
+
+	return JSON.stringify(list);
+}
+
+
+]]>
+		</code>
+    </script>
+</sited>

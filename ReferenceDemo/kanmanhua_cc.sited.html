@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sited ver="1" debug="1" engine="27" schema="1">
+	<meta>
+	<ua></ua>
+	<title>看漫画</title>
+	<intro>鹿财初代作品练手之作</intro>
+	<author>鹿财</author>
+	<url>www.kanman.com</url>
+	<expr>\.kanman\.com</expr>
+	<encode>utf-8</encode>
+
+	</meta>
+	<main dtype="1" durl="www.kanman.com">
+		<home>
+			<hots cache="1d" title="首页" method="get" parse="hots_parse" url="https://www.kanman.com/sort/all.html" />
+			<tags title="标签">
+				<item title="最近更新" url="http://m.57mh.com/latest" />
+				<item title="日行榜" url="http://m.57mh.com/rank" />
+			</tags>
+		</home>
+		<tag cache="1d" method="get" parse="tag_parse" />
+		<book cache="1d" method="get" parse="book_parse" />
+	</main>
+	<script>
+		< require >
+			<
+			item url = "http://sited.noear.org/addin/js/cheerio.js"
+		lib = "cheerio" / >
+			<
+			/require> <
+		code >
+			<
+			![CDATA[
+
+
+
+
+			]] >
+			<
+			/code>
+	</script>
+</sited>

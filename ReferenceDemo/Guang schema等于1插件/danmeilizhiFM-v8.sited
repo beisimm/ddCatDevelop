@@ -1,0 +1,178 @@
+<!--?xml version="1.0" encoding="UTF-8" ?-->
+<sited  ver="8" debug="1"  engine="27" schema="1">
+	<meta>
+		<ua></ua>
+		<guid></guid>
+		<title>耽美荔枝FM</title>
+		<author>Guang</author>
+		<contact>未想好我空着</contact>
+		<intro>[FM](v8修复搜索问题。如连接失败可能是原网站线路不稳定)不腐不开心！荔枝FM电台的二次元、广播剧频道</intro>
+		<url>http://www.lizhi.fm/</url>
+		<expr>www\.lizhi\.fm</expr>
+		<logo>http://image.coolapk.com/apk_logo/2016/0606/12202_1465211996_6029.png</logo>
+		<encode>UTF-8</encode>
+		<reward title="反馈" mail="wistn@qq.com">
+			<item txt="欢迎打赏插件开发者Guang，反馈问题。" />
+			<item />
+			<item txt="点击或扫描二维码对[❤❤广]支付宝打赏" expr="https://qr.alipay.com/aex05979jbnzvi4fs3hx691" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7nyz88j20by0by0sy.jpg" />
+			<item />
+			<item txt="扫描二维码对我的微信打赏" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7oa4khj206b06bt9m.jpg" />
+			<item />
+			<item url="点击本行可联系QQ" expr="http://wpa.qq.com/msgrd?v=3&amp;uin=476375486&amp;site=qq&amp;menu=yes" />
+			<item />
+		</reward>
+	</meta>
+	<main dtype="3" btag="电台">	
+		<home>
+			<hots cache="1d" title="耽美广播剧" method="get" showImg="1" parse="hots_parse" url="http://www.lizhi.fm/label/24229907145430576/" />
+			<tags title="分类">
+				<item group="二次元" title="ACG音乐" url="http://www.lizhi.fm/label/24229891039302320/@page" />
+				<item title="动漫" url="http://www.lizhi.fm/label/24229893992092464/@page" />
+				<item title="游戏" url="http://www.lizhi.fm/label/24229895871140784/@page" />
+				<item title="宅腐基" url="http://www.lizhi.fm/label/24229898823930928/@page" />
+				<item title="古风" url="http://www.lizhi.fm/label/24229900971414704/@page" />
+				<item title="同人" url="http://www.lizhi.fm/label/24229902313592112/@page" />
+				<item group="广播剧" title="更多耽美" url="http://www.lizhi.fm/label/24229907145430576/@page" />
+				<item title="古风剧" url="http://www.lizhi.fm/label/24229910635091632/@page" />
+				<item title="现代剧" url="http://www.lizhi.fm/label/24229913587881776/@page" />
+				<item title="CV" url="http://www.lizhi.fm/label/24229915466930096/@page" />
+			</tags>
+		</home>
+		<search cache="1d" method="get" parse="search_parse" url="http://www.lizhi.fm/search_radio/@key/1?wwwlizhi" ua="iPhone"  />
+		<tag>
+			<tag cache="1d" method="get" parse="tags_parse" expr="label\/(?!24229907145430576).+" />
+			<tag cache="1d" method="get" parse="tags_parse" addPage="1" expr="label\/24229907145430576" />
+		</tag>
+		<book cache="1d" method="get" parse="book_parse" parseUrl="book_parseUrl" expr="fm\/\d+" header="cookie;referer" />		
+		<section cache="1d" method="get" parse="section_parse" style="12"  header="cookie;referer"/>
+	</main>
+	<script>
+		<require>
+			<item url="http://sited.noear.org/addin/js/cheerio.js" lib="cheerio" /></require>
+		<code>
+			<![CDATA[
+function urla(u) {
+    var host = "http://www.lizhi.fm";
+    if (u.indexOf("http") < 0) {
+        if (u.substr(0, 1) != '/') u = host + '/' + u;
+        else u = host + u;
+    }
+    return encodeURI(u);
+}
+
+function hots_parse(url, html) {
+    var $ = cheerio.load(html);
+    var list = [];
+
+    $('.allRadioList li').each(function() {
+        var item = $(this);
+
+        var bm = {};
+        bm.name = item.find('img').attr('alt');
+        bm.url = urla(item.children('a').attr('href'));
+        bm.logo = item.find('img').attr('data-echo');
+
+        list.push(bm);
+    });
+
+    return JSON.stringify(list);
+}
+
+function search_parse(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+	var memo='没有pc版搜索，所以用wap版';
+	$('.list a').each(function() {
+		var item = $(this);
+		var bm = {};
+		bm.name = item.find('img').attr('alt');
+		bm.url = urla(item.attr('href'));
+		bm.logo = item.find('img').attr('data-echo');
+
+		bm.author = item.find('.list-item-desc').text().trim();
+		bm.newSection = '';
+		bm.updateTime = '';
+		bm.status = '';
+        bm.btag = "专辑";
+		list.push(bm);
+	});
+	return JSON.stringify(list);
+}
+
+function tags_parse(url, html) {
+    var $ = cheerio.load(html);
+    var list = [];
+
+    $('.allRadioList li').each(function() {
+        var item = $(this);
+
+        var bm = {};
+        bm.name = item.children('.radioName').children('a').text().trim();
+        bm.url = urla(item.children('a').attr('href'));
+        bm.logo = item.find('img').attr('data-echo');
+
+        bm.author = item.children('.radioAuthor').children('a').text().trim();
+        bm.newSection = '';
+        bm.updateTime = '';
+        bm.status = '';
+        list.push(bm);
+    });
+    return JSON.stringify(list);
+}
+function book_parseUrl(url, html) {
+    var $ = cheerio.load(html);
+
+	var urls = url;
+    var pages = $('div.page > a').length;
+    if (pages) {
+        for (i = 2; i <= pages; i++) {
+			urls += (';' + url + 'p/' + i+ '.html');			
+        }
+    }
+    return urls;
+}
+
+function book_parse(url, html) {
+    var $ = cheerio.load(html);
+    var data = {};
+	if(!url.match(/html$/i)) {
+		data.name = $('.radioInfo .radioBand').next().text() + '[' + $('.radioInfo .radioBand').text() + ']';
+		data.author = $('.avatar img').attr('alt');
+		data.logo = $('.radioCover img').eq(0).attr('src');
+		data.intro = $('.desText').text().trim();
+		data.updateTime = "";
+	}
+    data.isSectionsAsc=0;	
+    data.sections = [];
+
+    $('.js-audio-list li').each(function() {
+        var url0 = $(this).children('a').attr('href');
+        var bm = {
+            name: $(this).children('a').attr('title'),
+            url: urla(url0)
+        };
+        if (url0 && url0.search(/\d+/) >= 0) {
+            data.sections.push(bm);
+        }
+    });
+	return JSON.stringify(data);
+}
+
+
+function section_parse(url, html) {
+    var $ = cheerio.load(html);
+    var url0 = $('.audio-controller').attr('data-url');
+    var img = $('.audioCover img').attr('src');
+
+        return JSON.stringify([{
+            url: url0,
+            logo: img,
+            type: ".mp3",
+            mime: "audio/x-mpeg"
+        }]);
+}
+
+]]>
+		</code>
+    </script>
+</sited>

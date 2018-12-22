@@ -1,0 +1,274 @@
+<!--?xml version="1.0" encoding="UTF-8" ?-->
+<sited  ver="8" debug="1"  engine="27" schema="1" >
+	<meta>
+	<ua></ua>
+	<guid></guid>
+	<title>萌音</title>
+	<author>Guang</author>
+	<contact>未想好我空着</contact>
+	<intro>[FM]刷新首页可换歌，可搜索MV视频、单曲、专辑，一个ACG类的音乐插件！</intro>
+	<url>http://moesound.com/</url>
+	<expr>moesound\.com</expr>
+	<logo>http://moesound.com/favicon.ico</logo>
+	<encode>UTF-8</encode>
+	<reward title="反馈" mail="wistn@qq.com">
+		<item txt="欢迎打赏插件开发者Guang，反馈问题。" />
+		<item />
+		<item txt="点击或扫描二维码对[❤❤广]支付宝打赏" expr="https://qr.alipay.com/aex05979jbnzvi4fs3hx691" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7nyz88j20by0by0sy.jpg" />
+		<item />
+		<item txt="扫描二维码对我的微信打赏" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7oa4khj206b06bt9m.jpg" />
+		<item />
+		<item url="点击本行可联系QQ" expr="http://wpa.qq.com/msgrd?v=3&amp;uin=476375486&amp;site=qq&amp;menu=yes" />
+		<item />
+	</reward>
+	</meta>
+	<main dtype="3" btag="音乐，视频">
+		<home>
+			<hots cache="0" title="随机" method="get" showImg="1" w="4" h="4" parse="hots_parse" url="http://moesound.com/api.php?c=music&amp;f=fm&amp;row=4" />
+			<updates title="MV" showImg="2" w="2" h="1" cache="1d" method="get" parse="updates_parse" url="http://moesound.com/video.php" />
+			<tags title="更多">
+				<item title="单曲" url="http://moesound.com/music.php?page=@page" />
+				<item title="专辑" url="http://moesound.com/music.php?c=album&amp;page=@page" />
+				<item title="更多MV" url="http://moesound.com/video.php?page=@page" /></tags>
+		</home>
+		<search cache="1d" method="get" parse="search_parse" url="http://moesound.com/api.php?c=search&amp;s=@key" />
+		<tag>
+			<tag cache="1d" method="get" parse="updates_parse" addPage="1" expr="video\.php\?page" showImg="2" w="2" h="1" />
+			<tag cache="1d" method="get" parse="tag_parse2" expr="music\.php\?page" showImg="1" w="1" h="1" />
+			<tag cache="1d" method="get" parse="tag_parse3" expr="music\.php\?c=album" showImg="1" w="1" h="1" />
+		</tag>
+		<book>
+			<book cache="1d" method="get" parse="book_parse1" expr="video\/\d+" dtype="7" style="11"/>
+			<book cache="0" method="get" buildUrl="section_buildUrl" parse="book_parse2" expr="music\/\d+" dtype="7" style="12"/>
+			<book cache="1d" method="get" parse="book_parse3" expr="album\/\d+" dtype="3"/>
+		</book>
+		<section cache="0" method="get" parse="section_parse" buildUrl="section_buildUrl" style="12"/>
+	</main>
+	<script>
+		<require>
+			<item url="http://sited.noear.org/addin/js/cheerio.js" lib="cheerio" /></require>
+		<code>
+			<![CDATA[
+function urla(u) {
+    var host = "http://moesound.com";
+    if (u.indexOf("http") < 0) {
+        if (u.substr(0, 1) != '/') u = host + '/' + u;
+        else u = host + u;
+    }
+    return encodeURI(u);
+}
+
+function hots_parse(url, html) {
+    var json = JSON.parse(html);
+    var list = [];
+
+    for (var i in json) {
+        var item = json[i];
+        if (item.url) {
+            var bm = {};
+            bm.name = item.name;
+            bm.url = 'http://moesound.com/music/' + item.id;
+            bm.logo = item.image;
+            list.push(bm);
+        }
+    }
+    return JSON.stringify(list);
+}
+
+function updates_parse(url, html) {
+    var $ = cheerio.load(html);
+    var list = [];
+    $('.row-sm').last().find('.item').each(function() {
+        var item = $(this);
+        var bm = {};
+        bm.name = item.find('.text-ellipsis').eq(0).text();
+        bm.url = urla(item.find('.text-ellipsis').eq(0).attr('href'));
+
+        bm.logo = item.find('img').attr('src');
+        bm.newSection = '';
+        bm.updateTime = '';
+        list.push(bm);
+    });
+    return JSON.stringify(list);
+}
+
+function tag_parse2(url, html) {
+    var $ = cheerio.load(html);
+    var list = [];
+    $('.row-sm .item').each(function() {
+        var item = $(this);
+        var bm = {};
+        bm.name = item.find('.text-ellipsis').eq(0).text();
+
+        var id = item.find('.text-ellipsis').eq(0).attr('href').match(/id=(\d+)/)[1];
+        bm.url = 'http://moesound.com/music/' + id;
+
+        bm.logo = item.find('img').attr('src');
+        bm.newSection = '';
+        bm.updateTime = '[所属专辑：' + item.find('.text-ellipsis').eq(1).text() + ']';
+        list.push(bm);
+    });
+    return JSON.stringify(list);
+}
+
+function tag_parse3(url, html) {
+    var $ = cheerio.load(html);
+    var list = [];
+    $('#masonry .item').each(function() {
+        var item = $(this);
+        var bm = {};
+        bm.name = item.find('.text-u-c').text();
+        bm.url = item.find('.text-u-c').attr('href');
+
+        bm.logo = item.find('img').attr('src');
+        bm.newSection = '';
+        bm.updateTime = '';
+        list.push(bm);
+    });
+    return JSON.stringify(list);
+}
+
+function search_parse(url, html) {
+    var $ = cheerio.load(html);
+    var list = [];
+    $('h2').each(function() {
+        var item = $(this);
+        if (item.text().indexOf('音乐') >= 0) {
+            item.next().find('.item').each(function() {
+                var bm = {};
+                bm.name = $(this).find('.text-ellipsis').eq(0).text();
+                var id = $(this).find('.text-ellipsis').eq(0).attr('href').match(/id=(\d+)/)[1];
+                bm.url = 'http://moesound.com/music/' + id;
+                bm.logo = $(this).find('img').attr('src');
+                bm.updateTime = '[所属专辑：' + $(this).find('.text-ellipsis').eq(1).text() + ']';
+                bm.btag = "歌曲";
+                list.push(bm);
+            });
+        }
+        if (item.text().indexOf('专辑') >= 0) {
+            item.next().find('.item').each(function() {
+                var bm = {};
+                bm.name = $(this).find('.text-ellipsis').eq(0).text();
+                var id = $(this).find('.text-ellipsis').eq(0).attr('href').match(/id=(\d+)/)[1];
+                bm.url = 'http://moesound.com/album/' + id;
+                bm.logo = $(this).find('img').attr('src');
+                bm.updateTime = '';
+                bm.btag = "专辑";
+                list.push(bm);
+            });
+        }
+        if (item.text().indexOf('视频') >= 0) {
+            item.next().find('.item').each(function() {
+                var bm = {};
+                bm.name = $(this).find('.text-ellipsis').eq(0).text();
+                var id = $(this).find('.text-ellipsis').eq(0).attr('href').match(/id=(\d+)/)[1];
+                bm.url = 'http://moesound.com/video/' + id;
+                bm.logo = $(this).find('img').attr('src');
+                bm.updateTime = '';
+                bm.btag = "视频";
+                list.push(bm);
+            });
+        }
+    });
+    return JSON.stringify(list);
+}
+
+
+function book_parse1(url, html) {
+    if (html.indexOf('type="video/mp4"') != -1) {
+        url = html.match(/src=\s?"\s?(.+?)\s?".+?mp4/i)[1];
+    } else {
+        if (html.indexOf('type="video/ogg"') != -1) {
+            url = html.match(/src=\s?"\s?(.+?)\s?".+?ogg/i)[1];
+        } else {
+            if (html.indexOf('type="video/webm"') != -1) {
+                url = html.match(/src=\s?"\s?(.+?)\s?".+?webm/i)[1];
+            }
+        }
+    }
+    var $ = cheerio.load(html);	
+    return JSON.stringify({
+		name: $('h2').text(),
+		logo: $('video').attr('poster'),
+		list: [{
+				url: url,
+				type: ".mp4",
+				mime: "video/mp4"
+			}]
+	});
+}
+
+function book_parse2(url, html) {
+    var json = JSON.parse(html);
+    var item = json[0];
+
+    if (item.url) {
+
+        return JSON.stringify({
+		name: item.name,
+		logo: item.image,
+		list: [{
+            url: item.url,
+            logo: item.image,
+            type: ".mp3",
+            mime: "audio/x-mpeg"
+			}]
+	});
+    } else {
+        return "";
+    }
+}
+function section_buildUrl(url, html) {
+    var id = url.match(/http.+?(\d+)/i)[1];
+    url = 'http://moesound.com/api.php?c=music&mid=' + id;
+    return url;
+}
+
+function section_parse(url, html) {
+    var json = JSON.parse(html);
+    var item = json[0];
+
+    if (item.url) {
+
+        return JSON.stringify([{
+            url: item.url,
+            logo: item.image,
+            type: ".mp3",
+            mime: "audio/x-mpeg"
+        }]);
+
+    } else {
+        return "";
+    }
+}
+
+function book_parse3(url, html) {
+    var $ = cheerio.load(html);
+    var data = {};
+
+    data.name = $('h2').text();
+    data.author = '';
+    data.logo = $('.row img').eq(0).attr('src');
+    data.intro = '';
+    data.updateTime = "";
+	data.isSectionsAsc=1;
+    data.sections = [];
+    $('.list-group-lg li').each(function() {
+        var url0 = $(this).find('a').attr('href');
+        var name0 = $(this).find('a').text();
+        var bm = {
+            name: name0,
+            url: url0
+        };
+        if (url0 && url0.search(/\d+/) >= 0) {
+            data.sections.push(bm);
+        }
+    });
+    return JSON.stringify(data);
+}
+
+
+			]]>
+		</code>
+    </script>
+</sited>

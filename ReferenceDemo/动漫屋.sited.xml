@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<site ver="3" debug="1" engine="25" schema="1">
+    <meta>
+        <ua>Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36</ua>
+        <title>动漫屋</title>
+        <intro>动漫屋:全球动漫领先平台、老网站名:你的我的在线漫画、dm5.com</intro>
+        <author>Seiko</author>
+        <url>http://www.dm5.com</url>
+        <expr>www\.dm5\.com</expr>
+        <logo></logo>
+        <encode>utf-8</encode>
+        <reward title="打赏">
+            <item txt="插件开发者@Seiko的账号" />
+            <item />
+            <item title="支付宝[**飞]" url="605590140@qq.com" />
+            <item txt="感谢您使用此插件." />
+            <item />
+            <item txt="感谢你对此插件开发者的支持"/>
+        </reward>
+    </meta>
+	<main dtype="1">
+		<home>
+            <hots cache="1d" title="热门" method="get"  parse="ht_parse" url="http://www.dm5.com/manhua-new" />
+			<tags title="分类">
+                <item title="少年热血" url="http://www.dm5.com/manhua-shaonianrexue-p@page/" group="题材" />
+                <item title="少女爱情" url="http://www.dm5.com/manhua-shaonvaiqing-p@page/" />
+                <item title="武侠格斗" url="http://www.dm5.com/manhua-wuxiagedou-p@page/" />
+                <item title="科幻魔幻" url="http://www.dm5.com/manhua-kehuanmohuan-p@page/" />
+                <item title="竞技体育" url="http://www.dm5.com/manhua-jingjitiyu-p@page/" />
+                <item title="爆笑喜剧" url="http://www.dm5.com/manhua-baoxiaoxiju-p@page/" />
+                <item title="侦探推理" url="http://www.dm5.com/manhua-zhentantuili-p@page/" />
+                <item title="其它漫画" url="http://www.dm5.com/manhua-qitamanhua-p@page/" />
+                <item title="东方同人" url="http://www.dm5.com/manhua-dongfangtongren/" />
+                <item title="港台" url="http://www.dm5.com/manhua-hktw-p@page/" group="地区" />
+                <item title="日韩" url="http://www.dm5.com/manhua-jpkr-p@page/" />
+                <item title="大陆" url="http://www.dm5.com/manhua-china-p@page/" />
+                <item title="欧美" url="http://www.dm5.com/manhua-euus-p@page/" />
+			</tags>
+		</home>
+        <search  cache="1d" method="get" parse="search_parse" url="http://www.dm5.com/search?title=@key&amp;language=1" />
+		<tag     cache="0"  method="get" parse="ht_parse"  />
+        <book    cache="1d" method="get" parse="book_parse" />
+        <section>
+            <section expr="\/m\d+"  cache="1"  method="get" parse="section1_parse" parseUrl="section1_parseUrl" buildRef="section1_buildRef" header="cookie;referer;Accept=*/*;X-Requested-With=XMLHttpRequest" />
+            <section expr="\/t|\.baidu" cache="1"  method="get" parse="section2_parse" parseUrl="section2_parseUrl"  />
+        </section>
+        <object>
+            <object expr="\/m\d+" header="ccookie;referer;Accept=*/*;" />
+            <object expr="\/t|\.baidu" header="referer"/>
+        </object>
+    </main>
+    <script>
+        <require>
+            <item url="http://sited.noear.org/addin/js/cheerio.js" lib="cheerio" />
+        </require>
+		<code>
+        <![CDATA[
+
+
+function urla(u) {
+    var host = "http://www.dm5.com";
+    if (u.indexOf("http")<0) {
+        u = host + u;
+    }
+    return encodeURI(u);
+}
+
+function ht_parse(url,html) {
+    var $ = cheerio.load(html);
+    var list = [];
+    
+    $('.red_lj').find('img').each(function() {
+        var img  = $(this);
+        
+        var bm = {};
+        bm.name = img.parent().attr('title');
+        bm.url  = urla(img.parent().attr('href'));
+        bm.logo = img.attr('src');
+        list.push(bm);
+        
+    });
+    return JSON.stringify(list);
+}
+
+
+function search_parse(url,html) {
+    var $ = cheerio.load(html);
+    var list = [];
+    
+    $('div.item').find('img').each(function() {
+        var img  = $(this);
+        
+        var bm = {};
+        bm.name  = img.parent().parent().next().find('a.title').text();
+        bm.url   = urla(img.parent().attr('href'));        
+        bm.logo = img.attr('src');
+        
+
+        list.push(bm);
+        
+    });
+    return JSON.stringify(list);
+}
+
+
+
+function book_parse(url, html) {
+    var $ = cheerio.load(html);
+    
+    var data = {};
+    
+    data.name = $('.innr91').children('img').attr('alt');
+    data.author = $('.innr92_m').children('a').text();
+    data.logo = $('.innr91').children('img').attr('src');
+    data.updateTime = '';
+    data.intro = $('.red_lj').children('p').text();
+    data.sections = [];
+    
+    $('.lan2').find('a').each(function() {
+        var item = $(this);
+
+        var u1 = item.attr('href');
+        if (u1.indexOf("http")<0) {
+            var bm = {
+            name:item.attr('title'),
+            url:urla(u1)
+            };
+            data.sections.push(bm);
+        }
+    });
+    
+     
+    return JSON.stringify(data);
+}
+
+function section1_buildRef(url){
+    return url.replace(/chapterfun.*/gi,'');
+}
+
+function section1_parseUrl(url, html) {
+    var $ = cheerio.load(html);
+    var cid = url.match(/\/m(\d+)/i)[1];
+
+    var pages = parseInt($('.down.iList a').last().text().match(/(\d+)/i)[1]);
+    var urls='';
+    for(var i=1; i<=pages; i++){
+        if(urls.length>0){
+            urls+=';';
+        }
+        urls += (url+'chapterfun.ashx?cid='+cid+'&page='+i+'&key=&language=1&gtk=6');
+    }
+    return urls;
+}
+
+
+function section1_parse(url, html) {
+    var jList = eval(html);
+
+    var list = [];
+    jList.forEach(function(item,idx){
+        if(idx==0){
+            list.push(item);
+        }
+    });
+
+    return JSON.stringify(list);
+}
+
+
+function section2_parseUrl(url, html) {
+    var $ = cheerio.load(html);
+    var u11 = $('.flr').eq(0).children('a').attr('href');
+
+
+    var cid = html.match(/var\|([^\']*)/i)[1].split("|");
+
+    var ud = "http://tieba.baidu.com/p/" + cid[1] + "?see_lz=1";
+    
+    return ud;
+}
+
+
+function section2_parse(url,html) {
+    var $ = cheerio.load(html);
+    var list = [];
+    
+    $('.BDE_Image').each(function() {
+        var img  = $(this);
+        var u2 = img.attr('src');
+        if(u2 != null){
+            list.push(u2);
+        } 
+    });
+    return JSON.stringify(list);
+}
+
+
+
+
+        ]]>
+		</code>
+    </script>
+</site>

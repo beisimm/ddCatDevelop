@@ -1,0 +1,214 @@
+<!--?xml version="1.0" encoding="UTF-8" ?-->
+<sited ver="3" debug="1" engine="27" schema="1">
+	<meta>
+		<ua>iPhone</ua>
+		<guid></guid>
+		<title>每日一文</title>
+		<author>Guang</author>
+		<contact>未想好我空着</contact>	
+		<intro>[FM]修复了bug（献给Noear。插件无搜索,可听音频和看文章）简单生活，每日一文。没有复杂的算法，不猜你喜欢。专注、执着，每天阅读。只为简单的纯净的阅读而生。</intro>
+		<url>http://meiriyiwen.com/index/mobile</url>
+		<expr>meiriyiwen\.com</expr>
+		<logo>http://image.coolapk.com/apk_logo/2015/0403/12202_1428052879_951.png</logo>
+		<encode>UTF-8</encode>
+		<reward title="反馈" mail="wistn@qq.com">
+			<item txt="欢迎打赏插件开发者Guang，反馈问题。" />
+			<item />
+			<item txt="点击或扫描二维码对[❤❤广]支付宝打赏" expr="https://qr.alipay.com/aex05979jbnzvi4fs3hx691" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7nyz88j20by0by0sy.jpg" />
+			<item />
+			<item txt="扫描二维码对我的微信打赏" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7oa4khj206b06bt9m.jpg" />
+			<item />
+			<item url="点击本行可联系QQ" expr="http://wpa.qq.com/msgrd?v=3&amp;uin=476375486&amp;site=qq&amp;menu=yes" />
+			<item />
+		</reward>
+	</meta>
+	<main dtype="3" btag="FM，文章">
+		<home>
+            <hots cache="1d" showImg="0"  title="首页" method="get" parse="hots_parse" url="http://meiriyiwen.com/" />
+            <updates cache="1d" showImg="1"  title="书架" method="get" parse="updates_parse" url="http://book.meiriyiwen.com/" />			
+        </home>
+		<tag cache="1d" method="get" parse="tag_parse" expr="book\.meiriyiwen\.com\/book\?page" addPage="1" />		 
+		<book>
+			<book cache="1d"  method="get" parse="book_parse1"   expr="index\/mobile" dtype="6"/>
+			<book cache="0"  method="get" parse="book_parse1"   expr="random\/iphone" dtype="6"/>		
+			<book cache="1d" method="get" parse="book_parse2" expr="voice\.meiriyiwen\.com\/voice\/list_all" dtype="3" />	
+			<book cache="0" method="get" parse="book_parse3" expr="voice\/random" dtype="7" style="11"/>
+			<book cache="1d"  method="get" parse="book_parse4"   expr="book\.meiriyiwen\.com\/book\/chapter_list\/" dtype="2" />	
+		</book>
+		<section>
+			<section cache="1d"  method="get" parse="book_parse3" expr="voice" dtype="3" style="11" />	
+			<section cache="1d"  method="get" parse="book_parse1" expr="book" dtype="2" />		
+		</section>	
+    </main>
+    <script>
+	    <require>
+			<item url="http://sited.noear.org/addin/js/cheerio.js" lib="cheerio" />
+		</require>
+        <code>
+            <![CDATA[
+
+function hots_parse(url, html) {
+
+	var $ = cheerio.load(html);
+	var list = [];
+
+	var bm = {};
+	bm.name = '最新文章';
+	bm.url = 'http://meiriyiwen.com/index/mobile';
+	bm.logo = '';
+	list.push(bm);
+
+	bm = {};
+	bm.name = '随机文章';
+	bm.url = 'http://meiriyiwen.com/random/iphone';
+	bm.logo = '';
+	list.push(bm);
+
+	bm = {};
+	bm.name = '全部声音';
+	bm.url = 'http://voice.meiriyiwen.com/voice/list_all';
+	bm.logo = '';
+	list.push(bm);
+
+	bm = {};
+	bm.name = '随机声音';
+	bm.url = 'http://voice.meiriyiwen.com/voice/random';
+	bm.logo = '';
+	list.push(bm);
+
+	return JSON.stringify(list);
+}
+
+function updates_parse(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+	$('.content .books').each(function () {
+		var item = $(this);
+
+		var bm = {};
+		bm.name = item.find('.book-name').text().trim();
+		bm.url = 'http://book.meiriyiwen.com' + item.find('a').eq(0).attr('href');
+		bm.logo = 'http://book.meiriyiwen.com' + item.find('img').attr('src');
+		bm.newSection = '';
+		bm.updateTime = item.find('.book-author').text().trim();
+		list.push(bm);
+	});
+
+	bm = {};
+	bm.name = '更多书架';
+	bm.url = 'http://book.meiriyiwen.com/book?page=@page';
+	bm.logo = 'http://meiriyiwen.com/images/apple-icon.png';
+	bm.newSection = '';
+	bm.updateTime = '点击进入更多书架';
+	list.push(bm);
+
+	return JSON.stringify(list);
+}
+
+function tag_parse(url, html) {
+
+	var $ = cheerio.load(html);
+	var list = [];
+	$('.content .books').each(function () {
+		var item = $(this);
+
+		var bm = {};
+		bm.name = item.find('.book-name').text().trim();
+		bm.url = 'http://book.meiriyiwen.com' + item.find('a').eq(0).attr('href');
+		bm.logo = 'http://book.meiriyiwen.com' + item.find('img').attr('src');
+		bm.author = '';
+		bm.status = '';
+		bm.newSection = '';
+		bm.updateTime = item.find('.book-author').text().trim();
+		list.push(bm);
+	});
+
+	return JSON.stringify(list);
+}
+
+function book_parse1(url, html) {
+		
+	html = html.replace(/<p>/gi,'$$').replace(/<\/p>/gi,'');
+	var $ = cheerio.load(html);
+	var c = $('.articleContent');
+	var list = [];
+
+	if (url.indexOf('random/iphone') >= 0 || url.indexOf('index/mobile')>=0) {
+		list.push({
+			d : $('.articleTitle').text().trim(),
+			t : 2
+		}, {
+			d : $('.articleAuthorName').text().trim(),
+			t : 2
+		});
+	}
+	var tList = c.text().split('$');
+	tList.forEach(function (item) {
+		var t1 = item.trim();
+		if (t1.length > 0) {
+			list.push({
+				d : t1,
+				t : 1
+			});
+		}
+	});
+
+	return JSON.stringify(list);
+}
+
+function book_parse2(url, html) {
+	var $ = cheerio.load(html);
+	var data = {};
+
+	data.name = '全部声音';
+	data.author = '';
+	data.logo = 'http://meiriyiwen.com/images/apple-icon.png';
+	data.intro = '';
+	data.updateTime = '';
+	data.isSectionsAsc = 0;
+	data.sections = [];
+
+	$('.list_table tr').eq(0).remove();
+	$('.list_table tr').each(function () {
+		var item = $(this);
+		var sm = {
+			name : '《' + item.find('a').text().trim() + '》' + item.children('td').eq(1).text().trim(),
+			url : 'http://voice.meiriyiwen.com' + item.find('a').attr('href')
+		};
+		data.sections.push(sm);
+	});
+
+	return JSON.stringify(data);
+}
+
+function book_parse3(url, html) {
+	var $ = cheerio.load(html);
+	var logo = html.match(/background.+?url.+?"(.+?)"/i)[1];
+	var curl = $('audio').attr('src');
+	return curl;
+}
+function book_parse4(url, html) {
+	var $ = cheerio.load(html);
+	var data = {};
+
+	data.name = $('.book-name').text().trim();
+	data.author = $('.book-author').text().trim();
+	data.logo = 'http://book.meiriyiwen.com' + $('.book-img img').attr('src');
+	data.intro = '';
+	data.updateTime = "";
+	data.isSectionsAsc = 1;
+	data.sections = [];
+	$('.chapter-list a').each(function () {
+		var item = $(this);
+		var sm = {
+			name : item.text(),
+			url : 'http://book.meiriyiwen.com' + item.attr('href')
+		};
+		data.sections.push(sm);
+	});
+	return JSON.stringify(data);
+}
+]]>
+		</code>
+    </script>
+</sited>

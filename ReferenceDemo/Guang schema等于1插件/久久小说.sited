@@ -1,0 +1,193 @@
+<!--?xml version="1.0" encoding="UTF-8" ?-->
+<sited ver="6" debug="1"  engine="30" schema="1">
+    <meta>
+		<ua></ua>
+		<guid></guid>
+		<title>久久小说</title>
+		<author>Guang</author>
+		<contact>未想好我空着</contact>
+		<intro>[小说]主要提供txt格式网络小说,文学名著,学习教程,社科书籍电子书</intro>
+		<url>http://m.txt99.com/</url>
+		<expr>\.jjxsw\.com|\.txt99\.com</expr>
+		<logo>http://www.jjxsw.com/favicon.ico</logo>
+		<encode>UTF-8</encode>
+		<about title="反馈" mail="wistn@qq.com">
+			<item url="我邮箱是wistn@qq.com" />
+			<item />
+			<item url="欢迎打赏插件开发者Guang，反馈问题。"/>			
+			<item txt="点击或扫描二维码对[❤❤广]支付宝打赏"  expr="https://qr.alipay.com/aex05979jbnzvi4fs3hx691" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7nyz88j20by0by0sy.jpg"/>
+			<item />
+			<item txt="扫描二维码对我的微信打赏" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7oa4khj206b06bt9m.jpg"/>
+			<item />
+		</about>
+	</meta>
+	<main dtype="2" btag="小说" durl="http://m.jjxsw.com/">
+		<home>				
+            <updates cache="1d" showImg="0" title="首页" method="get"  parse="updates_parse" url="http://m.jjxsw.com/" />
+			<tags  title="分类">
+				<item title="穿越" url="http://m.jjxsw.com/txt/Chuanyue/" />
+				<item title="重生" url="http://m.jjxsw.com/txt/chongshengxiaoshuo/" />
+				<item title="架空" url="http://m.jjxsw.com/txt/Lsjs/" />
+				<item title="总裁" url="http://m.jjxsw.com/txt/Qinggan/" />
+				<item title="青春" url="http://m.jjxsw.com/txt/Young/" />
+				<item title="修仙" url="http://m.jjxsw.com/txt/Wuxia/" />
+				<item title="耽美" url="http://m.jjxsw.com/txt/dmtr/" />
+				<item title="玄幻" url="http://m.jjxsw.com/txt/Xuanhuan/" />
+				<item title="都市" url="http://m.jjxsw.com/txt/dushi/" />
+				<item title="惊悚" url="http://m.jjxsw.com/txt/Kongbu/" />
+			</tags>
+		</home>
+        <search cache="1d" method="get" parse="search_parse" url="http://www.jjxsw.com/e/search/?searchget=1&amp;show=title%2Cwriter&amp;keyboard=@key&amp;Submit22=%CB%D1%CB%F7"  />	
+        <tag cache="1d" showImg="1" method="get" buildUrl="tag_url" parse="tag_parse" />
+		<book cache="1d" method="get" buildUrl="book_buildUrl" parse="book_parse"  expr="\/txt\/" buildWeb="book_buildWeb">
+			<sections cache="1d" method="get" buildUrl="book_s_buildUrl" parseUrl="book_s_parseUrl" parse="book_s_parse" />
+		</book>
+        <section cache="1"  method="get"  parse="section_parse" />	
+    </main>
+    <script>
+	    <require>
+			<item url="http://sited.noear.org/addin/js/cheerio.js" lib="cheerio" />
+		</require>
+		<code>
+        <![CDATA[
+function urla(u) {
+	var host = "http://m.jjxsw.com";
+	if (u.indexOf("http") < 0) {
+		if (u.substr(0, 1) != '/')
+			u = host + '/' + u;
+		else
+			u = host + u;
+	}var memo="post搜索失败所以get。换域名要兼容http://m.txt99.com/txt/23633.htm";
+	return encodeURI(u);
+}
+
+function updates_parse(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+	list.push({
+		'name' : $('.list_a').eq(0).find('img').attr('alt'),
+		'url' : urla($('.list_a').eq(0).find('img').parent().attr('href')),
+		'logo' : '',
+		'newSection' : '',
+		'updateTime' : ''
+	});
+	$('.sso_a').find('a').each(function () {
+		var item = $(this);
+		var bm = {};
+		bm.name = item.text();
+		bm.url = urla(item.attr('href'));
+		bm.logo = '';
+		bm.newSection = '';
+		bm.updateTime = '';
+		list.push(bm);
+	});
+	return JSON.stringify(list);
+}
+function tag_url(url, page) {
+	if (Number(page) == 1) {
+		return url;
+	} else {
+		return url + 'index_' + page.toString() + '.html';
+	}
+}
+function tag_parse(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+	$('.booklist_a li').each(function () {
+		var item = $(this);
+		var bm = {};
+		bm.name = item.find('a').eq(1).text();
+		bm.url = urla(item.find('a').eq(1).attr('href'));
+		bm.logo = item.find('img').attr('src');
+		bm.author = '';
+		bm.status = '';
+		bm.newSection = '';
+		bm.updateTime = item.find('span').eq(1).text() + '；' + item.find('font').text();
+		list.push(bm);
+	});
+	return JSON.stringify(list);
+}
+function search_parse(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+	$('.searchTopic').each(function () {
+		var item = $(this);	
+		var bm = {};
+		bm.name = item.children('a').text();
+		bm.url = urla(item.children('a').attr('href'));
+		bm.logo = 'http://www.jjxsw.com/favicon.ico';
+		bm.author = item.text().replace(/^.+作者：/i, '');
+		bm.status = '';
+		bm.newSection = '';
+		bm.updateTime = '';
+		bm.btag = "小说";
+		list.push(bm);
+	});
+	return JSON.stringify(list);
+}
+function book_buildWeb(url){
+return url.replace(/^.+?\/txt\//i,'http://m.jjxsw.com/txt/');
+}
+function book_buildUrl(url){
+return url.replace(/^.+?\/txt\//i,'http://m.jjxsw.com/txt/');
+}
+function book_parse(url, html) {
+	var $ = cheerio.load(html);
+	var data = {};
+	data.name = $('.jie h1').text();
+	data.author = $('.jie a').text();
+	data.logo = $('.pic img').attr('src');
+	data.intro = $('.novelinfo').text();
+	data.updateTime = '';
+	data.isSectionsAsc = 1;
+	data.sections = [];
+	return JSON.stringify(data);
+}
+
+function book_s_buildUrl(url) {
+return url.replace(/^.+?\/txt\//i,'http://m.jjxsw.com/txt/');
+}
+function book_s_parseUrl(url, html) {
+	var $ = cheerio.load(html);
+	return urla($('.sso_d li a').eq(-1).attr('href'));
+}
+
+function book_s_parse(url, html) {
+	var data = {};
+	data.sections = [];
+	data.sections.push({
+		name : '第1页',
+		url : url
+	});
+	if (html.match(/iPage\s*<\s*(\d+)/i)) {
+		var len = html.match(/iPage\s*<\s*(\d+)/i)[1];
+		for (var i = 2; i <= Number(len); i++) {
+			data.sections.push({
+				name : '第' + i.toString() + '页',
+				url : url.replace(/\/\d+.html/i, '/') + i.toString() + '.html'
+			});
+		}
+	}
+	return JSON.stringify(data);
+}
+function section_parse(url, html) {
+	html = html.replace(/<\/p>/gi, '$$').replace(/<br\s*\/>/gi,'$$');
+	var $ = cheerio.load(html);
+	var c = $('#Content');
+	var list = [];
+	var tList = c.text().split('$');
+	tList.forEach(function (item) {
+		var t1 = item.trim();
+		if (t1.length > 0) {
+			list.push({
+				d : t1,
+				t : 1
+			});
+		}
+	});
+	return JSON.stringify(list);
+}
+]]>
+		</code>
+    </script>
+</sited>

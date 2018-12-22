@@ -1,0 +1,139 @@
+<!--?xml version="1.0" encoding="UTF-8" ?-->
+<sited ver="4" debug="1" engine="31" schema="1">
+    <meta>
+		<ua></ua>
+		<guid></guid>
+		<title>苹果播客合集</title>
+		<author>Guang</author>
+		<contact>未想好我空着</contact>
+		<intro>[FM](v4全改成音频播放界面)里面是iTunes苹果播客(多地区)每项分类的Podcasts排行榜（海外内容可能打不开需要翻_墙），不能搜索。</intro>
+		<url>https://itunes.apple.com/podcasts/?_ss=pgbk</url>
+		<expr>\/\/itunes\.apple\.com\/.*?ss=pgbk</expr>	
+		<logo></logo>
+		<encode>UTF-8</encode>
+		<reward title="Email" mail="wistn@qq.com">
+			<item txt="欢迎打赏插件开发者Guang，反馈问题。" />
+			<item />
+			<item txt="点击或扫描二维码对[❤❤广]支付宝打赏" expr="https://qr.alipay.com/aex05979jbnzvi4fs3hx691" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7nyz88j20by0by0sy.jpg" />
+			<item />
+			<item txt="扫描二维码对我的微信打赏" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7oa4khj206b06bt9m.jpg" />
+			<item />
+		</reward>
+	</meta>
+	<main dtype="3" btag="电台" durl="https://itunes.apple.com/cn/genre/podcasts/id26?mt=2&amp;_ss=pgbk">
+		<home>
+			<hots title="地区" showImg="0" autoSize="1">
+				<item title="大陆" url="https://itunes.apple.com/cn/genre/bo-ke/id26?mt=2" />
+				<item title="香港" url="https://itunes.apple.com/hk/genre/podcasts/id26?mt=2" />
+				<item title="台湾" url="https://itunes.apple.com/tw/genre/podcasts/id26?mt=2" />
+	            <item title="美国" url="https://itunes.apple.com/us/genre/podcasts/id26?mt=2" />
+				<item title="英国" url="https://itunes.apple.com/gb/genre/podcasts/id26?mt=2" />				
+				<item title="日本" url="https://itunes.apple.com/jp/genre/podcast/id26?mt=2" />
+				<item title="韩国" url="https://itunes.apple.com/kr/genre/podcast/id26?mt=2" />
+				<item title="西班牙" url="https://itunes.apple.com/es/genre/podcasts/id26?mt=2" />
+				<item title="葡萄牙" url="https://itunes.apple.com/pt/genre/podcasts/id26?mt=2" />
+				<item title="德国" url="https://itunes.apple.com/de/genre/podcasts/id26?mt=2" />				
+				<item title="俄罗斯" url="https://itunes.apple.com/ru/genre/podkasty/id26?mt=2" />
+				<item title="意大利" url="https://itunes.apple.com/it/genre/podcast/id26?mt=2" />
+				<item title="法国" url="https://itunes.apple.com/fr/genre/podcasts/id26?mt=2" />
+			</hots>
+		</home>
+		<tag cache="1d" method="get" parse="tag_parse" showImg="0" expr="\/\/itunes\.apple\.com\/.+?\/genre\/.+?\/id26\?mt=2"/>
+        <subtag cache="1d" method="get" parse="subtag_parse" showImg="0" expr="\/\/itunes\.apple\.com\/.+?\/genre\/.+?\/(?!id26\?mt=2).+" />
+		<book cache="1d" method="get" parse="book_parse" expr="\/\/itunes\.apple\.com\/.+?\/podcast\/"/>
+		<section cache="1"  method="@null"  parse="section_parse" style="12"/>	
+    </main>
+    <script>
+	    <require>
+			<item url="http://sited.noear.org/addin/js/cheerio.js" lib="cheerio" />
+		</require>
+		<code>
+        <![CDATA[
+function urla(url){
+	var memo="全世界苹果播客有3种网址方式，bo-ke,podcast,podcasts。苹果播客内地/苹果播客合集/苹果app商店插件expr兼容原因，前2者要先安装插件才能收藏打开/网址填写/扫码进入book，后者要先安装插件才能收藏打开，先安装插件但网址填写/扫码只能进入插件首页可能因为自动加上&ign-mpt=uo=4";
+	if(url.indexOf('?')>0){
+		return url+"&_ss=pgbk";
+	}else{
+		return url+"?_ss=pgbk";
+	}
+}
+
+function tag_parse(url, html) {
+	var list = [];
+	var $ = cheerio.load(html);
+
+	$('.grid3-column>ul>li a').each(function () {
+		var item = $(this);
+		var bm = {};
+		bm.name = item.text();
+		bm.url = item.attr('href');
+		list.push(bm);
+	});
+	return JSON.stringify(list);
+}
+function subtag_parse(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+	$('.grid3-column a').each(function () {
+		var item = $(this);
+		var bm = {};
+		bm.name = item.text();
+		bm.url = urla(item.attr('href'));
+		bm.logo = '';
+		bm.author = '';
+		bm.newSection = '';
+		bm.updateTime = '';
+		bm.status = '';
+		list.push(bm);
+	});
+	return JSON.stringify(list);
+}
+
+function book_parse(url, html) {
+	var $ = cheerio.load(html);
+	var data = {};
+
+	data.name = $('#title h1').text();
+	data.author = $('#title h2').text().replace(/By\s*/i, '');
+	data.logo = $('.product img').attr('src-swap');
+	data.intro = $('.product-review>p').text();
+	data.updateTime = "";
+	data.isSectionsAsc = 0;
+	data.sections = [];
+	$('.tracklist-content-box tbody>tr').each(function () {
+		var item = $(this);
+		if (item.attr('audio-preview-url')) {
+			var playurl = item.attr('audio-preview-url')+'?yinpin';
+		} else {
+			var playurl = item.attr('video-preview-url')+'?shipin';
+		}
+		var sm = {
+			name: item.attr('preview-title'),
+			url: playurl
+		};
+		data.sections.push(sm);
+	});
+	return JSON.stringify(data);
+}
+function section_parse(url) {
+	if (url.indexOf('?shipin') > 0) {
+		return JSON.stringify([{
+					url: url.replace('?shipin',''),
+					type: ".mp4",
+					mime: "vedio/mp4"
+				}
+			]);
+	} else {
+		return JSON.stringify([{
+					url: url.replace('?yinpin',''),
+					logo: "",
+					type: ".mp3",
+					mime: "audio/x-mpeg"
+				}
+			]);
+	}
+}
+]]>
+		</code>
+    </script>
+</sited>

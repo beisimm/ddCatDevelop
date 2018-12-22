@@ -1,0 +1,328 @@
+<!--?xml version="1.0" encoding="UTF-8" ?-->
+<sited ver="2" debug="1"  engine="30" schema="1">
+	<meta>
+		<ua></ua>
+		<guid></guid>
+		<title>蜻蜓FM</title>
+		<author>Guang</author>
+		<contact>未想好我空着</contact>
+		<intro>[FM]收录全国电台广播(插件有广播实时直播和前一天回放)，高校电台资源，聚合有声节目内容覆盖音乐、科技、新闻、财经、商业、小说等各种类型。（可搜索广播台名和网络电台专辑名，付费音频不能播放）</intro>
+		<url>http://www.qingting.fm/</url>
+		<expr>qingting\.fm</expr>
+		<logo>http://image.coolapk.com/apk_logo/2016/0612/12202_1465729517_2677.png</logo>
+		<encode>UTF-8</encode>
+		<about title="反馈" mail="wistn@qq.com">
+			<item txt="欢迎打赏插件开发者Guang，反馈问题。" />
+			<item />
+			<item txt="点击或扫描二维码对[❤❤广]支付宝打赏" expr="https://qr.alipay.com/aex05979jbnzvi4fs3hx691" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7nyz88j20by0by0sy.jpg" />
+			<item />
+			<item txt="扫描二维码对我的微信打赏" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7oa4khj206b06bt9m.jpg" />
+			<item />
+		</about>
+	</meta>
+	<main dtype="3" btag="电台">
+		<home>
+			<hots cache="1d" showImg="0" w="2.5" h="1" title="专辑" method="get" parse="hots_parse" url="http://i.qingting.fm/wapi/categories" />		
+			<tags  title="广播台">
+				<tags cache="1d" method="get" parse="tags_parse_radios" url="http://www.qingting.fm/radiopage" />
+			</tags>
+		</home>
+		<search cache="1d"  method="get"  parse="search_parse"  url="http://i.qingting.fm/wapi/search?k=@key&amp;groups=real_remix&amp;type=newcms&amp;page=1&amp;pagesize=12&amp;exclude=people_podcaster,program_live,program_temp,program_ondemand"  />
+		<tag>
+		<tag cache="10m" showImg="1" method="get" parse="tag_parse_radios" expr="rapi.qingting.fm\/categories"/>
+		<tag cache="1d" showImg="1" method="get" parse="tag_parse_channels" expr="i.qingting.fm\/wapi\/flip\/categories"/>
+		</tag>
+		<book>
+			<book cache="1d" method="get" buildUrl="buildUrl" parse="book_parse_radios" expr="www.qingting.fm\/radios|m.qingting.fm\/channels">
+				<sections cache="0" method="get" buildUrl="buildUrl" parseUrl="book_s_parseUrl_radios" parse="book_s_parse_radios"/>
+			</book>
+			<book cache="1d" method="get" buildUrl="buildUrl" parse="book_parse_channels"  expr="www.qingting.fm\/channels|m.qingting.fm\/vchannels">
+				<sections cache="1d" method="get" buildUrl="book_s_buildUrl_channels" parseUrl="book_s_parseUrl_channels" parse="book_s_parse_channels"/>
+			</book>
+		</book>
+		<section>
+			<section cache="1"  method="@null"  parse="section_parse_radios" expr="\/\/(?!www.qingting.fm)" style="12"/>	
+			<section cache="1d" method="get" buildUrl="section_buildUrl_channels" parse="section_parse_channels" expr="www.qingting.fm" style="12"/>	
+		</section>
+	</main>
+	<script>
+		<require>
+			<item url="http://sited.noear.org/addin/js/cheerio.js" lib="cheerio" />
+		</require>
+		<code>
+<![CDATA[
+function urla(u) {
+	var host = "http://www.qingting.fm";
+	if (u.indexOf("http") < 0) {
+		if (u.substr(0, 1) != '/')
+			u = host + '/' + u;
+		else
+			u = host + u;
+	}var memo='很多是倒序有些是正序所以var外reverse控制,搜索json机智手动加上排除项program_ondemand';
+	return encodeURI(u);
+}
+function hots_parse(url, html) {
+	var json = JSON.parse(html);
+	var list = [];
+	for (var i in json.data) {
+		var item = json.data[i];
+		if (item.type == 'ondemand') {
+			var bm = {};
+			bm.name = item.name;
+			bm.url = 'http://i.qingting.fm/wapi/flip/categories/' + item.id + '/channels/attrs/0/page/@page/pagesize/12';
+			bm.logo = '';
+			list.push(bm);
+		}
+	}
+	return JSON.stringify(list);
+}
+function tags_parse_radios(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+	var item = $('._2uXK').eq(1).children('a');
+	var bm = {};
+	bm.title = item.text().trim();
+	bm.url = 'http://rapi.qingting.fm/categories/' + item.attr('href').match(/radiopage\/(\d+)/)[1] + '/channels?with_total=true&page=@page&pagesize=12';
+	list.push(bm);
+	item = $('._2uXK').eq(2).children('a');
+	var bm = {};
+	bm.title = item.text().trim();
+	bm.url = 'http://rapi.qingting.fm/categories/' + item.attr('href').match(/radiopage\/(\d+)/)[1] + '/channels?with_total=true&page=@page&pagesize=12';
+	list.push(bm);
+	$('._2uXK').eq(0).find('a').each(function () {
+		var item = $(this);
+		var bm = {};
+		bm.title = item.text();
+		bm.url = 'http://rapi.qingting.fm/categories/' + item.attr('id') + '/channels?with_total=true&page=@page&pagesize=12';
+		list.push(bm);
+	});
+	$('._2uXK').eq(3).find('a').each(function () {
+		var item = $(this);
+		var bm = {};
+		bm.title = item.text();
+		bm.url = 'http://rapi.qingting.fm/categories/' + item.attr('id') + '/channels?with_total=true&page=@page&pagesize=12';
+		list.push(bm);
+	});
+	return JSON.stringify(list);
+}
+function tag_parse_radios(url, html) {
+	var json = JSON.parse(html);
+	var list = [];
+	for (var i in json.Data.items) {
+		var item = json.Data.items[i];
+		var bm = {};
+		bm.name = item.title;
+		bm.url = 'http://www.qingting.fm/radios/' + item.content_id;
+		bm.logo = item.cover;
+		bm.author = '';
+		bm.status = '';
+		bm.newSection = '';
+		bm.updateTime = '正在直播' + item.nowplaying.title;
+		list.push(bm);
+	}
+	return JSON.stringify(list);
+}
+function tag_parse_channels(url, html) {
+	var json = JSON.parse(html);
+	var list = [];
+	for (var i in json.data.channels) {
+		var item = json.data.channels[i];
+		var bm = {};
+		bm.name = item.name;
+		bm.url = 'http://www.qingting.fm/channels/' + item.id;
+		bm.logo = item.img_url;
+		bm.author = '';
+		bm.status = '';
+		bm.newSection = '';
+		bm.updateTime = item.update_time;
+		list.push(bm);
+	}
+	return JSON.stringify(list);
+}
+
+function search_parse(url, html) {
+	var json = JSON.parse(html);
+	var list = [];
+	for (var i in json.data.data.docs) {
+		var item = json.data.data.docs[i];
+		var bm = {};
+		bm.name = item.title;
+		if (item.type == "channel_live") {
+			bm.url = 'http://www.qingting.fm/radios/' + item.id;
+		} else {
+			bm.url = 'http://www.qingting.fm/channels/' + item.id;
+		}
+		bm.logo = item.cover;
+		bm.author = '';
+		bm.status = '';
+		bm.newSection = '';
+		bm.updateTime = '';
+		bm.btag = "专辑电台";
+		list.push(bm);
+	}	
+	return JSON.stringify(list);
+}
+function buildUrl(url) {
+	return 'http://i.qingting.fm/wapi/channels/' + url.match(/qingting.fm\/[^\d]+?\/(\d+)/i)[1];
+}
+function book_parse_radios(url, html) {
+	var json = JSON.parse(html);
+	var data = {};
+	data.name = json.data.name;
+	data.author = '';
+	data.logo = json.data.img_url;
+	data.intro = json.data.desc;
+	data.updateTime = '';
+	data.isSectionsAsc = 1;
+	data.sections = [];
+	return JSON.stringify(data);
+}
+
+function book_s_parseUrl_radios(url, html) {
+	var localTime = new Date();
+	var yesterday = new Date(localTime.getTime() + localTime.getTimezoneOffset() * 60000 - (-28800000) - 24 * 3600 * 1000);
+	var a = [yesterday.getFullYear(), yesterday.getMonth() + 1, yesterday.getDate()];
+	if (a[1].toString().length == 1) {
+		a[1] = '0' + a[1];
+	}
+	if (a[2].toString().length == 1) {
+		a[2] = '0' + a[2];
+	}
+	var today = new Date(localTime.getTime() + localTime.getTimezoneOffset() * 60000 - (-28800000));
+	var b = [today.getFullYear(), today.getMonth() + 1, today.getDate()];
+	if (b[1].toString().length == 1) {
+		b[1] = '0' + b[1];
+	}
+	if (b[2].toString().length == 1) {
+		b[2] = '0' + b[2];
+	}
+	return url + '/programs/date/' + a[0] + a[1] + a[2] + ';' + url + '/programs/date/' + b[0] + b[1] + b[2];
+}
+function chinautc(time) {
+	var chinautc = time.match(/(\d+)[^\d]*(\d+)[^\d]*(\d+)[^\d]*(\d+)[^\d]*(\d+)[^\d]*(\d+)/);
+	return Date.UTC(Number(chinautc[1]), Number(chinautc[2]) - 1, Number(chinautc[3]), Number(chinautc[4]), Number(chinautc[5]), Number(chinautc[6])) + (-28800000);
+}
+
+function book_s_parse_radios(url, html) {
+	var json = JSON.parse(html);
+	var data = {};
+	data.sections = [];
+	var timestr = new Date().getTime();
+	for (var i in json.data) {
+		var item = json.data[i];
+		if (timestr > chinautc(item.end_time)) {
+			var startTime = item.start_time.split('-').join('').replace(' ', '_').split(':').join('');
+			var endTime = item.end_time.split('-').join('').replace(' ', '_').split(':').join('');
+			if (item.type == 'program_live') {
+				var sm = {
+					url: 'http://lcache.qingting.fm/cache/' + startTime.split('_')[0] + '/' + item.channel_id + '/' + item.channel_id + '_' + startTime + '_' + endTime.split('_')[1] + '_24_0.aac',
+					name: item.start_time.match(/-(\d+-\d+.+)/)[1] + item.name
+				};
+			} else {
+				var sm = {
+					name: item.start_time.match(/-(\d+-\d+.+)/)[1] + item.name,
+					url: 'http://cacheshare.qingting.fm/cacheshare/' + item.res_id + '-' + startTime + '-' + endTime + '.m4a'
+				};
+			}
+			data.sections.push(sm);
+		} else if (timestr >= chinautc(item.start_time) && timestr <= chinautc(item.end_time)) {
+			if (item.type == 'program_live') {
+				var sm = {
+					url: 'http://lhttp.qingting.fm/live/' + item.channel_id + '/64k.mp3',
+					name: '直播' + item.start_time.match(/-(\d+-\d+.+)/)[1] + item.name
+				};
+			} else {
+				var sm = {
+					name: '直播' + item.start_time.match(/-(\d+-\d+.+)/)[1] + item.name,
+					url: 'http://http.qingting.fm/' + item.res_id + '.mp3'
+				};
+			}
+			data.sections.push(sm);
+		} else {}
+	}
+	return JSON.stringify(data);
+}
+function section_parse_radios(url) {
+	return JSON.stringify([{
+				url: url,
+				logo: '',
+				type: ".mp3",
+				mime: "audio/x-mpeg"
+			}
+		]);
+}
+
+function book_parse_channels(url, html) {
+	var json = JSON.parse(html);
+	var data = {};
+	data.name = json.data.name;
+	if(json.data.podcasters)data.author = json.data.podcasters[0].name;
+	data.logo = json.data.img_url;
+	data.intro = json.data.desc;
+	data.updateTime = '';
+	data.isSectionsAsc = 0;
+	data.sections = [];
+	return JSON.stringify(data);
+}
+function book_s_buildUrl_channels(url) {
+	return 'http://i.qingting.fm/wapi/channels/' + url.match(/qingting.fm\/[^\d]+\/(\d+)/i)[1] + '/programs/page/1/pagesize/30';
+}
+function book_s_parseUrl_channels(url, html) {
+	var json = JSON.parse(html);
+	var urls = url;
+	var pages = Math.ceil(json.total / 30);
+	if (json.data.length > 1 && json.data[0].id > json.data[1].id) {
+		orderasc = 0;
+		for (i = 2; i <= pages; i++) {
+			urls = urls +';' + url.replace('page/1', 'page/' + i);
+		}
+	} else {
+		orderasc = 1;
+		for (i = 2; i <= pages; i++) {
+			urls = url.replace('page/1', 'page/' + i)+ ';' + urls;
+		}
+	}
+	return urls;
+}
+var orderasc = 0;
+function book_s_parse_channels(url, html) {
+	var json = JSON.parse(html);
+	var data = {};
+	data.sections = [];
+	for (var i in json.data) {
+		var item = json.data[i];
+		if (item.type == 'program_ondemand') {
+			var sm = {
+				name: item.name,
+				url: 'http://www.qingting.fm/channels/' + item.channel_id + '/programs/' + item.id
+			};
+			if (item.file_path == null) {
+				sm.name = '属付费播放' + sm.name;
+				sm.url = '';
+			}
+			data.sections.push(sm);
+		}
+	}
+	if (orderasc == 1) {
+		data.sections.reverse();
+	}
+	return JSON.stringify(data);
+}
+
+function section_buildUrl_channels(url) {
+	return 'http://i.qingting.fm/wapi/' + url.match(/channels.+$/)[0];
+}
+function section_parse_channels(url, html) {
+	var json = JSON.parse(html);
+	return JSON.stringify([{
+				url: 'http://od.qingting.fm/' + json.data.file_path,
+				logo: '',
+				type: ".mp3",
+				mime: "audio/x-mpeg"
+			}
+		]);
+}
+]]>
+		</code>
+	</script>
+</sited>

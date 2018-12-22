@@ -1,0 +1,192 @@
+<!--?xml version="1.0" encoding="UTF-8" ?-->
+<sited ver="1" debug="1"  engine="27" schema="1">
+    <meta>
+		<ua></ua>
+		<guid></guid>
+		<title>米律合同</title>
+		<author>Guang</author>
+		<contact>未想好我空着</contact>
+		<intro>[资讯]专业的创业法律服务平台,为创业者提供在线合同生成（免费版）</intro>
+		<url>http://www.milv.cn/free_agreement.html</url>
+		<expr>\.milv\.cn</expr>
+		<logo>http://www.milv.cn/Public/Images/favicon.ico</logo>
+		<encode>UTF-8</encode>
+		<reward title="反馈" mail="wistn@qq.com">
+			<item txt="欢迎打赏插件开发者Guang，反馈问题。" />
+			<item />
+			<item txt="点击或扫描二维码对[❤❤广]支付宝打赏" expr="https://qr.alipay.com/aex05979jbnzvi4fs3hx691" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7nyz88j20by0by0sy.jpg" />
+			<item />
+			<item txt="扫描二维码对我的微信打赏" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7oa4khj206b06bt9m.jpg" />
+			<item />
+			<item url="点击本行可联系QQ" expr="http://wpa.qq.com/msgrd?v=3&amp;uin=476375486&amp;site=qq&amp;menu=yes" />
+			<item />
+		</reward>
+	</meta>
+	<main dtype="6" btag="资讯">
+		<home>
+			<updates cache="1d" showImg="1" title="最新" method="get" parse="updates_parse" url="http://www.milv.cn/free_agreement.html?order_by=new" />
+			<tags  title="分类">
+	            <tags cache="1d" method="get" parse="tags_parse" url="http://www.milv.cn/free_agreement.html"/>
+			</tags>
+		</home>
+        <search cache="1d"  method="get"  parse="search_parse"  url="http://www.milv.cn/free_agreement/search.html?keyword=@key"  />
+        <tag cache="1d" method="get" parse="tag_parse" />
+		<book cache="1d" method="get" parse="book_parse" />
+    </main>
+    <script>
+	    <require>
+			<item url="http://sited.noear.org/addin/js/cheerio.js" lib="cheerio" />
+		</require>
+		<code>
+			<![CDATA[
+function urla(u) {
+	var host = "http://www.milv.cn";
+	if (u.indexOf("http") < 0) {
+		if (u.substr(0, 1) != '/')
+			u = host + '/' + u;
+		else
+			u = host + u;
+	}
+	return encodeURI(u);
+}
+
+function updates_parse(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+
+	$('.custom-list li').each(function () {
+		var item = $(this);
+
+		var bm = {};
+		bm.name = item.attr('title');
+		bm.url = item.attr('url');
+		bm.logo = item.find('img').eq(0).attr('src');
+		bm.newSection = '';
+		bm.updateTime = item.children('.desc').text();
+		list.push(bm);
+	});
+
+	return JSON.stringify(list);
+}
+
+function tags_parse(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+
+	$('.selector').eq(0).find('dl.clearfix').each(function () {
+		var bm = null;
+
+		var groupname = $(this).children('dt').text();
+		$(this).children('dd').slice(1).each(function () {
+			if (bm) {
+				bm = {};
+			} else {
+				bm = {
+					group : groupname
+				};
+			}
+
+			var item = $(this);
+			bm.title = item.children('a').text().trim();
+			bm.url = item.children('a').attr('href').replace('.html?category_id=', '/category_id/') + '/p/@page.html';
+
+			list.push(bm);
+		});
+	});
+
+	return JSON.stringify(list);
+}
+
+function tag_parse(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+
+	$('.free_list .block').each(function () {
+
+		var slf = $(this);
+
+		var bm = {};
+		bm.name = slf.children('h3').text();
+		bm.url = slf.find('a').attr('href');
+		bm.logo = slf.find('img').attr('src');
+
+		bm.author = '';
+		bm.newSection = '';
+		bm.updateTime = slf.find('p').text();
+		bm.status = '';
+		list.push(bm);
+	});
+
+	return JSON.stringify(list);
+}
+
+function search_parse(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+	$('.free_list .block').each(function () {
+
+		var slf = $(this);
+
+		var bm = {};
+		bm.name = slf.children('h3').text();
+		bm.url = slf.find('a').attr('href');
+		bm.logo = slf.find('img').attr('src');
+
+		bm.author = '';
+		bm.newSection = '';
+		bm.updateTime = slf.find('p').text();
+		bm.status = '';
+		bm.btag = "资讯";
+		list.push(bm);
+	});
+	return JSON.stringify(list);
+}
+
+function book_parse(url, html) {
+	var list = [];
+	
+	html = html.replace(/<span[^>]+?underline[^>]+?>((&nbsp;)|\s)+<\/span>/gi,'______').replace(/<p.*?>/gi, '$$').replace(/<\/p>/gi, '$$');
+
+	var $ = cheerio.load(html);	
+	var intro = $('.contract_intro');
+	var preview = $('.contract_preview');	
+
+	list.push({
+		d : intro.find('h3').text(),
+		t : 1,
+		b : 1
+	});
+	var list1 = intro.find('.overview').text().split('$');
+
+	list1.forEach(function (item) {
+		var t1 = item.trim();
+		if (t1.length > 0) {
+			list.push({
+				d : item.trim(),
+				t : 1
+			});
+		}
+	});
+
+	list.push({
+		d : preview.find('h2').text(),
+		t : 1,
+		b : 1
+	});
+	var list2 = preview.find('.content').text().replace(/(\r|\n)(\t)+/g, '').split('$');
+
+	list2.forEach(function (item) {
+		var t1 = item.trim();
+		if (t1.length > 0) {
+			list.push({
+				d : item,
+				t : 1
+			});
+		}
+	});
+	return JSON.stringify(list);
+}
+    ]]>
+		</code>
+    </script>
+</sited>

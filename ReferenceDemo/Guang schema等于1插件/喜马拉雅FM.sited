@@ -1,0 +1,348 @@
+<!--?xml version="1.0" encoding="UTF-8" ?-->
+<sited  ver="11" debug="1"  engine="30" schema="1" >
+    <meta>
+		<ua></ua>
+		<guid></guid>
+		<title>喜马拉雅FM</title>
+		<author>Guang</author>
+		<contact>未想好我空着</contact>
+		<intro>[FM](v11修复搜索等)国内知名的音频分享平台，20多个分类，让你听上瘾,听过瘾。可搜索专辑、主播。节目本身顺序是主播自由调整的，插件调整不到。付费节目不可放</intro>
+		<url>http://m.ximalaya.com/</url>
+		<expr>\.ximalaya\.com</expr>
+		<logo>https://s1.xmcdn.com/wap/css/img/common/ting.png</logo>
+		<encode>UTF-8</encode>
+		<about title="反馈" mail="wistn@qq.com">
+			<item url="我邮箱是wistn@qq.com" />
+			<item />
+			<item url="欢迎打赏插件开发者Guang，反馈问题。"/>			
+			<item txt="点击或扫描二维码对[❤❤广]支付宝打赏"  expr="https://qr.alipay.com/aex05979jbnzvi4fs3hx691" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7nyz88j20by0by0sy.jpg"/>
+			<item />
+			<item txt="扫描二维码对我的微信打赏" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7oa4khj206b06bt9m.jpg"/>
+			<item />
+		</about>
+	</meta>
+    <main dtype="3" btag="电台">
+        <home>
+            <updates cache="1d" title="榜单" method="get" showImg="1" parse="updates_parse" url="http://m.ximalaya.com/chart" />
+            <tags title="分类">
+			<tags cache="1d" method="get" parse="tags_parse" url="http://www.ximalaya.com/dq/all/" />
+			</tags>
+        </home>
+        <search cache="1d" method="get" parse="search_parse" url="http://www.ximalaya.com/search/all/kw/@key/page/1/sc/true" />
+        <tag>
+			<tag cache="1d" method="get" parse="tag_parse1" expr="content_type=1" />
+            <tag cache="1d" method="get" parse="tag_parse2" expr="content_type=2|content_type=3" />
+            <tag cache="1d" method="get" parse="tag_parse3" expr="\/dq\/" />
+		</tag>
+        <book>
+            <book cache="1d" method="get" buildUrl="book_buildUrl1" parseUrl="book_parseUrl1" parse="book_parse1" expr="\d+\/album\/\d+" dtype="3" />
+			<book cache="1" method="get" buildUrl="section_buildUrl" parse="book_parse2" expr="\d+\/sound\/\d+" dtype="7" style="12"/>
+            <book cache="1d" method="get" expr="\/zhubo\/\d+|\d+\/sound\/?$|\d+\/sound\/p\d+" buildUrl="book_buildUrl3zhubo" parseUrl="book_parseUrl3zhubo" parse="book_parse3zhubo" dtype="3" />
+        </book>
+        <section cache="1" method="get" buildUrl="section_buildUrl" parse="section_parse" style="12"/></main>
+    <script>
+        <require>
+            <item url="http://sited.noear.org/addin/js/cheerio.js" lib="cheerio" /></require>
+        <code>
+            <![CDATA[
+function urla(u) {
+	var host = "http://m.ximalaya.com";
+	if (u.indexOf("http") < 0) {
+		if (u.substr(0, 1) != '/') u = host + '/' + u;
+		else u = host + u;
+	}
+	var memo="搜索、专辑、主播音频合集用电脑版，榜单、音频用手机版json";
+	return encodeURI(u);
+}
+function updates_parse(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+	$('.container li').each(function() {
+		var item = $(this);
+		var bm = {};
+		bm.name = item.find('.txt-mid2').text();
+		bm.url = item.children().attr('href');
+		if (bm.url.match(/track/i)) {
+			bm.url = 'http://m.ximalaya.com/chart/more_sublist?url=/chart/more_sublist&redis_key=' + bm.url.match(/name=(.+)/)[1] + '&content_type=1&page=@page';
+		} else if (bm.url.match(/album/i)) {
+			bm.url = 'http://m.ximalaya.com/chart/more_sublist?url=/chart/more_sublist&redis_key=' + bm.url.match(/name=(.+)/)[1] + '&content_type=2&page=@page';
+		} else {
+			bm.url = 'http://m.ximalaya.com/chart/more_sublist?url=/chart/more_sublist&redis_key=' + bm.url.match(/name=(.+)/)[1] + '&content_type=3&page=@page';
+		}
+		bm.logo = item.find('img').attr('src');
+		bm.newSection = '';
+		bm.updateTime = '';
+		list.push(bm);
+	});
+	return JSON.stringify(list);
+}
+function search_parse(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+	$('ul.search-album-lists li').each(function() {
+		var item = $(this);
+		var bm = {};
+		bm.name = item.children('.search-album-tit').text().trim();
+		bm.url = urla(item.children('a').attr('href'));
+		bm.logo = item.find('img').attr('src');
+		bm.author = '';
+		bm.newSection = '';
+		bm.updateTime = '[专辑]共'+item.find('i.icon-soundslight').text();
+		bm.status = '';	
+		bm.btag = "专辑";			
+		list.push(bm);
+	});
+	$('ul.search-anchor-lists li').each(function() {
+		var item = $(this);
+		var bm = {};
+		bm.name = item.find('.anchor-tit').text().trim();
+		bm.url = urla(item.find('img').parent('a').attr('href'));
+		bm.logo = item.find('img').attr('src');
+		bm.author = '';
+		bm.newSection = '';
+		bm.updateTime = '[主播]粉丝数：'+item.find('i.icon-fanslight').text();
+		bm.status = item.find('p').text().trim();
+		bm.btag = "主播";			
+		list.push(bm);
+	});
+	return JSON.stringify(list);
+}
+
+function tag_parse1(url, html) {
+	html = html.replace('\\r', '').replace('\\n', '').replace('\\t', '').replace('\\', '');
+	var jData = JSON.parse(html);
+	var list = [];
+	if (jData.html) {
+		var jhtml = jData.html;
+		var $ = cheerio.load(jhtml);
+		$('li').each(function() {
+			var item = $(this);
+			var bm = {};
+			bm.name = item.find('.sound-tit').text().trim();
+			bm.url = urla(item.find('.sound-tit').parent().attr('href'));
+			bm.logo = item.find('img').attr('src');
+			bm.author = item.find('span').text().trim();
+			bm.newSection = '';
+			bm.updateTime = '';
+			bm.status = '';
+			list.push(bm);
+		});
+	}
+	return JSON.stringify(list);
+}
+
+function tag_parse2(url, html) {
+	html = html.replace('\\r', '').replace('\\n', '').replace('\\t', '').replace('\\', '');
+	var jData = JSON.parse(html);
+	var list = [];
+	if (jData.html) {
+		var jhtml = jData.html;
+		var $ = cheerio.load(jhtml);
+		$('li').each(function() {
+			var item = $(this);
+			var bm = {};
+			if (url.match(/album/i)) {
+				bm.name = item.find('.txt-mid2').text().trim();
+				bm.url = urla(item.children().attr('href'));
+				bm.logo = item.find('img').attr('src');
+				bm.author = item.find('.icon-user2').parent().text().trim();
+				bm.updateTime = '共'+item.find('span').text();
+				bm.status = '';				
+			} else {
+				bm.name = '[主播]' + item.find('.txt-mid2').text().trim();
+				bm.url = 'http://www.ximalaya.com/zhubo/' + item.children().attr('href').match(/\d+/)[0] ;
+				bm.logo = item.find('img').attr('src');
+				bm.author = '';
+				bm.updateTime = item.find('.txt-mid2').next().text().trim();
+				bm.status = '粉丝数：'+item.find('span').text();
+			}
+			bm.newSection = '';
+
+			list.push(bm);
+		});
+	}
+	return JSON.stringify(list);
+}
+function tags_parse(url,html){
+	var $ = cheerio.load(html);
+	var list = [];
+	$('.sort_list>li>a').each(function() {
+		var item = $(this);
+		var bm = {};
+		bm.title = item.text();
+		bm.url = 'http://www.ximalaya.com'+item.attr('href')+'@page';
+		list.push(bm);
+	});
+	return JSON.stringify(list);
+}
+function tag_parse3(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+	
+	$('.discoverAlbum_wrapper .discoverAlbum_item').each(function(){
+		var item = $(this); 		
+		var bm = {};
+		bm.name = item.children('.discoverAlbum_title').text();
+		bm.url  = urla(item.children('.discoverAlbum_title').attr('href'));
+		bm.logo = item.find('img').attr('src');
+		
+		bm.author = '';
+		bm.newSection = '';
+		bm.updateTime = '';
+		bm.status = '';
+		list.push(bm);
+	});
+	return JSON.stringify(list);
+}
+
+
+function book_buildUrl1(url) {
+	return url.replace('m.', 'www.');
+}
+function book_parseUrl1(url, html) {
+	var $ = cheerio.load(html);
+	var urls = url;
+	if ($('.album_soundlist li').length > 1 && Number($('.album_soundlist li').eq(0).attr('sound_id')) > Number($('.album_soundlist li').eq(1).attr('sound_id'))) {
+		orderasc = 0;
+		var pages = $('div.pagingBar a').length - 1;
+		if (pages) {
+			for (i = 2; i <= pages; i++) {
+				urls = urls + ';' + url + '?page=' + i;
+			}
+		}
+	} else {
+		orderasc = 1;
+		var pages = $('div.pagingBar a').length - 1;
+		if (pages) {
+			for (i = 2; i <= pages; i++) {
+				urls = url + '?page=' + i + ';' + urls;
+			}
+		}
+	}
+	return urls;
+}
+	
+var orderasc = 0;
+function book_parse1(url, html) {
+	var $ = cheerio.load(html);
+	var data = {};
+	$('.personal_header .username span').remove();
+	data.name = $('.detailContent img').attr('alt');
+	data.author = $('.personal_header .username').text().trim();
+	data.logo = $('.detailContent img').attr('src');
+	data.intro = $('.rich_intro article').text();
+	data.updateTime = "";
+	data.isSectionsAsc=0;
+	data.sections = [];
+	$('.album_soundlist li').each(function() {
+		var url0 = $(this).find('.title').attr('href');
+		var name0 = $(this).find('.title').attr('title');
+		var bm = {
+			name: name0,
+			url: urla(url0)
+		};
+		if ($(this).find('.iconpay').length > 0) {
+			if ($(this).find('.iconpay-coin2').length > 0) {
+				bm.name = '[要购买]' + bm.name;
+			} else {
+				bm.name = '[' + $(this).find('.iconpay').text() + ']' + bm.name;
+			}
+		}
+		if (url0 && url0.search(/\d+/) >= 0) {
+			data.sections.push(bm);
+		}
+	});
+	if (orderasc == 1) {
+		data.sections.reverse();
+	}	
+	return JSON.stringify(data);
+}
+
+function section_buildUrl(url) {
+	return 'http://m.ximalaya.com/tracks/' + url.match(/\d+\/sound\/(\d+)/)[1] + '.json';
+}
+
+function book_parse2(url, html) {
+	var json = JSON.parse(html);
+    var url0 = json.play_path;
+	var img=json.cover_url_142;
+	return JSON.stringify({
+		name: json.title,
+		logo: img,
+		list: [{
+				url : url0,
+				logo : img,
+				type : ".mp3",
+				mime : "audio/x-mpeg"
+			}]
+		});		
+}
+function section_parse(url, html) {
+	var json = JSON.parse(html);
+    var url0 = json.play_path;
+	var img=json.cover_url_142;
+        return JSON.stringify([{
+            url: url0,
+            logo: img,
+            type: ".mp3",
+            mime: "audio/x-mpeg"
+        }]);
+}
+
+
+function book_buildUrl3zhubo(url) {
+	if (url.match(/sound/)) {
+		return 'http://www.ximalaya.com/' + url.match(/(\d+)\/sound/)[1] + '/sound/';
+	} else {
+		return 'http://www.ximalaya.com/' + url.match(/\/zhubo\/(\d+)/)[1] + '/sound/';
+	}
+}
+function book_parseUrl3zhubo(url, html) {
+	var $ = cheerio.load(html);
+	var list = url ;
+	var pages = $('div.pagingBar a').length - 1;
+	if (pages) {
+		for (i = 2; i <= pages; i++) {
+			list += (';' + url + 'p' + i);
+		}
+	}
+	return list;
+}
+function book_parse3zhubo(url, html) {
+	var $ = cheerio.load(html);
+	var data = {};
+	$('.personal_header .username span').remove();
+	data.name = $('.personal_header .username').text().trim();
+	data.author = $('.personal_header .username').text().trim();
+	data.logo = $('.picture img').attr('src');
+	data.intro = '此页为主播的最近10页音频，而非专辑';
+	data.updateTime = "";
+	data.isSectionsAsc=0;
+	data.sections = [];
+
+	$('.body_list .content_wrap').each(function() {
+		var url0 = $(this).find('.sound_titlebar a').eq(0).attr('href');
+		var name0 = $(this).find('.sound_titlebar a').eq(0).text() + $(this).find('.sound_titlebar span').eq(0).text().replace(/\s/,'');
+		var bm = {
+			name: name0,
+			url: urla(url0)
+		};
+		if ($(this).find('.iconpay').length > 0) {
+			if ($(this).find('.iconpay-coin2').length > 0) {
+				bm.name = '[要购买]' + bm.name;
+			} else {
+				bm.name = '[' + $(this).find('.iconpay').text() + ']' + bm.name;
+			}
+		}
+		if (url0 && url0.search(/\d+/) >= 0) {
+			data.sections.push(bm);
+		}
+	});
+	return JSON.stringify(data);
+}
+
+
+			]]>
+		</code>
+    </script>
+</sited>

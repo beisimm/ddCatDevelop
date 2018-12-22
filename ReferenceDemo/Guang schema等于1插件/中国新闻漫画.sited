@@ -1,0 +1,142 @@
+<!--?xml version="1.0" encoding="UTF-8" ?-->
+<sited  ver="2" debug="1"  engine="27" schema="1">
+    <meta>
+		<ua></ua>
+		<guid></guid>	
+		<title>中国新闻漫画</title>
+		<author>Guang</author>
+		<contact>未想好我空着</contact>
+		<intro>[资讯]用网络手段向全国和全世界新闻媒体提供最新的新闻漫画资讯、作品的欣赏、交流、交易，供各媒体选择发表；同时向世界展示我国最高水平的新闻漫画作品和介绍我国最优秀的漫画家。（无搜索功能）</intro>
+		<url>http://cartoon.chinadaily.com.cn</url>
+		<expr>cartoon\.chinadaily\.com\.cn</expr>
+		<logo></logo>
+		<encode>GB18030</encode>
+		<reward title="反馈" mail="wistn@qq.com">
+			<item txt="欢迎打赏插件开发者Guang，反馈问题。" />
+			<item />
+			<item txt="点击或扫描二维码对[❤❤广]支付宝打赏" expr="https://qr.alipay.com/aex05979jbnzvi4fs3hx691" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7nyz88j20by0by0sy.jpg" />
+			<item />
+			<item txt="扫描二维码对我的微信打赏" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7oa4khj206b06bt9m.jpg" />
+			<item />
+			<item url="点击本行可联系QQ" expr="http://wpa.qq.com/msgrd?v=3&amp;uin=476375486&amp;site=qq&amp;menu=yes" />
+			<item />
+		</reward>
+    </meta>
+    <main dtype="6" btag="资讯">
+        <home>
+            <updates title="本月最新" method="get" showImg="2" parse="updates_parse" url="http://cartoon.chinadaily.com.cn/cartoonclass.shtml?cid=0&amp;ty=m" />
+            <tags title="分类">
+                <item title="国际新闻" url="http://cartoon.chinadaily.com.cn/cartoonclass.shtml?cid=1&amp;page=@page" />
+                <item title="社会生活" url="http://cartoon.chinadaily.com.cn/cartoonclass.shtml?cid=2&amp;page=@page" />
+                <item title="环境" url="http://cartoon.chinadaily.com.cn/cartoonclass.shtml?cid=3&amp;page=@page" />
+                <item title="财经" url="http://cartoon.chinadaily.com.cn/cartoonclass.shtml?cid=4&amp;page=@page" />
+                <item title="家庭" url="http://cartoon.chinadaily.com.cn/cartoonclass.shtml?cid=5&amp;page=@page" />
+                <item title="教育" url="http://cartoon.chinadaily.com.cn/cartoonclass.shtml?cid=16&amp;page=@page" />
+                <item title="健康" url="http://cartoon.chinadaily.com.cn/cartoonclass.shtml?cid=11&amp;page=@page" />
+                <item title="体育" url="http://cartoon.chinadaily.com.cn/cartoonclass.shtml?cid=6&amp;page=@page" />
+                <item title="人物" url="http://cartoon.chinadaily.com.cn/cartoonclass.shtml?cid=7&amp;page=@page" />
+                <item title="幽默" url="http://cartoon.chinadaily.com.cn/cartoonclass.shtml?cid=10&amp;page=@page" />
+                <item title="连环" url="http://cartoon.chinadaily.com.cn/cartoonclass.shtml?cid=8&amp;page=@page" />
+                <item title="插图" url="http://cartoon.chinadaily.com.cn/cartoonclass.shtml?cid=12&amp;page=@page" />
+                <item title="院校作品" url="http://cartoon.chinadaily.com.cn/cartoonclass.shtml?cid=14&amp;page=@page" />
+                <item title="国外漫画" url="http://cartoon.chinadaily.com.cn/cartoonclass.shtml?cid=15&amp;page=@page" />
+                <item title="其它" url="http://cartoon.chinadaily.com.cn/cartoonclass.shtml?cid=9&amp;page=@page" />				
+			</tags>
+		</home>
+		<tag  cache="1d"  method="get"  parse="tags_parse" />
+		<book  cache="1d" method="get"  parse="book_parse"  />
+    </main>
+    <script>
+	    <require>
+			<item url="http://sited.noear.org/addin/js/cheerio.js" lib="cheerio" />
+		</require>
+		<code>
+        <![CDATA[
+
+function urla(u) {
+	var host = "http://cartoon.chinadaily.com.cn";
+	if (u.indexOf("http") < 0) {
+		if (u.substr(0, 1) != '/')
+			u = host + '/' + u;
+		else
+			u = host + u;
+	}
+	return encodeURI(u);
+}
+
+function updates_parse(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+	$('table').eq(7).children('tr').eq(0).remove();
+	$('table').eq(7).children('tr').children('td').each(function () {
+		var item = $(this);
+
+		var bm = {};
+		bm.name = item.find('tr').eq(1).text().match(/(.+?)作者/i)[1];
+		bm.url = urla(item.find('a').eq(0).attr('href'));
+		bm.logo = item.find('img').attr('src').replace('./', 'http://cartoon.chinadaily.com.cn/');
+		bm.newSection = '';
+		bm.updateTime = '';
+
+		list.push(bm);
+	});
+
+	return JSON.stringify(list);
+}
+
+function tags_parse(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+	$('table').eq(7).children('tr').eq(0).remove();
+	$('table').eq(7).children('tr').children('td').each(function () {
+		var item = $(this);
+
+		var bm = {};
+		bm.name = item.find('tr').eq(1).text().match(/(.+?)作者/i)[1];
+		bm.url = urla(item.find('a').eq(0).attr('href'));
+		bm.logo = item.find('img').attr('src').replace('./', 'http://cartoon.chinadaily.com.cn/');
+		bm.author='';
+		bm.status='';
+		bm.newSection = '';
+		bm.updateTime = '';
+
+		list.push(bm);
+	});
+
+	return JSON.stringify(list);
+}
+
+function book_parse(url, html) {
+	var $ = cheerio.load(html);
+
+	var list = [];
+
+	$('table').eq(7).each(function () {
+		var item = $(this);
+
+		item.find('img').each(function () {
+			var img = $(this).attr('src').replace('./', 'http://cartoon.chinadaily.com.cn/');
+			list.push({
+				d : img,
+				t : 9
+			});
+		});
+		item.find('table>tr').each(function () {
+			var txt = $(this).text().trim();
+			if (txt.length > 0){
+				list.push({
+					d : txt,
+					t : 1
+				});
+			}	
+		});
+
+	});
+
+	return JSON.stringify(list);
+}
+
+    ]]>
+		</code>
+    </script>
+</sited>

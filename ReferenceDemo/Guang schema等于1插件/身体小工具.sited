@@ -1,0 +1,124 @@
+<!--?xml version="1.0" encoding="UTF-8" ?-->
+<sited ver="1" debug="1" engine="28" schema="1">
+    <meta>
+		<ua></ua>
+		<guid></guid>
+		<title>身体小工具</title>
+		<intro>[小工具]有预产期计算、体重指数</intro>
+		<author>Guang</author>
+		<url>http://guang.ka94.com/body/</url>
+		<expr>guang\.ka94\.com\/body\/</expr>
+		<logo></logo>
+		<encode>UTF-8</encode>
+	</meta>
+    <main dtype="8" btag="小工具" showWeb="0">
+        <home>
+            <updates title="身体小工具" showImg="0">
+
+                <item title="体重指数BMI" url="http://guang.ka94.com/body/bmi/" />
+                <item title="怀孕计算器" url="http://guang.ka94.com/body/pregnancy/" />
+				
+
+			</updates>
+		</home>
+        <book>           
+            <book dtype="8" expr="\/bmi\/" btn="计算" method="@null" parse="book_parse_bmi" update="2" showWeb="0" buildWeb="book_buildWeb" >
+                <item title="@Guang" />
+                <item />			
+                <item title="填写身高（cm厘米）阿拉伯数字" hint="可包含小数点" key="height" />
+                <item />
+                <item title="填写体重（kg公斤）阿拉伯数字" hint="可包含小数点" key="weight" /></book>
+            <book dtype="8" expr="\/pregnancy\/" btn="计算" method="@null" parse="book_parse_pregnancy" update="2"  showWeb="0" buildWeb="book_buildWeb" >
+                <item title="@Guang" />
+                <item title="请依次填写末次月经第一天的年月日数"/>				
+                <item  txt="年份数只填写4位数字" key="year" />
+                <item />
+                <item  txt="月份数只填写1或2位数字" key="month" />
+                <item />
+				<item  txt="日数只填写1或2位数字" key="date" /></book>
+        </book>
+    </main>
+    <script><require><item url = "http://sited.noear.org/addin/js/cheerio.js" lib = "cheerio" /></require>
+		<code>
+			<![CDATA[
+
+function book_buildWeb(url) {
+	var memo='pregnancy日期计算用英国时间戳转换毫秒数[在世界上不同时区，同时运行new Date().getTime()的返回值是一样的],根据gmt/UTC日期转毫秒。Date时刻面向本地时间，参数代表的是本地时间，新建的对象代表的也是本地时间，输出的结果后面通常有(某国标准时间)等字样';
+	return 'http://guang.ka94.com/tool/';
+}
+
+
+
+function book_parse_pregnancy(url, str) {
+	var list = [];
+	var data = JSON.parse(str);
+	var year = data.year.trim();
+	var month = data.month.trim();
+	var date = data.date.trim();
+	var Timezonemilliseconds = (new Date().getTimezoneOffset()) * 60 * 1000;
+	var lastday = Date.UTC(Number(year), Number(month - 1), Number(date)) + Timezonemilliseconds;
+	if (lastday) {
+		var now = new Date().getTime();
+		var birthday = lastday + 24192000000;
+		var already = (now - lastday) / 86400000;
+		var remain = (birthday - now) / 86400000;
+		var zhengshu = parseInt(already / 7);
+		var yushu = parseInt(already % 7);
+		var jindu = ((now - lastday) / 24192000000 * 100).toFixed(0);
+		if (yushu != 0) {
+			list.push({
+				d : '今天是 ' + fundate(now) + ' ，预产期是 ' + fundate(birthday) + ' ，已怀孕 ' + Math.floor(already).toString() + ' 天（第 ' + zhengshu.toString() + ' 周+ ' + yushu.toString() + ' 天），怀孕进度是 ' + jindu.toString() + '% ，距离预产期 ' + (280 - Math.floor(already)).toString() + ' 天。以上结果仅供参考。',
+				t : 1,
+				b : 1
+			});
+		} else {
+			list.push({
+				d : '今天是 ' + fundate(now) + ' ，预产期是 ' + fundate(birthday) + ' ，已怀孕 ' + Math.floor(already).toString() + ' 天（第' + zhengshu.toString() + '周），怀孕进度是 ' + jindu.toString() + '% ，距离预产期 ' + (280 - Math.floor(already)).toString() + ' 天。以上结果仅供参考。',
+				t : 1,
+				b : 1
+			});
+		}
+	} else {
+		list.push({
+			d : '填写格式不正确，请重新输入。',
+			t : 1
+		});
+	}
+
+	return JSON.stringify(list);
+}
+function fundate(milliseconds) {
+	var date = new Date(milliseconds);
+
+	return date.getFullYear().toString() +'年'+ (1 + date.getMonth()).toString() +'月'+ date.getDate().toString()+'日';
+
+}
+function book_parse_bmi(url, str) {
+	var data = JSON.parse(str);
+	var list = [];
+	var height = Number(data.height.trim()) / 100;
+	var weight = Number(data.weight.trim());
+	var bmi = weight / (height * height);
+	if (bmi) {
+		var result= bmi.toString().substr(0, 4);
+		if (result.indexOf('.')==3)result=result.replace('.','');
+		list.push({
+			d : 'BMI结果是：' +result + '。以下范围仅供参考：小于15.0为严重偏瘦；15.1~18.5为偏瘦；18.5~24.9为标准；25.0~29.9为超重；大于30为肥胖。',
+			t : 1,
+			b : 1
+		});
+	} else {
+		list.push({
+			d : '输入格式有误，请重新输入。',
+			t : 1
+		});
+	}
+
+	return JSON.stringify(list);
+}
+
+
+]]>
+		</code>
+    </script>
+</sited>

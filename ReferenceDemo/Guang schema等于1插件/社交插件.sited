@@ -1,0 +1,71 @@
+<!--?xml version="1.0" encoding="UTF-8" ?-->
+<sited ver="1" debug="1" engine="28" schema="1">
+	<meta>
+        <ua></ua>
+        <guid></guid>
+        <title>社交插件</title>
+		<author>Guang</author>
+		<contact>未想好我空着</contact>
+        <intro>[小工具]目前有喵喵瓶留言给多多猫随机用户功能</intro>
+        <url>http://guang.ka94.com/social/</url>
+        <expr>guang\.ka94\.com\/social</expr>
+        <logo></logo>
+        <encode>UTF-8</encode>
+		<reward title="反馈" mail="wistn@qq.com">
+			<item txt="欢迎打赏插件开发者Guang，反馈问题。" />
+			<item />
+			<item txt="点击或扫描二维码对[❤❤广]支付宝打赏" expr="https://qr.alipay.com/aex05979jbnzvi4fs3hx691" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7nyz88j20by0by0sy.jpg" />
+			<item />
+			<item txt="扫描二维码对我的微信打赏" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7oa4khj206b06bt9m.jpg" />
+			<item />
+			<item url="点击本行可联系QQ" expr="http://wpa.qq.com/msgrd?v=3&amp;uin=476375486&amp;site=qq&amp;menu=yes" />
+			<item />
+		</reward>		
+	</meta>
+	<main dtype="8" btag="小工具"   showWeb="0">
+		<home>
+			<updates title="社交插件" showImg="0">
+                <item title="喵喵瓶" url="http://guang.ka94.com/social/bottle" />				
+			</updates>
+		</home>
+		<book>
+ 		    <book dtype="8" expr="bottle" 
+                  btn="拿出喵喵瓶"
+                  method="@null" 
+                  parse="book_parse_bottle" update="0"  showWeb="0" buildWeb="book_buildWeb">						
+            </book>		
+       </book>
+	</main>
+	<script>
+		<require>
+			<item url="http://sited.noear.org/addin/js/cheerio.js" lib="cheerio" /></require>
+		<code>
+			<![CDATA[
+function book_buildWeb(url) {
+	return 'http://guang.ka94.com/game/';
+}
+
+var SiteD = {};
+function book_parse_bottle(url, html) {
+	var list = [];
+	if (SiteD.uid != null && SiteD.uid != 0) {
+		var id = Math.floor(Math.random() * (699999 - 1 + 1) + 1);
+		var n = Math.floor(Math.random() * 8 + 1);
+		list.push({
+			d : '点击图片，就可输入内容给未知的对方。从我的猫友里可知道消息漂流给了谁',
+			t : 1,
+			b : 1
+		}, {
+			d : 'http://guang.ka94.com/tool/bottle' + n + '.jpg',
+			t : 10,
+			url : 'sited://at?' + id
+		});
+		return JSON.stringify(list);
+	} else {
+		return ' [{"d":"请先登录多多猫账号","t":1}]';
+	}
+}
+]]>
+		</code>
+    </script>
+</sited>

@@ -1,0 +1,179 @@
+<!--?xml version="1.0" encoding="UTF-8" ?-->
+<sited  ver="8" debug="1"  engine="27" schema="1">
+    <meta>
+		<ua></ua>
+		<guid></guid>
+		<title>不可能的世界</title>
+		<author>Guang</author>
+		<contact>未想好我空着</contact>
+		<intro>[轻小说](v8修复插件登陆功能)8kana,浪漫文学,让世界更精彩有趣,8站,小说,小说排行榜,好看的小说,免费小说,轻小说</intro>
+		<url>http://www.8kana.com/</url>
+		<expr>\.8kana\.com</expr>
+		<logo>http://image.coolapk.com/apk_logo/2015/1211/408649_1449823474_6579.png</logo>
+		<encode>UTF-8</encode>
+		<reward title="反馈" mail="wistn@qq.com">
+			<item txt="欢迎打赏插件开发者Guang，反馈问题。" />
+			<item />
+			<item txt="点击或扫描二维码对[❤❤广]支付宝打赏" expr="https://qr.alipay.com/aex05979jbnzvi4fs3hx691" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7nyz88j20by0by0sy.jpg" />
+			<item />
+			<item txt="扫描二维码对我的微信打赏" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7oa4khj206b06bt9m.jpg" />
+			<item />
+			<item url="点击本行可联系QQ" expr="http://wpa.qq.com/msgrd?v=3&amp;uin=476375486&amp;site=qq&amp;menu=yes" />
+			<item />
+		</reward>
+		<login run="web" url="http://m.8kana.com/passport/login?return_url=/bookshelf/index" check="login_check" auto="0" />
+	</meta>
+	<main dtype="2" btag="轻小说">
+        <home>
+			<hots  cache="60m"   title="最新精选" method="get"  parse="hots_parse" url="http://www.8kana.com/"  />
+			<tags  title="分类">
+                <item title="科幻" url="http://www.8kana.com/www/bookclass/bookshelf/0-1-0-0-0-0-0?page=@page.html" />
+                <item title="架空" url="http://www.8kana.com/www/bookclass/bookshelf/0-2-201-0-0-0-0?page=@page.html" />
+                <item title="超现实" url="http://www.8kana.com/www/bookclass/bookshelf/0-3-0-0-0-0-0?page=@page.html" />
+                <item title="都市" url="http://www.8kana.com/www/bookclass/bookshelf/0-4-401-0-0-0-0?page=@page.html" />
+                <item title="竞技" url="http://www.8kana.com/www/bookclass/bookshelf/0-5-0-0-0-0-0?page=@page.html" />
+                <item title="青春" url="http://www.8kana.com/www/bookclass/bookshelf/0-6-601-0-0-0-0?page=@page.html" />
+                <item title="悬疑" url="http://www.8kana.com/www/bookclass/bookshelf/0-7-0-0-0-0-0?page=@page.html" />
+                <item title="灵异" url="http://www.8kana.com/www/bookclass/bookshelf/0-8-801-0-0-0-0?page=@page.html" />
+                <item title="神州" url="http://www.8kana.com/www/bookclass/bookshelf/0-9-0-0-0-0-0?page=@page.html" />
+                <item title="不正常" url="http://www.8kana.com/www/bookclass/bookshelf/0-10-1001-0-0-0-0?page=@page.html" />
+                <item title="同人" url="http://www.8kana.com/www/bookclass/bookshelf/0-11-1101-0-0-0-0?page=@page.html" />
+            </tags>
+		</home>
+        <search cache="1d"  method="get"  parse="search_parse" url="http://www.8kana.com/www/search?keyword=@key&amp;type=1&amp;page=@page"  />
+ 
+        <tag cache="1d" method="get" parse="tags_parse" />
+        <book cache="1d"    method="get"  header="cookie;referer" parse="book_parse"  expr="\/book\/"   />
+        <section cache="1"  method="get"  parse="section_parse" />
+    </main>
+    <script>
+	    <require>
+			<item url="http://sited.noear.org/addin/js/cheerio.js" lib="cheerio" />
+		</require>
+		<code>
+        <![CDATA[
+function login_check(url,cookies){
+    if(cookies.indexOf('userinfo=')>=0)
+        return '1';
+    else
+        return '0';
+}
+
+function urla(u) {
+	var host = "http://www.8kana.com";
+	if (u.indexOf("http")<0) {
+		if (u.substr(0, 1) != '/')
+			u = host + '/' + u;
+		else
+			u = host + u;
+	}
+	return encodeURI(u);
+}
+
+function hots_parse(url,html) {
+    var $ = cheerio.load(html);
+    var list = [];
+    $('.Preselection #updateBook a').each(function() {
+        var slf = $(this);
+        var img = slf.children('.index_update_In_cover').children('img');       
+        var bm = {};
+        bm.name = img.attr('alt');
+        bm.url  = urla(slf.attr('href'));
+        bm.logo = urla(img.attr('original'));
+        list.push(bm);
+    });
+    return JSON.stringify(list);
+}
+
+
+function search_parse(url,html) {
+    var $ = cheerio.load(html);
+	var list = [];	
+	$('.results_details1').each(function(){
+		var img = $(this).find('img');		
+		var bm = {};
+		bm.name = $(this).find('.results_del_R_bookname').text();
+		bm.url = urla(img.parent().attr('href'));
+		bm.logo = urla(img.attr('src'));		
+		bm.author = $(this).find('.results_del_R_writername').text();
+		bm.newSection = '';
+		bm.updateTime = '';
+		bm.status = '';
+		bm.btag = "轻小说";
+		list.push(bm);
+	});
+	return JSON.stringify(list);
+}
+
+function tags_parse(url,html) {
+	var $ = cheerio.load(html);
+	var list = [];	
+	$('.classPage_books_B_R>a').each(function(){
+		var slf  = $(this).find('input');		
+		var bm = {};
+		bm.name = slf.eq(1).attr('value');
+		bm.url  = 'http://www.8kana.com/book/'+slf.eq(0).attr('value');
+		bm.logo = slf.eq(2).attr('value');		
+		bm.author = slf.eq(8).attr('value');
+		bm.newSection = '';
+		bm.updateTime = '';
+		bm.status = '';
+		list.push(bm);
+	});
+	return JSON.stringify(list);
+}
+
+
+function book_parse(url, html) {
+    var $ = cheerio.load(html);
+    var data = {};
+    data.name = $('.bookContainL h2').text();
+    data.author = $('.bookContainL li').eq(0).children('a').text();
+    data.logo = $('.bookContainL img').eq(0).attr('src');
+    data.intro = $('.bookContainL #li_booknote p').text().trim();
+    data.updateTime = "";
+    data.isSectionsAsc=1;	
+    data.sections = [];	
+    $('.informList .mainListTop').each(function(){
+        var slf = $(this);
+        data.sections.push({name:slf.find('span').text().trim(),url:''}); 
+        var ddd = slf.next(); 
+        ddd.find('a').each(function(){
+	        var item = $(this);          
+            if(item.children('.chapter_con_VIP').length>0){
+	            var sm = {url: urla(item.attr('href')), name:'网站vip章节'+ item.children('.ListName').text().trim()};
+	        }else{
+	            var sm = {url: urla(item.attr('href')), name:item.children('.ListName').text().trim()};
+	        }
+            data.sections.push(sm);			
+        });
+    });    
+	return JSON.stringify(data);
+}
+
+
+
+function section_parse(url,html) {
+    html = html.replace(/本书连载自免费.*享最快更新。/gi,'').replace(/\<p.*?>/gi,'$$').replace(/\<\/p>/gi,'');
+    var $ = cheerio.load(html);
+    var c = $('.myContent');
+    var list = [];   
+    if( $('#boolist').length > 0 )    
+    { 
+        var tList =  c.text().replace(/\<.*?br.*?>/gi,'').split('$');
+        tList.forEach(function(item) {
+            var t1 = item.trim();
+            if(t1.length>0){
+                list.push({d:item.trim(),t:1});
+            }
+        });    
+    }else{
+        var txt = '此为VIP章节只能登录原网站';
+        list.push({d:txt,t:1});
+    }   
+    return JSON.stringify(list);
+}
+    ]]>
+		</code>
+    </script>
+</sited>

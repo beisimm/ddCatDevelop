@@ -1,0 +1,298 @@
+<!--?xml version="1.0" encoding="UTF-8" ?-->
+<sited  ver="3" debug="1"  engine="27" schema="1" >
+    <meta>
+		<ua>iPhone</ua>
+		<guid></guid>
+		<title>百度音乐</title>
+		<author>Guang</author>	
+		<contact>未想好我空着</contact>	
+		<intro>[音乐](v3修复分类)中国第一音乐门户。（可搜索歌曲不可搜专辑，有些分类内容是空白的，因为源网站上也没有）</intro>
+		<url>http://music.baidu.com/home</url>
+		<expr>music\.baidu\.com|ting\.baidu\.com</expr>
+		<logo>http://image.coolapk.com/apk_logo/2016/0606/12202_1465209609_8464.png</logo>
+		<encode>UTF-8</encode>
+		<about title="反馈" mail="wistn@qq.com">
+			<item txt="欢迎打赏插件开发者Guang，反馈问题。" />
+			<item />
+			<item txt="点击或扫描二维码对[❤❤广]支付宝打赏" expr="https://qr.alipay.com/aex05979jbnzvi4fs3hx691" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7nyz88j20by0by0sy.jpg" />
+			<item />
+			<item txt="扫描二维码对我的微信打赏" logo="http://ww3.sinaimg.cn/mw690/82d3f846gw1f8ah7oa4khj206b06bt9m.jpg" />
+			<item />
+			<item url="点击本行可联系QQ" expr="http://wpa.qq.com/msgrd?v=3&amp;uin=476375486&amp;site=qq&amp;menu=yes" />
+			<item />
+		</about>
+    </meta>
+    <main dtype="3" btag="音乐">
+        <home>
+            <hots cache="1d" showImg="0" title="歌单" method="get" parse="hots_parse" url="http://music.baidu.com/songlists" />		
+            <updates cache="1d" showImg="1" w="1" h="1"  title="榜单" method="get" parse="updates_parse" url="http://music.baidu.com/home" />
+            <tags title="分类">
+	            <tags cache="1d" method="get" parse="tags_parse" url="http://music.baidu.com/tags"/>
+            </tags>
+        </home>
+		<search cache="1d" method="get" parse="search_parse" url="http://music.baidu.com/search/@key/"  />	
+		<tag>		
+			<tag cache="10m" showImg="1" w="1" h="1" method="get" parse="tag_parse_songlist" expr="method=baidu\.ting\.diy\.search" />
+			<tag cache="1d" showImg="0" method="get" buildUrl="tag_buildurl_tag" parse="tag_parse_tag" expr="\/tag\/" />
+		</tag>			
+		<book>
+			<book cache="1d"  method="get"  parse="book_parse_songlist"  expr="\/songlist\/" dtype="3" />
+			<book cache="1d"  method="get"  parse="book_parse_album"  expr="\/album\/" dtype="3" />	
+			<book cache="0"  method="get" buildUrl="section_buildurl" parse="book_parse_song"  expr="\/song\/"  dtype="7" style="12"/>
+		</book>
+		<section cache="1d"  method="get"  buildUrl="section_buildurl" parse="section_parse" style="12"/>
+    </main>
+    <script>
+	    <require>
+			<item url="http://sited.noear.org/addin/js/cheerio.js" lib="cheerio" />
+		</require>
+        <code>
+            <![CDATA[
+function urla(u) {
+	var host = "http://music.baidu.com";
+	if (u.indexOf("http") < 0) {
+		if (u.substr(0, 1) != '/')
+			u = host + '/' + u;
+		else
+			u = host + u;
+	}
+	return encodeURI(u);
+}
+
+function hots_parse(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+
+	$('.select-area span').each(function () {
+		var item = $(this);
+		if(item.text().trim().length>0){
+			bm = {};
+			bm.name = item.text().trim();
+			bm.url = 'http://tingapi.ting.baidu.com/v1/restserver/ting?from=webapp_music&method=baidu.ting.diy.search&format=jsonp&page_no=@page&page_size=20&query='+item.text().trim();
+			bm.logo = '';
+			list.push(bm);
+		}
+	});
+
+	return JSON.stringify(list);
+}
+
+function updates_parse(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+	list.push({
+		'name' : '以下是新专辑',
+		'updateTime' : '不要点本行'
+	});
+
+	$('.mod-albums .card').each(function () {
+		var item = $(this);
+		var bm = {};
+		bm.name = item.find('.name').text();
+		bm.url = urla(item.attr('data-url').replace('#', ''));
+		bm.logo = item.find('img').attr('src');
+		bm.updateTime = '歌手：' + item.find('.author').text();
+		list.push(bm);
+	});
+	list.push({
+		'name' : '以下是热歌/新歌/King榜',
+		'updateTime' : '不要点本行'
+	});
+	$('.mod-lists ul.list li.song').each(function () {
+		var item = $(this);
+		var bm = {};
+		bm.name = item.find('.name').text().trim();
+		bm.url = urla(item.attr('data-url'));
+		bm.logo = item.find('img').attr('org_src');
+		bm.updateTime = '歌手：' + item.find('.author').text();
+		list.push(bm);
+	});
+	return JSON.stringify(list);
+}
+
+function tag_parse_songlist(url, html) {
+	var jData = JSON.parse(html);
+    var list = [];
+    for (var i in jData.content) {
+        var item = jData.content[i];
+        if (item.listid) {
+            var bm = {};
+            bm.name = item.title;
+            bm.url = 'http://music.baidu.com/songlist/' + item.listid;
+            bm.logo = item.pic_300;			
+            bm.author = '';
+            bm.status = '';
+            bm.newSection = '';
+            bm.updateTime =  item.desc;
+            list.push(bm);
+        }
+    }
+
+	return JSON.stringify(list);
+}
+
+function tags_parse(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+	$('.content .block').eq(3).remove();
+
+	$('.content .block').each(function () {
+		var ugroup = $(this).children('.title').eq(0).text().trim();
+		var bm = null;
+		$(this).find('li').each(function () {
+			var item = $(this);
+			if (bm) {
+				bm = {};
+			} else {
+				bm = {
+					group : ugroup
+				};
+			}
+
+			bm.title = item.text().trim();
+
+			bm.url = 'http://music.baidu.com/tag/' + bm.title + "#@page";
+			list.push(bm);
+		});
+	});
+	return JSON.stringify(list);
+}
+
+function tag_buildurl_tag(url, page) {
+	var tagname = url.match(/tag\/(.+)#/)[1];
+	var start = (page - 1) * 20;
+
+	return 'http://music.baidu.com/loadmore/tag/?method=baidu.ting.tag.songlist&tagname=' + tagname + '&limit=20&offset=' + start.toString();
+}
+function tag_parse_tag(url, html) {
+	var list = [];
+
+	var items = html.match(/<li.+?song.+?txt.+?span>/gi);
+	items.forEach(function (item) {
+		var bm = {};
+		bm.name = item.match(/<span>(.+?)<\/span>/i)[1].trim();
+		bm.url = urla(item.match(/data-url.+?(\/song\/.+?)\\/i)[1]);
+		bm.logo = '';
+		bm.updateTime = '歌手：' + item.match(/txt.+?>(.+?)<\/span>/i)[1];
+		list.push(bm);
+
+	});
+	return JSON.stringify(list);
+}
+
+
+function search_parse(url, html) {
+	var $ = cheerio.load(html);
+	var list = [];
+
+	$('.list li.song').slice(0, 15).each(function () {
+		var item = $(this);
+		var bm = {};
+		if (item.find('.info b').text()) {
+			bm.name = item.find('.info b').text();
+		} else {
+			bm.name = item.find('.info span').eq(0).text();
+		}
+		bm.url = urla(item.attr('data-url'));
+		bm.logo = '';
+
+		bm.author = '';
+		bm.newSection = '';
+		bm.updateTime = item.find('span.txt').text().replace(/\s*/g, '');
+		bm.status = '';
+		bm.btag = "歌曲";
+		list.push(bm);
+	});
+	return JSON.stringify(list);
+}
+
+function book_parse_songlist(url, html) {
+	var $ = cheerio.load(html);
+	var data = {};
+
+	data.name = $('.pic').attr('alt');
+	data.author = '';
+	data.logo = $('.pic').attr('src');
+	data.intro = $('.content').text();
+	data.updateTime = '';
+	data.isSectionsAsc = 1;
+	data.sections = [];
+
+	$('ul.list>li').each(function () {
+		var url0 = $(this).attr('data-url');
+		var bm = {
+			name : $(this).find('.info>div>span').text().trim() + '——' + $(this).find('.txt').text(),
+			url : urla(url0)
+		};
+		if (url0 && url0.search(/\/\d+/) >= 0) {
+			data.sections.push(bm);
+		}
+	});
+
+	return JSON.stringify(data);
+}
+function book_parse_album(url, html) {
+	var $ = cheerio.load(html);
+	var data = {};
+
+	data.name = $('.pic>img').attr('alt');
+	data.author = $('.author').attr('data-author');
+	data.logo = $('.pic>img').attr('src');
+	data.intro = '';
+	data.updateTime = '';
+	data.isSectionsAsc = 1;
+	data.sections = [];
+
+	$('ul.list>li').each(function () {
+		var url0 = $(this).attr('data-url');
+		var bm = {
+			name : $(this).find('.info>div>span').text().trim(),
+			url : urla(url0)
+		};
+		if (url0 && url0.search(/\/\d+/) >= 0) {
+			data.sections.push(bm);
+		}
+	});
+
+	return JSON.stringify(data);
+}
+
+function section_buildurl(url) {
+	var id = url.match(/(\d+)/i)[1];
+	return 'http://tingapi.ting.baidu.com/v1/restserver/ting?method=baidu.ting.song.play&songid=' + id;
+}
+
+function book_parse_song(url, html) {
+	var json = JSON.parse(html);
+	var url0 = json.bitrate.show_link;
+	var img = json.songinfo.pic_big;
+	return JSON.stringify({
+		name: json.songinfo.title,
+		logo: img,
+		list: [{
+				url : url0,
+				logo : img,
+				type : ".mp3",
+				mime : "audio/x-mpeg"
+			}]
+		});
+}
+
+function section_parse(url, html) {
+	var json = JSON.parse(html);
+	var url0 = json.bitrate.show_link;
+	var img = json.songinfo.pic_big;
+
+	return JSON.stringify([{
+				url : url0,
+				logo : img,
+				type : ".mp3",
+				mime : "audio/x-mpeg"
+			}
+		]);
+}
+
+]]>
+        </code>
+    </script>
+</sited>
